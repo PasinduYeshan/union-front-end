@@ -1,17 +1,10 @@
 {
-  "name": "@coreui/coreui-free-react-admin-template",
-  "version": "4.1.1",
-  "description": "CoreUI Free React Admin Template",
+  "name": "Union-front-end",
+  "version": "1.0.0",
+  "description": "Union project front-end",
   "homepage": ".",
-  "bugs": {
-    "url": "https://github.com/coreui/coreui-free-react-admin-template/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:coreui/coreui-free-react-admin-template.git"
-  },
   "license": "MIT",
-  "author": "The CoreUI Team (https://github.com/orgs/coreui/people)",
+  "author": "Pasindu Yeshan",
   "scripts": {
     "build": "react-scripts build",
     "build:n17": "react-scripts --openssl-legacy-provider build",
@@ -40,7 +33,6 @@
     "classnames": "^2.3.1",
     "core-js": "^3.19.1",
     "enzyme": "^3.11.0",
-    "joi": "^17.6.0",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
     "react-app-polyfill": "^2.0.0",
@@ -62,5 +54,17 @@
   "engines": {
     "node": ">=10",
     "npm": ">=6"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
