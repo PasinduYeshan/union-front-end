@@ -1,3 +1,52 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/**
+* Home page carousel customization
+*/
+
+.swiper-container{
+    height: 400px;
+    /* max-height: 400px !important; */
+}
+
+.home-swiper-carousel{
+    /* justify-content: center;
+    align-items: center; */
+    /* background-repeat: no-repeat; */
+    /* background-position: 0%; */
+    /* background-image: url("assets/images/404.svg"); */
+}
+
+.home-carousel-image{
+    width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+}
+
+.swiper-pagination-bullet{
+    /* background-color: #fff !important; */
+}
+
+.swiper-pagination-bullet-active {
+    /* background-color: #000 !important; */
+}
+
+.swiper-button-disabled{
+    /* color: #398AB9 !important; */
+}
+
+.swiper-button-next{
+    /* color: blueviolet !important; */
+}
+
+.swiper-button-next{
+    /* color: blueviolet !important; */
+}
+
+
+
+/**
+* Home page carousel customization
+*/

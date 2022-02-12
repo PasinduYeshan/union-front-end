@@ -17,7 +17,7 @@ const Register = React.lazy(() => import("./views/pages/register/Register"));
 const Page404Error = React.lazy(() =>
   import("./views/pages/page404/404ErrorPage")
 );
-const Page500 = React.lazy(() => import("./views/pages/page500/Page500"));
+// const Page500 = React.lazy(() => import("./views/pages/page500/Page500"));
 const HomePage = React.lazy(() => import("./views/landing/HomePage"));
 
 class App extends Component {
@@ -44,19 +44,19 @@ class App extends Component {
               name="Page 404"
               render={(props) => <Page404Error {...props} />}
             />
-            <Route
+            {/* <Route
               exact
               path="/500"
               name="Page 500"
               render={(props) => <Page500 {...props} />}
-            />
+            /> */}
             <Route
               exact
               path="/"
               name="Home Page"
               render={(props) => <HomePage {...props} />}
             />
-            {/* <Route path="/" name="Home" render={(props) => <DefaultLayout {...props} />} /> */}
+            <Route path="/dashboard" name="Home" render={(props) => <DefaultLayout {...props} />} />
           </Switch>
         </React.Suspense>
       </BrowserRouter>
