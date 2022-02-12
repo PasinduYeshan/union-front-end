@@ -12,8 +12,8 @@ const loading = (
 const DefaultLayout = React.lazy(() => import("./layout/DefaultLayout"));
 
 // Pages
-const Login = React.lazy(() => import("./views/pages/login/Login"));
-const Register = React.lazy(() => import("./views/pages/register/Register"));
+// const Login = React.lazy(() => import("./views/pages/login/Login"));
+// const Register = React.lazy(() => import("./views/pages/register/Register"));
 const Page404Error = React.lazy(() =>
   import("./views/pages/page404/404ErrorPage")
 );
@@ -26,18 +26,18 @@ class App extends Component {
       <BrowserRouter>
         <React.Suspense fallback={loading}>
           <Switch>
-            <Route
+            {/* <Route
               exact
               path="/login"
               name="Login Page"
               render={(props) => <Login {...props} />}
-            />
-            <Route
+            /> */}
+            {/* <Route
               exact
               path="/register"
               name="Register Page"
               render={(props) => <Register {...props} />}
-            />
+            /> */}
             <Route
               exact
               path="/404"
