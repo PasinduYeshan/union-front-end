@@ -8,17 +8,22 @@ const WordAboutUs = React.lazy(() => import("./WordAboutUs"));
 const FooterComponent = React.lazy(() =>
   import("../../components/common/FooterComponent")
 );
-const GoogleMapLocation = React.lazy(() =>
-  import("../../components/common/GoogleMapLocation")
-);
+
+const EventCarouselSection = React.lazy(() => import("./EventCarouselSection"));
+const LandingCounter = React.lazy(() => import("./LandingCounter"));
+
+
 
 const HomePage = () => {
   return (
     <>
       <NavigationBar />
       <HeroSection />
+      <LandingCounter />
       <WordAboutUs />
+      <EventCarouselSection />
       <FooterComponent />
+      
     </>
   );
 };

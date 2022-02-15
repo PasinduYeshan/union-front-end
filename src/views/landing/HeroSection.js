@@ -4,9 +4,9 @@ const HeroSection = () => {
   return (
     <>
       <main className="mt-8 mx-auto max-w-7xl px-4 sm:mt-8 sm:px-6 md:mt-16 lg:mt-10 lg:px-8 xl:mt-10">
-        <div className="sm:text-center lg:text-center">
-          <h1 className="mb-2 text-2xl tracking-tight font-extrabold text-gray-900 sm:text-2xl md:text-3xl">
-            <span className="block text-blue-400 hover:text-blue-600 xl:inline">
+        <div className="sm:text-center lg:text-center transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 ">
+          <h1 className="mb-2 text-4xl tracking-tight font-extrabold text-gray-900 sm:text-4xl md:text-4xl">
+            <span className="block text-blue-400 hover:text-blue-600 xl:inline ">
               UPTO Sri Lanka
             </span>
           </h1>

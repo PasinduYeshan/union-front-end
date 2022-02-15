@@ -7,7 +7,7 @@
 */
 
 .swiper-container{
-    height: 400px;
+    height: 500px;
     /* max-height: 400px !important; */
 }
 
@@ -48,5 +48,37 @@
 
 
 /**
-* Home page carousel customization
+* Home page coverflow carousel customization
 */
+.coreflow-swiper{
+    width: 100%;
+  padding-top: 50px;
+  padding-bottom: 30px;
+  
+
+}
+
+.coreflow-swiper-slide{
+    background-position: center;
+  background-size: cover;
+  width: 300px !important;
+  height: 300px !important;
+
+}
+
+.coreflow-swiper-slide-img{
+    display: block;
+  width: 100%;
+}
+
+.event-carousel{
+    margin-top: 100px;
+    margin-bottom: 100px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+#home-event-headline{
+    padding-bottom: 30px;
+    padding-left: 50px;
+}

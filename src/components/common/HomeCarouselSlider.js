@@ -3,7 +3,7 @@ import React from "react";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 // import Swiper core and required modules
-import { Navigation, Pagination, Scrollbar, A11y, EffectFade } from "swiper";
+import { Navigation, Pagination, Scrollbar, A11y, EffectFade, Autoplay } from "swiper";
 
 // Import Swiper styles
 import "swiper/css/bundle";
@@ -19,12 +19,16 @@ const HomeCarouselSlider = () => {
   return (
     <Swiper
       className="swiper-container"
-      modules={[Navigation, Pagination, Scrollbar, A11y, EffectFade]}
+      modules={[Navigation, Pagination, Scrollbar, A11y, EffectFade, Autoplay]}
       effect="fade"
       spaceBetween={0}
       slidesPerView={1}
       navigation
       pagination={{ clickable: true }}
+      autoplay={{
+        delay: 2500,
+        disableOnInteraction: false,
+      }}
     //   scrollbar={{ draggable: true }}
       onSwiper={(swiper) => console.log(swiper)}
       onSlideChange={() => console.log("slide change")}

@@ -32,7 +32,7 @@ const WordAboutUs = () => {
               <h1 className="text-2xl tracking-tight font-semibold text-gray-700 sm:text-2xl md:text-3xl">
                 <span className="block xl:inline">A Few Words About Us</span>
               </h1>
-              <p className="mt-3 text-base text-black-500 text-sm text-justify">
+              <p className="mt-3 text-base text-black-500 text-md text-justify">
                 Sri Lanka post started her journey from 1798 The first trade
                 union of Sri Lanka Post is "Post And Telegraph Association". The
                 UPTO started her history on 1945 just after breakdown the "Post
@@ -40,7 +40,7 @@ const WordAboutUs = () => {
                 as "Post Masters' Association"
               </p>
 
-              <p className="mt-3 text-base text-black-500 text-sm text-justify">
+              <p className="mt-3 text-base text-black-500 text-md text-justify">
                 1945 1947 Leader of Post Masters' Association Lion is Brother A.
                 Sampanthar As our first request we obtain a salary Increment and
                 the quarters to post masters by trade union activity. In 1947
