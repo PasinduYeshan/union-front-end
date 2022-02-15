@@ -84,5 +84,14 @@
 }
 
 /**
-* Login page customization
+* Open Street Map Customization
 */
+
+.leaflet-container {
+    /* width: 100%; */
+    /* height: 10vh;
+     */
+    /* z-index: 1; */
+    height: 300px;
+    max-height: 350px;
+  }

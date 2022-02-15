@@ -1,22 +1,23 @@
 import React from "react";
-import GoogleMapLocation from "./GoogleMapLocation";
+
+const OpenStreetMap = React.lazy(() => import('./OpenStreetMap'));
 
 const FooterComponent = () => {
   return (
     <>
       <footer className="text-center bg-gray-900 text-white mt-10">
-        <div class="flex justify-center items-center lg:justify-between p-6 border-b border-gray-300">
-          <div class="mr-12 hidden lg:block">
+        <div className="flex justify-center items-center lg:justify-between p-6 border-b border-gray-300">
+          <div className="mr-12 hidden lg:block">
             <span>Get connected with us on social networks:</span>
           </div>
-          <div class="flex justify-center">
-            <a href="#!" class="mr-6 text-gray-600">
+          <div className="flex justify-center">
+            <a href="#!" className="mr-6 text-gray-600">
               <svg
                 aria-hidden="true"
                 focusable="false"
                 data-prefix="fab"
                 data-icon="facebook-f"
-                class="w-2.5"
+                className="w-2.5"
                 role="img"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 320 512"
@@ -27,13 +28,13 @@ const FooterComponent = () => {
                 ></path>
               </svg>
             </a>
-            <a href="#!" class="mr-6 text-gray-600">
+            <a href="#!" className="mr-6 text-gray-600">
               <svg
                 aria-hidden="true"
                 focusable="false"
                 data-prefix="fab"
                 data-icon="twitter"
-                class="w-4"
+                className="w-4"
                 role="img"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 512 512"
@@ -44,13 +45,13 @@ const FooterComponent = () => {
                 ></path>
               </svg>
             </a>
-            <a href="#!" class="mr-6 text-gray-600">
+            <a href="#!" className="mr-6 text-gray-600">
               <svg
                 aria-hidden="true"
                 focusable="false"
                 data-prefix="fab"
                 data-icon="google"
-                class="w-3.5"
+                className="w-3.5"
                 role="img"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 488 512"
@@ -61,13 +62,13 @@ const FooterComponent = () => {
                 ></path>
               </svg>
             </a>
-            <a href="#!" class="mr-6 text-gray-600">
+            <a href="#!" className="mr-6 text-gray-600">
               <svg
                 aria-hidden="true"
                 focusable="false"
                 data-prefix="fab"
                 data-icon="instagram"
-                class="w-3.5"
+                className="w-3.5"
                 role="img"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 448 512"
@@ -78,13 +79,13 @@ const FooterComponent = () => {
                 ></path>
               </svg>
             </a>
-            <a href="#!" class="mr-6 text-gray-600">
+            <a href="#!" className="mr-6 text-gray-600">
               <svg
                 aria-hidden="true"
                 focusable="false"
                 data-prefix="fab"
                 data-icon="linkedin-in"
-                class="w-3.5"
+                className="w-3.5"
                 role="img"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 448 512"
@@ -98,14 +99,14 @@ const FooterComponent = () => {
           </div>
         </div>
 
-        <div class="mx-6 py-10 text-center md:text-left">
-          <div class="grid grid-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div class="">
-              <GoogleMapLocation />
+        <div className="mx-6 py-10 text-center md:text-left">
+          <div className="grid grid-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="">
+              <OpenStreetMap />
             </div>
-            <div class="">
+            <div className="">
               <h6
-                class="
+                className="
             uppercase
             font-normal
             mb-4
@@ -120,7 +121,7 @@ const FooterComponent = () => {
                   focusable="false"
                   data-prefix="fas"
                   data-icon="cubes"
-                  class="w-4 mr-3"
+                  className="w-4 mr-3"
                   role="img"
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 512 512"
@@ -132,71 +133,71 @@ const FooterComponent = () => {
                 </svg>
                 Opening Hours
               </h6>
-              <p class="font-light pb-1">Weekdays : 8:00am - 6:00pm</p>
-              <p class="font-light pt-1">Weekends : 9:00am - 6:00pm</p>
+              <p className="font-light pb-1">Weekdays : 8:00am - 6:00pm</p>
+              <p className="font-light pt-1">Weekends : 9:00am - 6:00pm</p>
             </div>
 
-            {/* <div hidden class="">
-              <h6 class="uppercase font-normal mb-4 flex justify-center md:justify-start">
+            {/* <div hidden className="">
+              <h6 className="uppercase font-normal mb-4 flex justify-center md:justify-start">
                 Products
               </h6>
-              <p class="mb-4">
-                <a href="#!" class="text-gray-600">
+              <p className="mb-4">
+                <a href="#!" className="text-gray-600">
                   Angular
                 </a>
               </p>
-              <p class="mb-4">
-                <a href="#!" class="text-gray-600">
+              <p className="mb-4">
+                <a href="#!" className="text-gray-600">
                   React
                 </a>
               </p>
-              <p class="mb-4">
-                <a href="#!" class="text-gray-600">
+              <p className="mb-4">
+                <a href="#!" className="text-gray-600">
                   Vue
                 </a>
               </p>
               <p>
-                <a href="#!" class="text-gray-600">
+                <a href="#!" className="text-gray-600">
                   Laravel
                 </a>
               </p>
             </div> */}
-            <div class="">
-              <h6 class="uppercase font-normal mb-4 flex justify-center md:justify-start">
+            <div className="">
+              <h6 className="uppercase font-normal mb-4 flex justify-center md:justify-start">
                 Useful links
               </h6>
-              <p class="mb-4">
-                <a href="#!" class="text-gray-600">
+              <p className="mb-4">
+                <a href="#!" className="text-gray-600">
                   About us
                 </a>
               </p>
-              <p class="mb-4">
-                <a href="#!" class="text-gray-600">
+              <p className="mb-4">
+                <a href="#!" className="text-gray-600">
                   Team
                 </a>
               </p>
-              <p class="mb-4">
-                <a href="#!" class="text-gray-600">
+              <p className="mb-4">
+                <a href="#!" className="text-gray-600">
                   Contact Us
                 </a>
               </p>
               <p>
-                <a href="#!" class="text-gray-600">
+                <a href="#!" className="text-gray-600">
                   Help
                 </a>
               </p>
             </div>
-            <div class="md:justify-end">
-              <h6 class="uppercase font-normal mb-4 flex justify-center md:justify-start">
+            <div className="md:justify-end">
+              <h6 className="uppercase font-normal mb-4 flex justify-center md:justify-start">
                 Contact
               </h6>
-              <p class="flex font-light items-center justify-center md:justify-start mb-4">
+              <p className="flex font-light items-center justify-center md:justify-start mb-4">
                 <svg
                   aria-hidden="true"
                   focusable="false"
                   data-prefix="fas"
                   data-icon="home"
-                  class="w-4 lg:w-4 mr-4"
+                  className="w-4 lg:w-4 mr-4"
                   role="img"
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 512 512"
@@ -209,13 +210,13 @@ const FooterComponent = () => {
                 11/4 Lotus Road <br />
                 P.O Box 15 <br /> Colombo 01 Sri Lanka
               </p>
-              <p class="flex font-light font-light  items-center justify-center md:justify-start mb-4">
+              <p className="flex font-light font-light  items-center justify-center md:justify-start mb-4">
                 <svg
                   aria-hidden="true"
                   focusable="false"
                   data-prefix="fas"
                   data-icon="envelope"
-                  class="w-4 mr-4"
+                  className="w-4 mr-4"
                   role="img"
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 512 512"
@@ -227,13 +228,13 @@ const FooterComponent = () => {
                 </svg>
                 uptosrilanka@gmail.com
               </p>
-              <p class="flex font-light items-center justify-center md:justify-start mb-4">
+              <p className="flex font-light items-center justify-center md:justify-start mb-4">
                 <svg
                   aria-hidden="true"
                   focusable="false"
                   data-prefix="fas"
                   data-icon="phone"
-                  class="w-4 mr-4"
+                  className="w-4 mr-4"
                   role="img"
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 512 512"
@@ -245,13 +246,13 @@ const FooterComponent = () => {
                 </svg>
                 +94 11 202 16 87
               </p>
-              <p class="flex font-light items-center justify-center md:justify-start">
+              <p className="flex font-light items-center justify-center md:justify-start">
                 <svg
                   aria-hidden="true"
                   focusable="false"
                   data-prefix="fas"
                   data-icon="print"
-                  class="w-4 mr-4"
+                  className="w-4 mr-4"
                   role="img"
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 512 512"

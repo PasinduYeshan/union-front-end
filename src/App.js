@@ -19,6 +19,7 @@ const Page404Error = React.lazy(() =>
 );
 // const Page500 = React.lazy(() => import("./views/pages/page500/Page500"));
 const HomePage = React.lazy(() => import("./views/landing/HomePage"));
+const ContactUsPage = React.lazy(() => import("./views/contactUs/contactUsPage"));
 const LoginPage = React.lazy(() => import("./views/pages/login/LoginPage"));
 
 class App extends Component {
@@ -32,6 +33,12 @@ class App extends Component {
               path="/login"
               name="Login Page"
               render={(props) => <LoginPage {...props} />}
+            />
+            <Route
+              exact
+              path="/contact-us"
+              name="Login Page"
+              render={(props) => <ContactUsPage {...props} />}
             />
             {/* <Route
               exact

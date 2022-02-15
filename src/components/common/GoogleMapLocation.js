@@ -14,7 +14,7 @@ const SimpleMap = () => {
 
   return (
     <>
-      <div style={{ height: "50vh", width: "100%" }}>
+      <div style={{ height: "40vh", width: "100%" }}>
         <GoogleMapReact
           bootstrapURLKeys={{}}
           defaultCenter={defaultProps.center}

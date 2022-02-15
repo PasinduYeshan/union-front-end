@@ -1,30 +1,23 @@
 import React from "react";
+
 import { LockClosedIcon } from "@heroicons/react/solid";
 
-const NavigationBar = React.lazy(() =>
-  import("../../../components/common/NavigationBar")
-);
+const FooterComponent = React.lazy(() => import('../../components/common/FooterComponent')); 
+const NavigationBar = React.lazy(() => import('../../components/common/NavigationBar')); 
 
-const FooterComponent = React.lazy(() =>
-  import("../../../components/common/FooterComponent")
-);
-
-export default function LoginPage() {
-  const forgotPassword = () => {};
-  const login = () => {};
+const ContactUsPage = () => {
   return (
-    <>
-      <div className="h-screen">
+      <>
         <NavigationBar />
-        <div className="max-h-400">
+        <div className="h-full">
           <div className="grid grid-cols-1 md:grid-cols-2 align-middle h-full w-full ">
             <div className="hidden md:block align-middle m-10">
               <img
-                src="images/login.svg"
+                src="images/contact-us.svg"
                 className=" object-cover w-full h-full "
               />
             </div>
-            <div className="flex items-center justify-center align-content-center px-4 sm:px-6 lg:px-8 ">
+            <div className="flex items-center justify-center align-content-center py-12 px-4 sm:px-6 lg:px-8">
               <div className="max-w-md w-full space-y-8">
                 <div>
                   <img
@@ -38,8 +31,8 @@ export default function LoginPage() {
                 </div>
                 <form className="mt-8 space-y-6" action="#" method="POST">
                   <input type="hidden" name="remember" defaultValue="true" />
-                  <div className="rounded-md ">
-                    <div className="py-2">
+                  <div className="rounded-md shadow-sm -space-y-px">
+                    <div>
                       <label htmlFor="email-address" className="sr-only">
                         Membership Number
                       </label>
@@ -53,7 +46,7 @@ export default function LoginPage() {
                         placeholder="Membership Number"
                       />
                     </div>
-                    <div className="py-2">
+                    <div>
                       <label htmlFor="password" className="sr-only">
                         Password
                       </label>
@@ -86,12 +79,7 @@ export default function LoginPage() {
                     </div>
 
                     <div className="text-sm">
-                      <button
-                        className="font-medium text-indigo-600 hover:text-indigo-500"
-                        onClick={forgotPassword}
-                      >
-                        Forgot your password?
-                      </button>
+                      
                     </div>
                   </div>
 
@@ -114,9 +102,9 @@ export default function LoginPage() {
             </div>{" "}
           </div>
         </div>
-        <FooterComponent />
-      </div>
-      
+          <FooterComponent />
     </>
   );
-}
+};
+
+export default ContactUsPage;
