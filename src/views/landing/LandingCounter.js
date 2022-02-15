@@ -21,7 +21,7 @@ const LandingCounter = () => {
               </div>
             )}
                   </VisibilitySensor>
-                  <h6 class="uppercase font-normal mb-4 flex justify-center md:justify-center text-black text-xl">
+                  <h6 className="uppercase font-normal mb-4 flex justify-center md:justify-center text-black text-xl">
                Years of Experience
               </h6>
               </div>
@@ -33,7 +33,7 @@ const LandingCounter = () => {
               </div>
             )}
                   </VisibilitySensor>
-                  <h6 class="uppercase font-normal mb-4 flex justify-center md:justify-center text-black text-xl">
+                  <h6 className="uppercase font-normal mb-4 flex justify-center md:justify-center text-black text-xl">
                Members
               </h6>
               </div>
@@ -45,7 +45,7 @@ const LandingCounter = () => {
               </div>
             )}
                   </VisibilitySensor>
-                  <h6 class="uppercase font-normal mb-4 flex justify-center md:justify-center text-black text-xl">
+                  <h6 className="uppercase font-normal mb-4 flex justify-center md:justify-center text-black text-xl">
                Branches
               </h6>
               </div>
@@ -57,7 +57,7 @@ const LandingCounter = () => {
               </div>
             )}
                   </VisibilitySensor>
-                  <h6 class="uppercase font-normal mb-4 flex justify-center md:justify-center text-black text-xl">
+                  <h6 className="uppercase font-normal mb-4 flex justify-center md:justify-center text-black text-xl">
                Association was Formed
               </h6>
         </div>

@@ -16,7 +16,9 @@ const navigation = [
   { name: "Contact Us", href: "/contact-us" },
 ];
 
-const NavigationBar = () => {
+const NavigationBar = (props) => {
+  const activeNav = props.activeNav;
+  console.log(activeNav);
   return (
     <>
       <div className="relative bg-white overflow-hidden">
@@ -50,14 +52,14 @@ const NavigationBar = () => {
                       <Link
                         key={item.name}
                         to={item.href}
-                        className="font-medium text-gray-500 hover:text-gray-900"
+                        className={`font-medium ${activeNav == item.name ? "text-indigo-600" : "text-gray-700" } hover:text-gray-900`}
                       >
                         {item.name}
                       </Link>
                     ))}
                     <Link
                       to="/login"
-                      className="font-medium text-indigo-600 hover:text-indigo-500"
+                      className={`font-medium ${activeNav == "Log in" ? "text-indigo-600" : "text-gray-700"}  hover:text-gray-900`}
                     >
                       Log in
                     </Link>
@@ -88,7 +90,7 @@ const NavigationBar = () => {
                         />
                       </div>
                       <div className="-mr-2">
-                        <Popover.Button className="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+                        <Popover.Button className="bg-white rounded-md p-2 inline-flex items-center justify-center hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
                           <span className="sr-only">Close main menu</span>
                           <XIcon className="h-6 w-6" aria-hidden="true" />
                         </Popover.Button>
@@ -99,7 +101,7 @@ const NavigationBar = () => {
                         <Link
                           key={item.name}
                           to={item.href}
-                          className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50"
+                          className={`block px-3 py-2 rounded-md text-base font-medium ${activeNav == item.name ? "text-indigo-600" : "text-gray-700" } hover:text-gray-900 hover:bg-gray-50`}
                         >
                           {item.name}
                         </Link>
@@ -107,7 +109,7 @@ const NavigationBar = () => {
                     </div>
                     <Link
                       to="/login"
-                      className="block w-full px-5 py-3 text-center font-medium text-indigo-600 bg-gray-50 hover:bg-gray-100"
+                      className={`block w-full px-5 py-3 text-center font-medium ${activeNav == "Log in" ? "text-indigo-600" : "text-gray-700"} bg-gray-50 hover:bg-gray-100`}
                     >
                       Log in
                     </Link>

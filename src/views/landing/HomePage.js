@@ -17,7 +17,7 @@ const LandingCounter = React.lazy(() => import("./LandingCounter"));
 const HomePage = () => {
   return (
     <>
-      <NavigationBar />
+      <NavigationBar activeNav = "Home"/>
       <HeroSection />
       <LandingCounter />
       <WordAboutUs />

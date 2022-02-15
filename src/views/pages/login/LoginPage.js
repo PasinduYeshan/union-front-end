@@ -15,7 +15,7 @@ export default function LoginPage() {
   return (
     <>
       <div className="h-screen">
-        <NavigationBar />
+        <NavigationBar activeNav = "Log in"/>
         <div className="max-h-400">
           <div className="grid grid-cols-1 md:grid-cols-2 align-middle h-full w-full ">
             <div className="hidden md:block align-middle m-10">

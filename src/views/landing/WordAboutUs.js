@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 const WordAboutUs = () => {
   return (
     < >
-      <div class="bg-inherit">
+      <div className="bg-inherit">
         <div className="mx-5 my-10  grid grid-cols-1 gap-8 lg:grid-cols-2 p-2">
                   <motion.div
                       className="shadow-lg rounded-lg overflow-hidden"

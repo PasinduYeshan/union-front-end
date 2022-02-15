@@ -8,7 +8,7 @@ const NavigationBar = React.lazy(() => import('../../components/common/Navigatio
 const ContactUsPage = () => {
   return (
       <>
-        <NavigationBar />
+        <NavigationBar activeNav="Contact Us"/>
         <div className="h-full">
           <div className="grid grid-cols-1 md:grid-cols-2 align-middle h-full w-full ">
             <div className="hidden md:block align-middle m-10">
