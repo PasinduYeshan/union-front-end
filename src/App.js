@@ -19,6 +19,7 @@ const Page404Error = React.lazy(() =>
 );
 // const Page500 = React.lazy(() => import("./views/pages/page500/Page500"));
 const HomePage = React.lazy(() => import("./views/landing/HomePage"));
+const LoginPage = React.lazy(() => import("./views/pages/login/LoginPage"));
 
 class App extends Component {
   render() {
@@ -26,12 +27,12 @@ class App extends Component {
       <BrowserRouter>
         <React.Suspense fallback={loading}>
           <Switch>
-            {/* <Route
+            <Route
               exact
               path="/login"
               name="Login Page"
-              render={(props) => <Login {...props} />}
-            /> */}
+              render={(props) => <LoginPage {...props} />}
+            />
             {/* <Route
               exact
               path="/register"

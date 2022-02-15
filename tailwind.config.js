@@ -3,7 +3,8 @@ module.exports = {
   theme: {
     extend: {},
   },
-  plugins: [],
+  plugins: [  
+],
   darkMode: "class",
   i18n: {
     locales: ["en-US"],
@@ -29,7 +30,6 @@ module.exports = {
       zIndex: ["hover", "active"],
     },
   },
-  plugins: [],
   future: {
     purgeLayersByDefault: true,
   },
