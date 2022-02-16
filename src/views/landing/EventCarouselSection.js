@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const CoverflowCarousel = React.lazy(() =>
   import("../../components/common/CoverflowCarousel")
@@ -14,12 +15,13 @@ const EventCarouselSection = () => {
               <CoverflowCarousel />
               <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-center">
             <div className="rounded-md shadow">
-              <a
-                href="#"
-                className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10"
+              <Link
+                to="/events"
+                // className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10"
+                className="w-full flex items-center justify-center px-7 py-2 !border-indigo-400 border-2 text-base font-medium rounded-md text-white bg-transparent outline-slate-100 hover:scale-110 md:py-4 md:text-lg md:px-10"
               >
                 More Events
-              </a>
+              </Link>
             </div>
           </div>
       </div>

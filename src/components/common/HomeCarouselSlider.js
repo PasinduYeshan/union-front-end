@@ -18,7 +18,7 @@ const HomeCarouselSlider = () => {
   // const swiper = new Swiper();
   return (
     <Swiper
-      className="swiper-container"
+      className="swiper-container h-[300px] sm:h-[400px] md:h-[500px]"
       modules={[Navigation, Pagination, Scrollbar, A11y, EffectFade, Autoplay]}
       effect="fade"
       spaceBetween={0}

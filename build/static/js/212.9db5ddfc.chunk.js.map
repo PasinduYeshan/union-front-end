@@ -1,1 +1,0 @@
-{"version":3,"file":"static/js/212.9db5ddfc.chunk.js","mappings":"uJAaA,UAVsB,WAElB,OACI","sources":["views/landing/NavigationBar.js"],"sourcesContent":["import React, { lazy } from 'react';\n\n\nconst NavigationBar = () => {\n\n    return (\n        <>\n        \n        </>\n    );\n\n}\n\nexport default NavigationBar;"],"names":[],"sourceRoot":""}

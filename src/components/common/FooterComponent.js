@@ -5,7 +5,7 @@ const OpenStreetMap = React.lazy(() => import('./OpenStreetMap'));
 const FooterComponent = () => {
   return (
     <>
-      <footer className="text-center bg-gray-900 text-white mt-10">
+      <footer className="text-center bg-gray-900 text-white mt-0">
         <div className="flex justify-center items-center lg:justify-between p-6 border-b border-gray-300">
           <div className="mr-12 hidden lg:block">
             <span>Get connected with us on social networks:</span>

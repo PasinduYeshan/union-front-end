@@ -21,7 +21,7 @@ const NavigationBar = (props) => {
   console.log(activeNav);
   return (
     <>
-      <div className="relative bg-white overflow-hidden">
+      {/* <div className="relative bg-white overflow-hidden"> */}
         <div className=" mx-auto">
           <div className="relative z-10 pb-4 bg-white sm:pb-8 md:pb-8  lg:w-full lg:pb-8 xl:pb-8 ">
             <Popover>
@@ -119,7 +119,7 @@ const NavigationBar = (props) => {
             </Popover>
           </div>
         </div>
-      </div>
+      {/* </div> */}
     </>
   );
 };

@@ -2,7 +2,9 @@ import React, { lazy } from "react";
 
 import { CRow, CCol } from "@coreui/react";
 
-const NavigationBar = React.lazy(() => import("./NavigationBar.js"));
+const NavigationBar = React.lazy(() =>
+  import("../../components/common/NavigationBar")
+);
 const HeroSection = React.lazy(() => import("./HeroSection"));
 const WordAboutUs = React.lazy(() => import("./WordAboutUs"));
 const FooterComponent = React.lazy(() =>
@@ -11,19 +13,26 @@ const FooterComponent = React.lazy(() =>
 
 const EventCarouselSection = React.lazy(() => import("./EventCarouselSection"));
 const LandingCounter = React.lazy(() => import("./LandingCounter"));
-
-
+const LeadersSection = React.lazy(() => import("./LeadersSection"));
+const HomeCarouselSlider = React.lazy(() =>
+  import("../../components/common/HomeCarouselSlider")
+);
 
 const HomePage = () => {
   return (
     <>
-      <NavigationBar activeNav = "Home"/>
-      <HeroSection />
-      <LandingCounter />
-      <WordAboutUs />
-      <EventCarouselSection />
-      <FooterComponent />
-      
+      <div className="bg-slate-100">
+        <div className="relative bg-white overflow-hidden">
+          <NavigationBar activeNav="Home" />
+          <HomeCarouselSlider />
+        </div>
+        <HeroSection />
+        <LandingCounter />
+        <WordAboutUs />
+        <EventCarouselSection />
+        <LeadersSection />
+        <FooterComponent />
+      </div>
     </>
   );
 };
