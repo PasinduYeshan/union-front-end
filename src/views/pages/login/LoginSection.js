@@ -7,8 +7,8 @@ export default function LoginSection() {
   const login = () => {};
   return (
     <>
-        <div className="max-h-400">
-          <div className="grid grid-cols-1 md:grid-cols-2 align-middle h-full w-full ">
+        <div className="container h-500 mb-16 sm:mb-16 md:mb-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 align-middle h-full w-full">
             <div className="hidden md:block align-middle m-10">
               <img
                 src="images/login.svg"
