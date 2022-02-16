@@ -1,21 +1,19 @@
 import React, { lazy } from "react";
 
-import { CRow, CCol } from "@coreui/react";
-
 const NavigationBar = React.lazy(() =>
-  import("../../components/common/NavigationBar")
+  import("../../../components/common/NavigationBar")
 );
 const HeroSection = React.lazy(() => import("./HeroSection"));
 const WordAboutUs = React.lazy(() => import("./WordAboutUs"));
 const FooterComponent = React.lazy(() =>
-  import("../../components/common/FooterComponent")
+  import("../../../components/common/FooterComponent")
 );
 
 const EventCarouselSection = React.lazy(() => import("./EventCarouselSection"));
 const LandingCounter = React.lazy(() => import("./LandingCounter"));
-const LeadersSection = React.lazy(() => import("./LeadersSection"));
+const LeadersSection = React.lazy(() => import("../../../components/common/LeadersSection"));
 const HomeCarouselSlider = React.lazy(() =>
-  import("../../components/common/HomeCarouselSlider")
+  import("../../../components/common/HomeCarouselSlider")
 );
 
 const HomePage = () => {

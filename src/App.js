@@ -18,9 +18,10 @@ const Page404Error = React.lazy(() =>
   import("./views/pages/page404/404ErrorPage")
 );
 // const Page500 = React.lazy(() => import("./views/pages/page500/Page500"));
-const HomePage = React.lazy(() => import("./views/landing/HomePage"));
-const ContactUsPage = React.lazy(() => import("./views/contactUs/contactUsPage"));
+const HomePage = React.lazy(() => import("./views/pages/landing/HomePage"));
+const ContactUsPage = React.lazy(() => import("./views/pages/contactUs/contactUsPage"));
 const LoginPage = React.lazy(() => import("./views/pages/login/LoginPage"));
+const TeamPage = React.lazy(() => import("./views/pages/team/TeamPage")); 
 
 class App extends Component {
   render() {
@@ -39,6 +40,12 @@ class App extends Component {
               path="/contact-us"
               name="Login Page"
               render={(props) => <ContactUsPage {...props} />}
+            />
+            <Route
+              exact
+              path="/team"
+              name="Team Page"
+              render={(props) => <TeamPage {...props} />}
             />
             {/* <Route
               exact

@@ -12,13 +12,12 @@ const HomeCarouselSlider = React.lazy(() =>
 const navigation = [
   { name: "Home", href: "/" },
   { name: "About", href: "#" },
-  { name: "Team", href: "#" },
+  { name: "Team", href: "/team" },
   { name: "Contact Us", href: "/contact-us" },
 ];
 
 const NavigationBar = (props) => {
   const activeNav = props.activeNav;
-  console.log(activeNav);
   return (
     <>
       {/* <div className="relative bg-white overflow-hidden"> */}

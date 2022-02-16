@@ -1,14 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const LeaderSection = () => {
+const LeaderSection = (props) => {
+  const title = props.title ?? `The Talented People Behind the Scenes of the Organization`;
+  const btnVisibility = props.viewBtnVisibility ?? true;
   return (
     <>
-      <div className="bg-white pb-20">
-        <div className="container flex justify-center mx-auto pt-20 pb-10 ">
-          <div>
+      <div className="bg-white pb-20 w-screen mx-0">
+        <div className="container flex justify-center mx-0 pt-20 pb-10">
+          <div className="w-full">
             <h1 className="xl:text-4xl text-3xl text-center text-gray-800 font-extrabold pb-6 sm:w-4/6 w-5/6 mx-auto">
-              The Talented People Behind the Scenes of the Organization
+             {title}
             </h1>
           </div>
         </div>
@@ -21,7 +23,7 @@ const LeaderSection = () => {
                     <div className="h-32 w-32">
                       <img
                         src="https://cdn.tuk.dev/assets/photo-1564061170517-d3907caa96ea.jfif"
-                        alt
+                        alt =""
                         className="rounded-full object-cover h-full w-full shadow-md"
                       />
                     </div>
@@ -45,7 +47,7 @@ const LeaderSection = () => {
                     <div className="h-32 w-32">
                       <img
                         src="https://cdn.tuk.dev/assets/photo-1530577197743-7adf14294584.jfif"
-                        alt
+                        alt =""
                         className="rounded-full object-cover h-full w-full shadow-md"
                       />
                     </div>
@@ -69,7 +71,7 @@ const LeaderSection = () => {
                     <div className="h-32 w-32">
                       <img
                         src="https://cdn.tuk.dev/assets/photo-1566753323558-f4e0952af115.jfif"
-                        alt
+                        alt =""
                         className="rounded-full object-cover h-full w-full shadow-md"
                       />
                     </div>
@@ -90,10 +92,10 @@ const LeaderSection = () => {
             </div>
           </div>
         </div>
-        <div className="flex container w-full justify-center">
+        <div className={`flex container w-full justify-center ${btnVisibility ? "" : "hidden"} `}>
         <div className="rounded-md shadow">
               <Link
-                to="/events"
+                to="/team"
                 className="w-full flex items-center justify-center px-7 py-2 !border-indigo-400 border-2 text-base font-medium rounded-md text-black bg-transparent outline-slate-100 hover:scale-110 md:py-4 md:text-lg md:px-10"
               >
                View All

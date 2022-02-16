@@ -14,8 +14,6 @@ import hc3 from "../../assets/images/home-carousel/hc3.jpg";
 import hc4 from "../../assets/images/home-carousel/hc4.jpg";
 
 const HomeCarouselSlider = () => {
-  // init Swiper:
-  // const swiper = new Swiper();
   return (
     <Swiper
       className="swiper-container h-[300px] sm:h-[400px] md:h-[500px]"
@@ -29,16 +27,7 @@ const HomeCarouselSlider = () => {
         delay: 2500,
         disableOnInteraction: false,
       }}
-    //   scrollbar={{ draggable: true }}
-      onSwiper={(swiper) => console.log(swiper)}
-      onSlideChange={() => console.log("slide change")}
     >
-      {/* <SwiperSlide
-        className="home-swiper-carousel"
-        style={{
-          backgroundImage: `url(${hc1})`,
-        }}
-      ></SwiperSlide> */}
       <SwiperSlide className="home-swiper-carousel">
         <img
           src="images/home-carousel/hc1.jpg"

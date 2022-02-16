@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const CoverflowCarousel = React.lazy(() =>
-  import("../../components/common/CoverflowCarousel")
+  import("../../../components/common/CoverflowCarousel")
 );
 
 const EventCarouselSection = () => {
