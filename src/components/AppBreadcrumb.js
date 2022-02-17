@@ -1,5 +1,6 @@
 import React from 'react'
 import { useLocation } from 'react-router-dom'
+import { matchPath } from 'react-router';
 
 import routes from '../routes'
 
@@ -9,7 +10,14 @@ const AppBreadcrumb = () => {
   const currentLocation = useLocation().pathname
 
   const getRouteName = (pathname, routes) => {
-    const currentRoute = routes.find((route) => route.path === pathname)
+    const currentRoute = routes.find(
+      (route) =>
+        matchPath(pathname, {
+          path: route.path,
+          exact: route.exact,
+          strict: route.strict,
+        }) != null,
+    )
     return currentRoute.name
   }
 

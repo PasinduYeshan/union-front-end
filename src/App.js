@@ -71,7 +71,8 @@ class App extends Component {
               name="Home Page"
               render={(props) => <HomePage {...props} />}
             />
-            <Route path="/dashboard" name="Home" render={(props) => <DefaultLayout {...props} />} />
+            <Route path="/office" name="Office Home" render={(props) => <DefaultLayout {...props} />}
+            />
           </Switch>
         </React.Suspense>
       </BrowserRouter>

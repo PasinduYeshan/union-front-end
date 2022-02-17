@@ -1,10 +1,15 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 import { LockClosedIcon } from "@heroicons/react/solid";
 
 
-export default function LoginSection() {
+export default function LoginSection(props) {
+  const history = useHistory();
   const forgotPassword = () => {};
-  const login = () => {};
+  const login = (e) => {
+    e.preventDefault();
+    history.replace("/office/dashboard");
+  };
   return (
     <>
         <div className="container h-500 mb-16 sm:mb-16 md:mb-16">
@@ -27,7 +32,7 @@ export default function LoginSection() {
                     Sign in to your account
                   </h2>
                 </div>
-                <form className="mt-8 space-y-6" action="#" method="POST">
+                <form className="mt-8 space-y-6" onSubmit={login} method="POST">
                   <input type="hidden" name="remember" defaultValue="true" />
                   <div className="rounded-md ">
                     <div className="py-2">
@@ -87,7 +92,8 @@ export default function LoginSection() {
                   </div>
 
                   <div>
-                    <button
+                  <button
+                      onClick = { login}
                       type="submit"
                       className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                     >

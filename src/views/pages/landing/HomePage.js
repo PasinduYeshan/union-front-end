@@ -29,7 +29,9 @@ const HomePage = () => {
         <WordAboutUs />
         <EventCarouselSection />
         <LeadersSection />
+        <div className="pb-20 bg-white" />
         <FooterComponent />
+        
       </div>
     </>
   );

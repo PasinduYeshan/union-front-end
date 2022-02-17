@@ -6,8 +6,8 @@ const LeaderSection = (props) => {
   const btnVisibility = props.viewBtnVisibility ?? true;
   return (
     <>
-      <div className="bg-white pb-20 w-screen mx-0">
-        <div className="container flex justify-center mx-0 pt-20 pb-10">
+      <div className="bg-white w-full mx-0">
+        <div className="flex justify-center mx-0 pt-20 pb-10 !w-full !pr-0">
           <div className="w-full">
             <h1 className="xl:text-4xl text-3xl text-center text-gray-800 font-extrabold pb-6 sm:w-4/6 w-5/6 mx-auto">
              {title}
@@ -33,7 +33,7 @@ const LeaderSection = (props) => {
                       Andres Berlin
                     </div>
                     <p className="text-gray-800 text-sm text-center">
-                      Chief Executive Officer
+                      Hon. President
                     </p>
                     <p className="text-center text-gray-600 text-base pt-3 font-normal">
                       0777326320
@@ -57,7 +57,7 @@ const LeaderSection = (props) => {
                       Silene Tokyo
                     </div>
                     <p className="text-gray-800 text-sm text-center">
-                      Product Design Head
+                     Hon. General Secretary
                     </p>
                     <p className="text-center text-gray-600 text-base pt-3 font-normal">
                       0777326320
@@ -81,7 +81,7 @@ const LeaderSection = (props) => {
                       Johnson Stone
                     </div>
                     <p className="text-gray-800 text-sm text-center">
-                      Manager Development
+                      Hon. Treasurer
                     </p>
                     <p className="text-center text-gray-600 text-base pt-3 font-normal">
                       0777326320
