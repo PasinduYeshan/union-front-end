@@ -23,30 +23,6 @@ import {
   CPagination,
 } from "@coreui/react";
 
-import CIcon from "@coreui/icons-react";
-import {
-  cibCcAmex,
-  cibCcApplePay,
-  cibCcMastercard,
-  cibCcPaypal,
-  cibCcStripe,
-  cibCcVisa,
-  cibGoogle,
-  cibFacebook,
-  cibLinkedin,
-  cifBr,
-  cifEs,
-  cifFr,
-  cifIn,
-  cifPl,
-  cifUs,
-  cibTwitter,
-  cilCloudDownload,
-  cilPeople,
-  cilUser,
-  cilUserFemale,
-} from "@coreui/icons";
-
 const IssueTable = () => {
   // State
   const maxPages = 4;
@@ -115,7 +91,9 @@ const IssueTable = () => {
                   <CButton
                     color="info"
                     variant="outline"
-                    onClick={() => history.push(`/office/issues/${issue.issueId}`)}
+                    onClick={() =>
+                      history.push(`/office/issues/${issue.issueId}`)
+                    }
                   >
                     View
                   </CButton>
@@ -158,6 +136,7 @@ const issues = [
     name: "John Doe",
     issueDate: "2020-01-01",
     status: "Open",
+    telephone : "07898989898",
     description: "Salary should be increased",
   },
   {
@@ -166,6 +145,7 @@ const issues = [
     name: "John Doe",
     issueDate: "2020-01-01",
     status: "Open",
+    telephone : "07898989898",
     description: "Salary should be increased",
   },
   {
@@ -174,6 +154,7 @@ const issues = [
     name: "John Doe",
     issueDate: "2020-01-01",
     status: "Open",
+    telephone : "07898989898",
     description: "Salary should be increased",
   },
   {
@@ -182,6 +163,7 @@ const issues = [
     name: "John Doe",
     issueDate: "2020-01-01",
     status: "Viewed",
+    telephone : "07898989898",
     description: "Salary should be increased",
   },
   {
@@ -190,6 +172,7 @@ const issues = [
     name: "John Doe",
     issueDate: "2020-01-01",
     status: "Open",
+    telephone : "07898989898",
     description: "Salary should be increased",
   },
   {
@@ -198,6 +181,7 @@ const issues = [
     name: "John Doe",
     issueDate: "2020-01-01",
     status: "ActionTaken",
+    telephone : "07898989898",
     description: "Salary should be increased",
   },
   {
@@ -206,6 +190,7 @@ const issues = [
     name: "John Doe",
     issueDate: "2020-01-01",
     status: "ActionTaken",
+    telephone : "07898989898",
     description: "Salary should be increased",
   },
   {
@@ -214,6 +199,7 @@ const issues = [
     name: "John Doe",
     issueDate: "2020-01-01",
     status: "ActionTaken",
+    telephone : "07898989898",
     description: "Salary should be increased",
   },
   {
@@ -222,6 +208,7 @@ const issues = [
     name: "John Doe",
     issueDate: "2020-01-01",
     status: "ActionTaken",
+    telephone : "07898989898",
     description: "Salary should be increased",
   },
   {
@@ -230,6 +217,7 @@ const issues = [
     name: "John Doe",
     issueDate: "2020-01-01",
     status: "ActionTaken",
+    telephone : "07898989898",
     description: "Salary should be increased",
   },
   {
@@ -238,6 +226,7 @@ const issues = [
     name: "John Doe",
     issueDate: "2020-01-01",
     status: "ActionTaken",
+    telephone : "07898989898",
     description: "Salary should be increased",
   },
   {
@@ -246,6 +235,7 @@ const issues = [
     name: "John Doe",
     issueDate: "2020-01-01",
     status: "ActionTaken",
+    telephone : "07898989898",
     description: "Salary should be increased",
   },
 ];

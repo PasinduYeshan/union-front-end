@@ -11,20 +11,23 @@ const AppBreadcrumb = () => {
 
   const getRouteName = (pathname, routes) => {
     const currentRoute = routes.find(
-      (route) =>
-        matchPath(pathname, {
+      (route) => {
+        console.log(route, pathname);
+        return matchPath(pathname, {
           path: route.path,
           exact: route.exact,
           strict: route.strict,
-        }) != null,
+        }) != null }
     )
     return currentRoute.name
   }
 
   const getBreadcrumbs = (location) => {
     const breadcrumbs = []
+    console.log("full location",location);
     location.split('/').reduce((prev, curr, index, array) => {
       const currentPathname = `${prev}/${curr}`
+      console.log(currentPathname);
       breadcrumbs.push({
         pathname: currentPathname,
         name: getRouteName(currentPathname, routes),
