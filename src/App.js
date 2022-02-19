@@ -22,6 +22,7 @@ const HomePage = React.lazy(() => import("./views/pages/landing/HomePage"));
 const ContactUsPage = React.lazy(() => import("./views/pages/contactUs/contactUsPage"));
 const LoginPage = React.lazy(() => import("./views/pages/login/LoginPage"));
 const TeamPage = React.lazy(() => import("./views/pages/team/TeamPage")); 
+const AboutUsPage = React.lazy(() => import("./views/pages/aboutUs/AboutUsPage"));
 
 class App extends Component {
   render() {
@@ -46,6 +47,12 @@ class App extends Component {
               path="/team"
               name="Team Page"
               render={(props) => <TeamPage {...props} />}
+            />
+            <Route
+              exact
+              path="/about-us"
+              name="About Us"
+              render={(props) => <AboutUsPage {...props} />}
             />
             {/* <Route
               exact

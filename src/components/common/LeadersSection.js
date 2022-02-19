@@ -2,7 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const LeaderSection = (props) => {
-  const title = props.title ?? `The Talented People Behind the Scenes of the Organization`;
+  const title =
+    props.title ?? `The Talented People Behind the Scenes of the Organization`;
   const btnVisibility = props.viewBtnVisibility ?? true;
   return (
     <>
@@ -10,7 +11,7 @@ const LeaderSection = (props) => {
         <div className="flex justify-center mx-0 pt-20 pb-10 !w-full !pr-0">
           <div className="w-full">
             <h1 className="xl:text-4xl text-3xl text-center text-gray-800 font-extrabold pb-6 sm:w-4/6 w-5/6 mx-auto">
-             {title}
+              {title}
             </h1>
           </div>
         </div>
@@ -23,7 +24,7 @@ const LeaderSection = (props) => {
                     <div className="h-32 w-32">
                       <img
                         src="https://cdn.tuk.dev/assets/photo-1564061170517-d3907caa96ea.jfif"
-                        alt =""
+                        alt=""
                         className="rounded-full object-cover h-full w-full shadow-md"
                       />
                     </div>
@@ -47,7 +48,7 @@ const LeaderSection = (props) => {
                     <div className="h-32 w-32">
                       <img
                         src="https://cdn.tuk.dev/assets/photo-1530577197743-7adf14294584.jfif"
-                        alt =""
+                        alt=""
                         className="rounded-full object-cover h-full w-full shadow-md"
                       />
                     </div>
@@ -57,7 +58,7 @@ const LeaderSection = (props) => {
                       Silene Tokyo
                     </div>
                     <p className="text-gray-800 text-sm text-center">
-                     Hon. General Secretary
+                      Hon. General Secretary
                     </p>
                     <p className="text-center text-gray-600 text-base pt-3 font-normal">
                       0777326320
@@ -71,7 +72,7 @@ const LeaderSection = (props) => {
                     <div className="h-32 w-32">
                       <img
                         src="https://cdn.tuk.dev/assets/photo-1566753323558-f4e0952af115.jfif"
-                        alt =""
+                        alt=""
                         className="rounded-full object-cover h-full w-full shadow-md"
                       />
                     </div>
@@ -92,15 +93,19 @@ const LeaderSection = (props) => {
             </div>
           </div>
         </div>
-        <div className={`flex container w-full justify-center ${btnVisibility ? "" : "hidden"} `}>
-        <div className="rounded-md shadow">
-              <Link
-                to="/team"
-                className="w-full flex items-center justify-center px-7 py-2 !border-indigo-400 border-2 text-base font-medium rounded-md text-black bg-transparent outline-slate-100 hover:scale-110 md:py-4 md:text-lg md:px-10"
-              >
-               View All
-              </Link>
-            </div>
+        <div
+          className={`flex container w-full justify-center ${
+            btnVisibility ? "" : "hidden"
+          } `}
+        >
+          <div className="rounded-md shadow">
+            <Link
+              to="/team"
+              className="w-full flex items-center justify-center px-7 py-2 !border-indigo-400 border-2 text-base font-medium rounded-md text-black bg-transparent outline-slate-100 hover:scale-110 md:py-4 md:text-lg md:px-10"
+            >
+              View All
+            </Link>
+          </div>
         </div>
       </div>
     </>

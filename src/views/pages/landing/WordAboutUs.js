@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
 const WordAboutUs = () => {
@@ -8,20 +9,19 @@ const WordAboutUs = () => {
         <div className="mx-5 my-10  grid grid-cols-1 gap-8 lg:grid-cols-2 p-2">
           <motion.div
             className="shadow-lg rounded-lg overflow-hidden"
-            initial={{ opacity: 0, x: -60, y: 60 }}
+            initial={{ opacity: 0, x: -70 }}
             animate={{
               opacity: 1,
               x: 0,
-              y: 0,
             }}
-            transition={{ duration: 2 }}
+            transition={{ duration: 0.7, ease: "easeOut" }}
           >
             <img
               src="images/landing/c1.jpg"
               className="h-full w-full object-cover max-h-100"
             ></img>
           </motion.div>
-          
+
           <div className="row">
             <h1 className="text-3xl tracking-tight font-semibold text-slate-900 sm:text-3xl md:text-3xl xl:text-4xl">
               <span className="block xl:inline uppercase">
@@ -49,6 +49,13 @@ const WordAboutUs = () => {
               his era we can increased our members 100 to 700.it was our
               victory.
             </p>
+            <Link
+              to="/about-us"
+              className="mt-4 flex items-center justify-center px-7 py-2 !border-indigo-400 border-2 text-base font-medium rounded-md
+                 text-black bg-transparent outline-slate-100 hover:scale-110 md:py-4 md:text-lg md:px-10 shadow max-w-fit"
+            >
+              Read More
+            </Link>
           </div>
         </div>
       </div>

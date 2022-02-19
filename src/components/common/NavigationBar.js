@@ -11,7 +11,7 @@ const HomeCarouselSlider = React.lazy(() =>
 
 const navigation = [
   { name: "Home", href: "/" },
-  { name: "About", href: "#" },
+  { name: "About", href: "/about-us" },
   { name: "Team", href: "/team" },
   { name: "Contact Us", href: "/contact-us" },
 ];
