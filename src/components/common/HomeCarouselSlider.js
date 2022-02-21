@@ -8,11 +8,6 @@ import { Navigation, Pagination, Scrollbar, A11y, EffectFade, Autoplay } from "s
 // Import Swiper styles
 import "swiper/css/bundle";
 
-import hc1 from "../../assets/images/home-carousel/hc1.jpg";
-import hc2 from "../../assets/images/home-carousel/hc2.jpg";
-import hc3 from "../../assets/images/home-carousel/hc3.jpg";
-import hc4 from "../../assets/images/home-carousel/hc4.jpg";
-
 const HomeCarouselSlider = () => {
   return (
     <Swiper
