@@ -18,17 +18,17 @@ import { getImageFromBucket } from "../../../utils/function";
 const EventCard = ({ event }) => {
   return (
     <>
-      <div className="px-4 py-2 my-2 w-100  md:w-80 lg:w-100 lg:mb-0 mb-8">
+      <div className="p-4 my-2 lg:mb-0 mb-8 !bg-transparent w-96 md:w-full">
         <div>
           <Swiper
             effect={"cards"}
             grabCursor={true}
             modules={[EffectCards]}
-            className="mySwiper"
+            className="mySwiper !bg-transparent"
           >
             {event.images.map((image, index) => (
-              <SwiperSlide>
-                <img src={getImageFromBucket(image)} className="w-full max-h-full" />
+              <SwiperSlide className=" !h-64 !bg-transparent px-0 sm:px-2">
+                <img src={getImageFromBucket(image)} className="w-full h-full object-cover bg-transparent" />
               </SwiperSlide>
             ))}
           </Swiper>
