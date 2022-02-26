@@ -12,8 +12,8 @@ import {
 const IssuePage = () => {
   const { issueId } = useParams();
   const issue = {
-      issueId: "ksdfjklsd3213",
-      telephone : "07898989898",
+    issueId: "ksdfjklsd3213",
+    telephone: "07898989898",
     title: "Salary Problem",
     name: "John Doe",
     issueDate: "2020-01-01",
@@ -30,17 +30,21 @@ const IssuePage = () => {
               Issue Title
             </CFormLabel>
             <CFormInput
+              className="bg-white"
+              readOnly
               type="text"
               id="exampleFormControlInput1"
-              value={issue.title}
+              defaultValue={issue.title}
             />
           </div>
           <div className="mb-3">
             <CFormLabel htmlFor="exampleFormControlInput1">Name</CFormLabel>
             <CFormInput
+              className="bg-white"
+              readOnly
               type="text"
               id="exampleFormControlInput1"
-              value={issue.name}
+              defaultValue={issue.name}
             />
           </div>
           <div className="mb-3">
@@ -48,9 +52,11 @@ const IssuePage = () => {
               Contact Number
             </CFormLabel>
             <CFormInput
+              className="bg-white"
+              readOnly
               type="text"
               id="exampleFormControlInput1"
-              value={issue.telephone}
+              defaultValue={issue.telephone}
             />
           </div>
           <div className="mb-3">
@@ -75,9 +81,11 @@ const IssuePage = () => {
               Issue Description
             </CFormLabel>
             <CFormTextarea
+              className="bg-white"
+              readOnly
               id="exampleFormControlTextarea1"
               rows="5"
-              value={issue.description}
+              defaultValue={issue.description}
             ></CFormTextarea>
           </div>
         </CForm>

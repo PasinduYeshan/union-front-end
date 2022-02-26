@@ -21,6 +21,9 @@ module.exports = {
       //   landscape: "url('/images/landscape/2.jpg')",
       // }),
     },
+    colors: {
+      'green' : '#84cc16'
+    }
   },
   variants: {
     extend: {

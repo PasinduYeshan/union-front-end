@@ -44,7 +44,7 @@ import {
   cilUserFemale,
 } from '@coreui/icons'
 
-
+const HeroSection = React.lazy(() => import("../pages/landing/HeroSection"));
 
 
 const Dashboard = () => {
@@ -52,14 +52,12 @@ const Dashboard = () => {
 
   return (
     <>
-      <CCard className="mb-4">
+      <CCard className="py-16 h-full">
         <CCardBody>
-          
+          <HeroSection />
           
         </CCardBody>
-        <CCardFooter>
-          
-        </CCardFooter>
+        
       </CCard> 
     </>
   )

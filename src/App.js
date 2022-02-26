@@ -30,7 +30,7 @@ class App extends Component {
     return (
       <BrowserRouter>
         <React.Suspense fallback={loading}>
-          <Switch>
+          <Switch >
             <Route
               exact
               path="/login"

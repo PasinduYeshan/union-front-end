@@ -1,5 +1,5 @@
-import React from 'react'
-import CIcon from '@coreui/icons-react'
+import React from "react";
+import CIcon from "@coreui/icons-react";
 import {
   cilBell,
   cilCalculator,
@@ -11,8 +11,13 @@ import {
   cilPuzzle,
   cilSpeedometer,
   cilStar,
-} from '@coreui/icons'
-import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
+  cilChatBubble,
+  cilGroup,
+  cilAddressBook,
+  cilUserPlus,
+  cilList,
+} from "@coreui/icons";
+import { CNavGroup, CNavItem, CNavTitle } from "@coreui/react";
 
 const _nav = [
   // {
@@ -41,29 +46,34 @@ const _nav = [
   //   to: '/theme/typography',
   //   icon: <CIcon icon={cilPencil} customClassName="nav-icon" />,
   // },
-   
-  
-  // {
-  //   component: CNavTitle,
-  //   name: 'Issues',
-  // },
-  {
-    component: CNavGroup,
-    name: 'Issues',
-    icon: <CIcon icon={cilStar} customClassName="nav-icon" />,
-    items: [
-      {
-        component: CNavItem,
-        name: 'Issue List',
-        to: '/office/issues',
-      },
-      // {
-      //   component: CNavItem,
-      //   name: 'Register',
-      //   to: '/register',
-      // },
-    ],
-  },
-]
 
-export default _nav
+  {
+    component: CNavTitle,
+    name: "Members",
+  },
+
+  {
+    component: CNavItem,
+    name: "Add Member",
+    to: "/office/member/add-member",
+    icon: <CIcon icon={cilUserPlus} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: "View Member",
+    to: "/office/member/view-member",
+    icon: <CIcon icon={cilAddressBook} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavTitle,
+    name: "Issues",
+  },
+  {
+    component: CNavItem,
+    name: "Issue List",
+    to: "/office/issues",
+    icon: <CIcon icon={cilChatBubble} customClassName="nav-icon" />,
+  },
+];
+
+export default _nav;
