@@ -8,8 +8,6 @@ const FooterComponent = React.lazy(() =>
 const LoginSection = React.lazy(() => import("./LoginSection"));
 
 export default function LoginPage() {
-  const forgotPassword = () => {};
-  const login = () => {};
   return (
     <>
       <div className="h-screen">
@@ -22,5 +20,3 @@ export default function LoginPage() {
     </>
   );
 }
-
-

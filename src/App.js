@@ -2,6 +2,10 @@ import React, { Component } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import "./scss/style.scss";
 
+// Toaster
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const loading = (
   <div className="pt-3 text-center">
     <div className="sk-spinner sk-spinner-pulse"></div>
@@ -19,18 +23,35 @@ const Page404Error = React.lazy(() =>
 );
 // const Page500 = React.lazy(() => import("./views/pages/page500/Page500"));
 const HomePage = React.lazy(() => import("./views/pages/landing/HomePage"));
-const ContactUsPage = React.lazy(() => import("./views/pages/contactUs/contactUsPage"));
+const ContactUsPage = React.lazy(() =>
+  import("./views/pages/contactUs/contactUsPage")
+);
 const LoginPage = React.lazy(() => import("./views/pages/login/LoginPage"));
-const TeamPage = React.lazy(() => import("./views/pages/team/TeamPage")); 
-const AboutUsPage = React.lazy(() => import("./views/pages/aboutUs/AboutUsPage"));
+const TeamPage = React.lazy(() => import("./views/pages/team/TeamPage"));
+const AboutUsPage = React.lazy(() =>
+  import("./views/pages/aboutUs/AboutUsPage")
+);
 const EventsPage = React.lazy(() => import("./views/pages/events/EventsPage"));
 
 class App extends Component {
   render() {
     return (
       <BrowserRouter>
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
+        {/* Same as */}
+        <ToastContainer />
         <React.Suspense fallback={loading}>
-          <Switch >
+          <Switch>
             <Route
               exact
               path="/login"
@@ -85,7 +106,10 @@ class App extends Component {
               name="Home Page"
               render={(props) => <HomePage {...props} />}
             />
-            <Route path="/office" name="Office Home" render={(props) => <DefaultLayout {...props} />}
+            <Route
+              path="/office"
+              name="Office Home"
+              render={(props) => <DefaultLayout {...props} />}
             />
           </Switch>
         </React.Suspense>

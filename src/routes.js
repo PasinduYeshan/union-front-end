@@ -10,6 +10,9 @@ const IssuePage = React.lazy(() => import("./views/issues/IssuePage"));
 const ViewMemberPage = React.lazy(() =>
   import("./views/members/viewMember/ViewMemberPage")
 );
+const AddMemberPage = React.lazy(() =>
+  import("./views/members/addMember/AddMemberPage")
+);
 
 //Event related pages
 
@@ -42,6 +45,11 @@ const routes = [
     path: "/office/member/view-member",
     name: "Member Details",
     component: ViewMemberPage,
+  },
+  {
+    path: "/office/member/add-member",
+    name: "Add Member",
+    component: AddMemberPage,
   },
 ];
 

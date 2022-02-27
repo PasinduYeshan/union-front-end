@@ -7,6 +7,7 @@ const StepperControl = ({
   handlePreviousBtn,
   handleNextBtn,
   maxSteps,
+  submitBtnText,
 }) => {
   return (
     <>
@@ -21,14 +22,20 @@ const StepperControl = ({
           Previous
         </CButton>
 
-        <CButton
-          color="primary"
-          variant="outline"
-          onClick={handleNextBtn}
-          disabled={currentStep >= maxSteps ? true : false}
-        >
-          Next
-        </CButton>
+        {submitBtnText ? (
+          <CButton color="primary" variant="outline" onClick={handleNextBtn}>
+            {currentStep >= maxSteps ? submitBtnText : "Next"}
+          </CButton>
+        ) : (
+          <CButton
+            color="primary"
+            variant="outline"
+            onClick={handleNextBtn}
+            disabled={currentStep >= maxSteps ? true : false}
+          >
+            Next
+          </CButton>
+        )}
       </div>
     </>
   );
