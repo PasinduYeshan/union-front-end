@@ -19,9 +19,10 @@ import {
 const FamilyDetailsSection = ({ member }) => {
   return (
     <>
-      <div >
+      <h1 className="text-xl font-semibold mb-3">Family Details</h1>
+      <div className="row g-3">
         <CCol className="mb-3" xs={12}>
-          <CFormLabel htmlFor="exampleFormControlInput1">
+          <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">
             Spouse's Name
           </CFormLabel>
           <CFormInput
@@ -33,8 +34,8 @@ const FamilyDetailsSection = ({ member }) => {
           />
         </CCol>
         <CCol className="mb-3" xs={12}>
-          <CFormLabel htmlFor="exampleFormControlInput1">
-            Children Details
+          <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">
+            Children's Details
           </CFormLabel>
           {/* <CFormInput
             className="bg-white"
@@ -61,7 +62,7 @@ const FamilyDetailsSection = ({ member }) => {
           </CTable>
         </CCol>
         <CCol className="mb-3" xs={12}>
-          <CFormLabel htmlFor="exampleFormControlInput1">
+          <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">
             Father's Name
           </CFormLabel>
           <CFormInput
@@ -73,7 +74,7 @@ const FamilyDetailsSection = ({ member }) => {
           />
         </CCol>
         <CCol className="mb-3" xs={12}>
-          <CFormLabel htmlFor="exampleFormControlInput1">
+          <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">
             Mother's Name
           </CFormLabel>
           <CFormInput
@@ -85,7 +86,7 @@ const FamilyDetailsSection = ({ member }) => {
           />
         </CCol>
         <CCol className="mb-3" md={6}>
-          <CFormLabel htmlFor="exampleFormControlInput1">
+          <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">
             Father in Law's Name
           </CFormLabel>
           <CFormInput
@@ -97,7 +98,7 @@ const FamilyDetailsSection = ({ member }) => {
           />
         </CCol>
         <CCol className="mb-3" md={6}>
-          <CFormLabel htmlFor="exampleFormControlInput1">
+          <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">
             Mother in Law's Name
           </CFormLabel>
           <CFormInput

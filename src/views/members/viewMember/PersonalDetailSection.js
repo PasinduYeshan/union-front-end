@@ -22,9 +22,11 @@ const PersonalDetailsSection = ({ member }) => {
 
   return (
     <>
-      <div className="shadow border-b border-gray-200 sm:rounded-lg bg-white p-4 mb-5 row g-3">
+      <h1 className="text-xl font-semibold mb-3">Personal Details</h1>
+      <div className="row g-3">
+        
         <CCol className="mb-3" xs={12}>
-          <CFormLabel htmlFor="exampleFormControlInput1">Full Name</CFormLabel>
+          <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">Full Name</CFormLabel>
           <CFormInput
             className="bg-white"
             readOnly
@@ -34,7 +36,7 @@ const PersonalDetailsSection = ({ member }) => {
           />
         </CCol>
         <CCol className="mb-3" xs={12}>
-          <CFormLabel htmlFor="exampleFormControlInput1">
+          <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">
             Name With Initials
           </CFormLabel>
           <CFormInput
@@ -46,7 +48,7 @@ const PersonalDetailsSection = ({ member }) => {
           />
         </CCol>
         <CCol className="mb-3" xs={12}>
-          <CFormLabel htmlFor="exampleFormControlInput1">Other Name</CFormLabel>
+          <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">Other Name</CFormLabel>
           <CFormInput
             className="bg-white"
             readOnly
@@ -56,7 +58,7 @@ const PersonalDetailsSection = ({ member }) => {
           />
         </CCol>
         <CCol className="mb-3" md={6}>
-          <CFormLabel htmlFor="exampleFormControlInput1">Old NIC No</CFormLabel>
+          <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">Old NIC No</CFormLabel>
           <CFormInput
             className="bg-white"
             readOnly
@@ -66,7 +68,7 @@ const PersonalDetailsSection = ({ member }) => {
           />
         </CCol>
         <CCol className="mb-3" md={6}>
-          <CFormLabel htmlFor="exampleFormControlInput1">New NIC No</CFormLabel>
+          <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">New NIC No</CFormLabel>
           <CFormInput
             className="bg-white"
             readOnly
@@ -76,7 +78,7 @@ const PersonalDetailsSection = ({ member }) => {
           />
         </CCol>
         <CCol className="mb-3" md={6}>
-          <CFormLabel htmlFor="exampleFormControlInput1">
+          <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">
             Date of Birth
           </CFormLabel>
           <CFormInput
@@ -88,7 +90,7 @@ const PersonalDetailsSection = ({ member }) => {
           />
         </CCol>
         <CCol className="mb-3" md={6}>
-          <CFormLabel htmlFor="exampleFormControlInput1">Sex</CFormLabel>
+          <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">Sex</CFormLabel>
           <CFormInput
             className="bg-white"
             readOnly
@@ -98,7 +100,7 @@ const PersonalDetailsSection = ({ member }) => {
           />
         </CCol>
         <CCol className="mb-3" xs={12}>
-          <CFormLabel htmlFor="exampleFormControlInput1">
+          <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">
             Permanent Address
           </CFormLabel>
           <CFormInput
@@ -110,7 +112,7 @@ const PersonalDetailsSection = ({ member }) => {
           />
         </CCol>
         <CCol className="mb-3" xs={12}>
-          <CFormLabel htmlFor="exampleFormControlInput1">
+          <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">
             Mailing Address
           </CFormLabel>
           <CFormInput
@@ -122,7 +124,7 @@ const PersonalDetailsSection = ({ member }) => {
           />
         </CCol>
         <CCol className="mb-3" md={6}>
-          <CFormLabel htmlFor="exampleFormControlInput1">
+          <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">
             Email Address
           </CFormLabel>
           <CFormInput
@@ -134,7 +136,7 @@ const PersonalDetailsSection = ({ member }) => {
           />
         </CCol>
         <CCol className="mb-3" md={6}>
-          <CFormLabel htmlFor="exampleFormControlInput1">
+          <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">
             Civil Status
           </CFormLabel>
           <CFormInput
@@ -146,7 +148,7 @@ const PersonalDetailsSection = ({ member }) => {
           />
         </CCol>
         <CCol className="mb-3" md={4}>
-          <CFormLabel htmlFor="exampleFormControlInput1">
+          <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">
             Mobile Number
           </CFormLabel>
           <CFormInput
@@ -158,7 +160,7 @@ const PersonalDetailsSection = ({ member }) => {
           />
         </CCol>
         <CCol className="mb-3" md={4}>
-          <CFormLabel htmlFor="exampleFormControlInput1">
+          <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">
             Office Number
           </CFormLabel>
           <CFormInput
@@ -170,7 +172,7 @@ const PersonalDetailsSection = ({ member }) => {
           />
         </CCol>
         <CCol className="mb-3" md={4}>
-          <CFormLabel htmlFor="exampleFormControlInput1">
+          <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">
             Home Number
           </CFormLabel>
           <CFormInput
@@ -182,7 +184,7 @@ const PersonalDetailsSection = ({ member }) => {
           />
         </CCol>
         <CCol className="mb-3" md={6}>
-          <CFormLabel htmlFor="exampleFormControlInput1">
+          <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">
             For Nomination on Behalf of The Member
           </CFormLabel>
           <CFormInput
@@ -194,7 +196,7 @@ const PersonalDetailsSection = ({ member }) => {
           />
         </CCol>
         <CCol className="mb-3" md={6}>
-          <CFormLabel htmlFor="exampleFormControlInput1">
+          <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">
             Relationship of Nominee
           </CFormLabel>
           <CFormInput

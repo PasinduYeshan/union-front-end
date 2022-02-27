@@ -1,25 +1,34 @@
 import React from "react";
 
-const StepperControl = () => {
+import { CButton } from "@coreui/react";
+
+const StepperControl = ({
+  currentStep,
+  handlePreviousBtn,
+  handleNextBtn,
+  maxSteps,
+}) => {
   return (
     <>
-      <div className="flex justify-around mt-4 mb-4 !bg-white">
+      <div className="flex justify-between mt-4 mb-4 !bg-white">
         {/* back button  */}
-        <button
-          className="bg-white text-slate-400 uppercase py-2 px-4 rounded-xl 
-                  font-semibold cursor-pointer border-2 border-slate-300 hover:bg-slate-700
-                  hover:text-white trasition duration-200 ease-in-out"
+        <CButton
+          color="primary"
+          variant="outline"
+          onClick={handlePreviousBtn}
+          disabled={currentStep <= 1 ? true : false}
         >
-          Back
-        </button>
+          Previous
+        </CButton>
 
-        <button
-          className="bg-green-500 text-white uppercase py-2 px-4 rounded-xl 
-                  font-semibold cursor-pointer hover:bg-slate-700 
-                  hover:text-black trasition duration-200 ease-in-out"
+        <CButton
+          color="primary"
+          variant="outline"
+          onClick={handleNextBtn}
+          disabled={currentStep >= maxSteps ? true : false}
         >
           Next
-        </button>
+        </CButton>
       </div>
     </>
   );

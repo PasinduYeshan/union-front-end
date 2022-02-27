@@ -1,12 +1,7 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import _ from "lodash";
 
-import {
-  CForm,
-  CFormInput,
-  CFormLabel,
-  CFormTextarea,
-  CBadge,
-} from "@coreui/react";
+import SearchBars from "./SearchBars";
 
 // Stepper
 const Stepper = React.lazy(() => import("../../../components/common/Stepper"));
@@ -19,32 +14,100 @@ const PersonalDetailsSection = React.lazy(() =>
   import("./PersonalDetailSection")
 );
 const FamilyDetailsSection = React.lazy(() => import("./FamilyDetailsSection"));
-const DepartmentDetailsSection = React.lazy(() => import("./DepartmentDetailsSection"));
-
+const DepartmentDetailsSection = React.lazy(() =>
+  import("./DepartmentDetailsSection")
+);
+const MemberDetailsSection = React.lazy(() => import("./MemberDetailsSection"));
 
 const ViewMemberPage = () => {
+  /**
+   * State
+   */
   const [currentStep, setCurrentStep] = useState(1);
+  const [value, setValue] = useState({
+    oldNIC: "",
+    newNIC: "",
+  });
+  const [member, setMember] = useState({});
 
-  const stepArray = [
-    "Personal Details",
-    "Family Details",
-    "Department Details",
-    "Member Details",
-  ];
+  // TODO : Study on this
+  // const { value, handleChange } = useInput("");
 
+  useEffect(() => {
+    console.log("Re-rendering ViewMemberPage");
+  }, []);
+
+  /**
+   * Handle functions
+   */
+  const handleChange = (event) => {
+    if (event.target.name === "oldNIC") {
+      setValue({
+        ...value,
+        oldNIC: event.target.value,
+      });
+    } else {
+      setValue({
+        ...value,
+        newNIC: event.target.value,
+      });
+    }
+  };
+
+  const handleSearch = (event) => {
+    console.log(event.target);
+    if (event.target.name === "oldNICSearch") {
+      console.log("oldNIC", value.oldNIC);
+    } else {
+      console.log("newNICSearch", value.newNIC);
+    }
+    setMember(memberData);
+  };
+
+  const handleNextBtn = () => {
+    setCurrentStep(currentStep + 1);
+  };
+
+  const handlePreviousBtn = () => {
+    setCurrentStep(currentStep - 1);
+  };
+
+  /**
+   * Stepper
+   */
   const stepComponents = [
     <PersonalDetailsSection member={member} />,
     <FamilyDetailsSection member={member} />,
-    <PersonalDetailsSection member={member} />,
-    <PersonalDetailsSection member={member} />,
+    <DepartmentDetailsSection member={member} />,
+    <MemberDetailsSection member={member} />,
   ];
+
+  const returnStepComponent = (step) => {
+    console.log(step);
+    return stepComponents[step - 1];
+  };
 
   return (
     <>
       <div className="shadow sm:rounded-lg bg-white p-4 mb-5 row g-3">
-        {/* <Stepper />
-        <StepperControl /> */}
-        <FamilyDetailsSection member={member} />
+        {currentStep == 1 ? (
+          <SearchBars
+            handleChange={handleChange}
+            value={value}
+            handleSearch={handleSearch}
+          />
+        ) : null}
+        {!_.isEmpty(member) && (
+          <div>
+            {returnStepComponent(currentStep)}
+            <StepperControl
+              handleNextBtn={handleNextBtn}
+              handlePreviousBtn={handlePreviousBtn}
+              currentStep={currentStep}
+              maxSteps={stepComponents.length}
+            />
+          </div>
+        )}
       </div>
     </>
   );
@@ -52,7 +115,7 @@ const ViewMemberPage = () => {
 
 export default ViewMemberPage;
 
-const member = {
+const memberData = {
   // personal details
   userId: "jfsajfsdj346",
   fullName: "BALARATNAM BAHEERATHAN",
@@ -105,8 +168,8 @@ const member = {
   membershipNo: "B1125",
   dateOfMembership: "2009-04-05",
   RDSNumber: "0258",
-  memberOfOtherUnion: "NO",
-  namesOfOtherUnions: "",
+  memberOfOtherUnion: "Yes",
+  namesOfOtherUnions: ["UNION1", "UNION2"],
 
   // Branch details
   branchName: "KALMUNAI/AMPARA",
