@@ -1,109 +1,159 @@
-import React from "react";
-
+import React, { useState } from "react";
+import Joi from "joi";
 import { ReplyIcon } from "@heroicons/react/solid";
+import { toast } from "react-toastify";
 
+import {
+  CustomCFormTextAreaGroup,
+  CustomCFormInputGroup,
+  CustomCFormFilesGroup,
+} from "src/components/common/CustomCInputGroup";
+import { addDataToFormData, printFormData } from "src/utils/function";
 
 const ContactUsSection = () => {
+  // States
+  const [formData, setFormData] = useState(initialValue);
+  const [formErrors, setFormErrors] = useState({});
+  const [images, setImages] = useState([]);
+
+  // Joi validation schema
+  const schema = Joi.object({
+    name: Joi.string().required().label("Name"),
+    membershipNo: Joi.string().required().label("Membership No"),
+    contactNo: Joi.string().required().label("Contact No"),
+    branchName: Joi.string().required().label("Branch Name"),
+    issue: Joi.string().min(10).required().label("Issue"),
+    images: Joi.any(),
+  });
+
+  /**
+   * Handlers
+   */
+  const handleChange = (e) => {
+    const { name, value, files } = e.target;
+    if (name === "images") {
+      setFormData({ ...formData, [name]: files });
+    } else {
+      delete formErrors[name];
+      setFormData({ ...formData, [name]: value });
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const { error, value } = schema.validate(formData, { abortEarly: false });
+    if (!error) {
+      //Issue send logic
+      let fData = new FormData();
+      fData = addDataToFormData(fData, formData);
+      toast.success("Successfull", {});
+    } else {
+      const errors = {};
+      for (let item of error.details) {
+        errors[item.path[0]] = item.message;
+      }
+      setFormErrors(errors);
+    }
+  };
+
   return (
     <>
-        <div className="grid grid-cols-1 md:grid-cols-2 align-middle h-full w-full ">
-          <div className="hidden md:block align-middle m-10">
-            <img
-              src="images/contact-us.svg"
-              className=" object-cover w-full h-full "
-            />
-          </div>
-          <div className="flex items-center justify-center align-content-center py-12 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-md w-full space-y-8">
-              <div>
-                <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-                  How can we help you?
-                </h2>
-              </div>
-              <form className="mt-8 space-y-6" action="#" method="POST">
-                <input type="hidden" name="remember" defaultValue="true" />
-                <div className="rounded-md">
-                  <div className="pb-2">
-                    <label htmlFor="membership-no" className="">
-                      First Name
-                    </label>
-                    <input
-                      id="firstName"
-                      name="firstName"
-                      type="string"
-                      autoComplete="First Name"
-                      required
-                      className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                      placeholder=""
-                    />
-                  </div>
-                  <div className="pb-2">
-                    <label htmlFor="membership-no" className="">
-                      Membership Number
-                    </label>
-                    <input
-                      id="membership-no"
-                      name="membership-no"
-                      type="string"
-                      autoComplete="Membership Number"
-                      required
-                      className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                      placeholder=""
-                    />
-                  </div>
-                  <div className="pb-2">
-                    <label htmlFor="contact-no" className="">
-                      Contact Number
-                    </label>
-                    <input
-                      id="contact-no"
-                      name="contact-no"
-                      type="string"
-                      autoComplete="Contact Number"
-                      required
-                      className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                      placeholder=""
-                    />
-                  </div>
-                  <div className="pb-2">
-                    <label htmlFor="issue" className="">
-                      Issue
-                    </label>
-                    <textarea
-                      id="issue"
-                      name="issue"
-                      type="string"
-                      autoComplete="Issue"
-                      rows={6}
-                      required
-                      className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                      placeholder=""
-                    />
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-center text-center">
-                  <button
-                    type="submit"
-                    className="group relative w-1/2 flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                  >
-                    <span className="absolute left-0 inset-y-0 flex items-center pl-3">
-                      <ReplyIcon
-                        className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400"
-                        aria-hidden="true"
-                      />
-                    </span>
-                    Submit Your Issue
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>{" "}
+      <div className="grid grid-cols-1 md:grid-cols-2 align-middle h-full w-full ">
+        <div className="hidden md:block align-middle m-10">
+          <img
+            src="images/contact-us.svg"
+            className=" object-cover w-full h-full "
+          />
         </div>
+        <div className="flex items-center justify-center align-content-center py-12 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-md w-full space-y-8">
+            <div>
+              <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+                How can we help you?
+              </h2>
+            </div>
+            <form
+              className="mt-8 space-y-6"
+              onSubmit={handleSubmit}
+              method="POST"
+            >
+              <input type="hidden" name="remember" defaultValue="true" />
+              <div className="rounded-md">
+                <CustomCFormInputGroup
+                  label="Name"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  error={formErrors.name}
+                />
+                <CustomCFormInputGroup
+                  label="Branch Name"
+                  name="branchName"
+                  value={formData.branchName}
+                  onChange={handleChange}
+                  error={formErrors.branchName}
+                />
+                <CustomCFormInputGroup
+                  label="Membership Number"
+                  name="membershipNo"
+                  value={formData.membershipNO}
+                  onChange={handleChange}
+                  error={formErrors.membershipNO}
+                />
+                <CustomCFormInputGroup
+                  label="Contact Number"
+                  name="contactNo"
+                  value={formData.contactNo}
+                  onChange={handleChange}
+                  error={formErrors.contactNo}
+                />
+                <CustomCFormTextAreaGroup
+                  label="Issue"
+                  name="issue"
+                  value={formData.issue}
+                  onChange={handleChange}
+                  error={formErrors.issue}
+                />
+                <CustomCFormFilesGroup
+                  label="Images"
+                  name="images"
+                  onChange={handleChange}
+                  error={formErrors.images}
+                  type="file"
+                  required={false}
+                />
+              </div>
+
+              <div className="flex items-center justify-center text-center">
+                <button
+                  onSubmit={handleSubmit}
+                  type="submit"
+                  className="group relative w-1/2 flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                >
+                  <span className="absolute left-0 inset-y-0 flex items-center pl-3">
+                    <ReplyIcon
+                      className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400"
+                      aria-hidden="true"
+                    />
+                  </span>
+                  Submit Your Issue
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
     </>
   );
 };
 
 export default ContactUsSection;
 
-
+const initialValue = {
+  name: "",
+  membershipNo: "",
+  contactNo: "",
+  issue: "",
+  branchName: "",
+  images: [],
+};

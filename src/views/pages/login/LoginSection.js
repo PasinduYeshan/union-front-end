@@ -3,13 +3,17 @@ import { useHistory } from "react-router-dom";
 import Joi from "joi";
 import { LockClosedIcon } from "@heroicons/react/solid";
 
+import { CCol } from "@coreui/react";
+
+import { CustomCFormInputGroup } from "../../../components/common/CustomCInputGroup";
+
 export default function LoginSection(props) {
   const history = useHistory();
   const [formData, setFormData] = useState({
     username: "",
     password: "",
   });
-
+  const [rememberMe, setRememberMe] = useState(false);
   const [formErrors, setFormErrors] = useState({});
 
   // Joi validation schema
@@ -27,9 +31,13 @@ export default function LoginSection(props) {
     setFormData({ ...formData, [name]: value });
   };
 
+  const handleRememberMe = (e) => {
+    setRememberMe(!rememberMe);
+  };
+
   const forgotPassword = () => {};
 
-  const login = (e) => {
+  const handleLogin = (e) => {
     e.preventDefault();
     const { error, value } = schema.validate(formData, { abortEarly: false });
     if (!error) {
@@ -43,7 +51,6 @@ export default function LoginSection(props) {
       setFormErrors(errors);
     }
   };
-  console.log(formErrors.username);
   return (
     <>
       <div className="container h-500 mb-16 sm:mb-16 md:mb-16">
@@ -66,43 +73,30 @@ export default function LoginSection(props) {
                   Sign in to your account
                 </h2>
               </div>
-              <form className="mt-8 space-y-6" onSubmit={login} method="POST">
+              <form
+                className="mt-8 space-y-6"
+                onSubmit={handleLogin}
+                method="POST"
+              >
                 <input type="hidden" name="remember" defaultValue="true" />
                 <div className="rounded-md ">
                   <div className="py-2">
-                    <label htmlFor="username" className="sr-only">
-                      Username
-                    </label>
-                    <input
-                      id="username"
+                    <CustomCFormInputGroup
+                      label="Username"
                       name="username"
-                      type="string"
-                      autoComplete="username"
-                      className={`appearance-none rounded-none relative block w-full px-3 py-2 
-                      border ${
-                        typeof formErrors.username == "undefined"
-                          ? "!border-gray-300"
-                          : "!border-red-500"
-                      }placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none 
-                      focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm`}
-                      placeholder="Username"
                       value={formData.username}
                       onChange={handleChange}
+                      error={formErrors.username}
                     />
                   </div>
                   <div className="py-2">
-                    <label htmlFor="password" className="sr-only">
-                      Password
-                    </label>
-                    <input
-                      id="password"
+                    <CustomCFormInputGroup
+                      label="Password"
                       name="password"
-                      type="password"
-                      autoComplete="current-password"
-                      className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                      placeholder="Password"
                       value={formData.password}
                       onChange={handleChange}
+                      error={formErrors.password}
+                      type="password"
                     />
                   </div>
                 </div>
@@ -114,6 +108,8 @@ export default function LoginSection(props) {
                       name="remember-me"
                       type="checkbox"
                       className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                      onChange={handleRememberMe}
+                      value={rememberMe}
                     />
                     <label
                       htmlFor="remember-me"
@@ -135,7 +131,7 @@ export default function LoginSection(props) {
 
                 <div>
                   <button
-                    onClick={login}
+                    onClick={handleLogin}
                     type="submit"
                     className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                   >
