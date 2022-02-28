@@ -48,8 +48,6 @@ class App extends Component {
           draggable
           pauseOnHover
         />
-        {/* Same as */}
-        <ToastContainer />
         <React.Suspense fallback={loading}>
           <Switch>
             <Route

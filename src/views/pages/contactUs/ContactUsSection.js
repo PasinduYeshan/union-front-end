@@ -14,7 +14,6 @@ const ContactUsSection = () => {
   // States
   const [formData, setFormData] = useState(initialValue);
   const [formErrors, setFormErrors] = useState({});
-  const [images, setImages] = useState([]);
 
   // Joi validation schema
   const schema = Joi.object({
@@ -46,6 +45,7 @@ const ContactUsSection = () => {
       //Issue send logic
       let fData = new FormData();
       fData = addDataToFormData(fData, formData);
+      console.log("Toast run");
       toast.success("Successfull", {});
     } else {
       const errors = {};

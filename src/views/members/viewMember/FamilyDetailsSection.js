@@ -48,14 +48,14 @@ const FamilyDetailsSection = ({ member }) => {
             <CTableHead>
               <CTableRow>
                 <CTableHeaderCell scope="col">Name</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Date of Birth</CTableHeaderCell>
+                {/* <CTableHeaderCell scope="col">Date of Birth</CTableHeaderCell> */}
               </CTableRow>
             </CTableHead>
             <CTableBody>
               {member.children.map((child, index) => (
                 <CTableRow key={index}>
                   <CTableDataCell>{child.name}</CTableDataCell>
-                  <CTableDataCell>{child.dob}</CTableDataCell>
+                  {/* <CTableDataCell>{child.dob}</CTableDataCell> */}
                 </CTableRow>
               ))}
             </CTableBody>
