@@ -14,6 +14,11 @@ const AddMemberPage = React.lazy(() =>
   import("./views/members/addMember/AddMemberPage")
 );
 
+// Accounts related pages
+const BSAccountsPage = React.lazy(() =>
+  import("./views/accounts/BSAccountsPage")
+);
+
 //Event related pages
 
 const routes = [
@@ -50,6 +55,16 @@ const routes = [
     path: "/office/member/add-member",
     name: "Add Member",
     component: AddMemberPage,
+  },
+  {
+    path: "/office/accounts",
+    exact: true,
+    name: "Accounts",
+  },
+  {
+    path: "/office/accounts/branch-secrataries",
+    name: "Branch Secrataries",
+    component: BSAccountsPage,
   },
 ];
 

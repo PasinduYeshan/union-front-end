@@ -46,6 +46,22 @@ const _nav = [
   //   to: '/theme/typography',
   //   icon: <CIcon icon={cilPencil} customClassName="nav-icon" />,
   // },
+  {
+    component: CNavTitle,
+    name: "Branch Secrataries",
+  },
+  {
+    component: CNavItem,
+    name: "Add Branch Secratary",
+    to: "/office/accounts/add-branch-secratary",
+    icon: <CIcon icon={cilUserPlus} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: "Branch Secrataries",
+    to: "/office/accounts/branch-secrataries",
+    icon: <CIcon icon={cilAddressBook} customClassName="nav-icon" />,
+  },
 
   {
     component: CNavTitle,
