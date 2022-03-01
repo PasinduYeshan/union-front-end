@@ -1,49 +1,35 @@
 import React from "react";
 
 import {
-  CForm,
-  CFormInput,
   CFormLabel,
-  CFormTextarea,
-  CBadge,
   CTableHeaderCell,
   CTable,
   CTableBody,
   CTableDataCell,
   CTableHead,
-  CTableHeader,
   CTableRow,
   CCol,
 } from "@coreui/react";
+
+import { CustomCFormInputGroup } from "src/components/common/CustomCInputGroup";
 
 const FamilyDetailsSection = ({ member }) => {
   return (
     <>
       <h1 className="text-xl font-semibold mb-3">Family Details</h1>
       <div className="row g-3">
-        <CCol className="mb-3" xs={12}>
-          <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">
-            Spouse's Name
-          </CFormLabel>
-          <CFormInput
-            className="bg-white border-bottom"
-            readOnly
-            type="text"
-            id="exampleFormControlInput1"
-            defaultValue={member.spouseName}
-          />
-        </CCol>
+        <CustomCFormInputGroup
+          label="Spouse's Name"
+          name="spouseName"
+          value={member.spouseName}
+          uppercase={true}
+          readOnly={true}
+          required={false}
+        />
         <CCol className="mb-3" xs={12}>
           <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">
             Children's Details
           </CFormLabel>
-          {/* <CFormInput
-            className="bg-white"
-            readOnly
-            type="text"
-            id="exampleFormControlInput1"
-            defaultValue={member.nameWithInitials}
-          /> */}
           <CTable>
             <CTableHead>
               <CTableRow>
@@ -61,54 +47,42 @@ const FamilyDetailsSection = ({ member }) => {
             </CTableBody>
           </CTable>
         </CCol>
-        <CCol className="mb-3" xs={12}>
-          <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">
-            Father's Name
-          </CFormLabel>
-          <CFormInput
-            className="bg-white"
-            readOnly
-            type="text"
-            id="exampleFormControlInput1"
-            defaultValue={member.fatherName}
-          />
-        </CCol>
-        <CCol className="mb-3" xs={12}>
-          <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">
-            Mother's Name
-          </CFormLabel>
-          <CFormInput
-            className="bg-white"
-            readOnly
-            type="text"
-            id="exampleFormControlInput1"
-            defaultValue={member.motherName}
-          />
-        </CCol>
-        <CCol className="mb-3" md={6}>
-          <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">
-            Father in Law's Name
-          </CFormLabel>
-          <CFormInput
-            className="bg-white"
-            readOnly
-            type="text"
-            id="exampleFormControlInput1"
-            defaultValue={member.fatherInLawName}
-          />
-        </CCol>
-        <CCol className="mb-3" md={6}>
-          <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">
-            Mother in Law's Name
-          </CFormLabel>
-          <CFormInput
-            className="bg-white"
-            readOnly
-            type="text"
-            id="exampleFormControlInput1"
-            defaultValue={member.motherInLawName}
-          />
-        </CCol>
+
+        <CustomCFormInputGroup
+          label="Father's Name"
+          name="fatherName"
+          value={member.fatherName}
+          uppercase={true}
+          readOnly={true}
+          required={false}
+        />
+        <CustomCFormInputGroup
+          label="Mother's Name"
+          name="motherName"
+          value={member.motherName}
+          uppercase={true}
+          readOnly={true}
+          required={false}
+        />
+        <CustomCFormInputGroup
+          label="Father in Law's Name"
+          name="fatherInLawName"
+          value={member.fatherInLawName}
+          uppercase={true}
+          readOnly={true}
+          required={false}
+          mdSize={6}
+          required={false}
+        />
+        <CustomCFormInputGroup
+          label="Mother in Law's Name"
+          name="motherInLawName"
+          value={member.motherInLawName}
+          uppercase={true}
+          readOnly={true}
+          required={false}
+          mdSize={6}
+        />
       </div>
     </>
   );

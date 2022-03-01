@@ -1,144 +1,100 @@
 import React from "react";
+import { CustomCFormInputGroup } from "src/components/common/CustomCInputGroup";
 
-import {
-  CForm,
-  CFormInput,
-  CFormLabel,
-  CFormTextarea,
-  CBadge,
-  CTableHeaderCell,
-  CTable,
-  CTableBody,
-  CTableDataCell,
-  CTableHead,
-  CTableHeader,
-  CTableRow,
-  CCol,
-} from "@coreui/react";
-
-const DepartmentDetailsSection = ({member}) => {
+const DepartmentDetailsSection = ({ member }) => {
   return (
     <>
       <h1 className="text-xl font-semibold mb-3">Departmental Details</h1>
       <div className="row g-3">
-        <CCol className="mb-3" xs={12}>
-           <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">Title</CFormLabel>
-          <CFormInput
-            className="bg-white border-bottom"
-            readOnly
-            type="text"
-            id="exampleFormControlInput1"
-            defaultValue={member.title}
-          />
-        </CCol>
-        <CCol className="mb-3" xs={12}>
-           <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">
-            Grade
-          </CFormLabel>
-          <CFormInput
-            className="bg-white"
-            readOnly
-            type="text"
-            id="exampleFormControlInput1"
-            defaultValue={member.grade}
-          />
-        </CCol>
-        <CCol className="mb-3" xs={12}>
-           <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">
-            Date of Appointment
-          </CFormLabel>
-          <CFormInput
-            className="bg-white"
-            readOnly
-            type="text"
-            id="exampleFormControlInput1"
-            defaultValue={member.dateOfAppointment}
-          />
-        </CCol>
-        <CCol className="mb-3" md={6}>
-           <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">
-            Permanent Work Station
-          </CFormLabel>
-          <CFormInput
-            className="bg-white"
-            readOnly
-            type="text"
-            id="exampleFormControlInput1"
-            defaultValue={member.permanentWorkStation}
-          />
-        </CCol>
-        <CCol className="mb-3" md={6}>
-           <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">
-            Present Work Station
-          </CFormLabel>
-          <CFormInput
-            className="bg-white"
-            readOnly
-            type="text"
-            id="exampleFormControlInput1"
-            defaultValue={member.presentWorkStation}
-          />
-        </CCol>
-        <CCol className="mb-3" md={6}>
-           <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">
-            Date of Pension
-          </CFormLabel>
-          <CFormInput
-            className="bg-white"
-            readOnly
-            type="text"
-            id="exampleFormControlInput1"
-            defaultValue={member.dateOfPension}
-          />
-        </CCol>
-        <CCol className="mb-3" md={6}>
-           <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">
-            Office of the Regional Accountant
-          </CFormLabel>
-          <CFormInput
-            className="bg-white"
-            readOnly
-            type="text"
-            id="exampleFormControlInput1"
-            defaultValue={member.officeOfRegionalAccountant}
-          />
-        </CCol>
-        <CCol className="mb-3" md={4}>
-           <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">
-            Pay Sheet No
-          </CFormLabel>
-          <CFormInput
-            className="bg-white"
-            readOnly
-            type="text"
-            id="exampleFormControlInput1"
-            defaultValue={member.paySheetNo}
-          />
-        </CCol>
-        <CCol className="mb-3" md={4}>
-           <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">
-            Employee ID
-          </CFormLabel>
-          <CFormInput
-            className="bg-white"
-            readOnly
-            type="text"
-            id="exampleFormControlInput1"
-            defaultValue={member.employeeId}
-          />
-        </CCol>
-        <CCol className="mb-3" md={4}>
-          <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">
-            Office of the DPMG
-          </CFormLabel>
-          <CFormInput
-            className="bg-white"
-            readOnly
-            type="text"
-            id="exampleFormControlInput1"
-            defaultValue={member.officeOfDPMG}
-          />
-        </CCol>
+        <CustomCFormInputGroup
+          label="Title"
+          name="title"
+          value={member.title}
+          uppercase={true}
+          readOnly={true}
+          required={false}
+        />
+        <CustomCFormInputGroup
+          label="Grade"
+          name="grade"
+          value={member.grade}
+          readOnly={true}
+          required={false}
+          uppercase={true}
+          mdSize={6}
+        />
+        <CustomCFormInputGroup
+          label="Date of Appointment"
+          name="dateOfAppointment"
+          value={member.dateOfAppointment}
+          readOnly={true}
+          required={false}
+          uppercase={true}
+          mdSize={6}
+        />
+        <CustomCFormInputGroup
+          label="Permanent WOrk Station"
+          name="permanentWorkStation"
+          value={member.permanentWorkStation}
+          readOnly={true}
+          required={false}
+          uppercase={true}
+          mdSize={6}
+        />
+        <CustomCFormInputGroup
+          label="Present Work Station"
+          name="prsentWorkStation"
+          value={member.presentWorkStation}
+          readOnly={true}
+          required={false}
+          uppercase={true}
+          mdSize={6}
+        />
+        <CustomCFormInputGroup
+          label="Date of Pension"
+          name="dateOfPension"
+          value={member.dateOfPension}
+          readOnly={true}
+          required={false}
+          uppercase={true}
+          mdSize={6}
+        />
+        <CustomCFormInputGroup
+          label="Office of the Regional Accountant"
+          name="officeOfRegionalAccountant"
+          value={member.officeOfRegionalAccountant}
+          readOnly={true}
+          required={false}
+          uppercase={true}
+          mdSize={6}
+        />
+        <CustomCFormInputGroup
+          label="Pay Sheet No"
+          name="paySheetNo"
+          value={member.paySheetNo}
+          readOnly={true}
+          required={false}
+          uppercase={true}
+          mdSize={4}
+        />
+        <CustomCFormInputGroup
+          label="Employee ID"
+          name="employeeId"
+          value={member.employeeId}
+          readOnly={true}
+          required={false}
+          uppercase={true}
+          mdSize={4}
+        />
+        <CustomCFormInputGroup
+          label="Office of the DPMG"
+          name="officeOfDPMG"
+          value={member.officeOfDPMG}
+          readOnly={true}
+          required={false}
+          uppercase={true}
+          mdSize={4}
+        />
       </div>
     </>
   );

@@ -1,86 +1,127 @@
 import React from "react";
 
 import {
-  CForm,
-  CFormInput,
-  CFormLabel,
-  CFormTextarea,
-  CBadge,
   CTableHeaderCell,
   CTable,
   CTableBody,
   CTableDataCell,
   CTableHead,
-  CTableHeader,
   CTableRow,
-  CCol,
+  CButton,
 } from "@coreui/react";
 
-const MemberDetailsSection = ({ member }) => {
+import {
+  CustomCFormAddInputGroup,
+  CustomCFormInputGroup,
+  CustomCFormSelectGroup,
+} from "src/components/common/CustomCInputGroup";
+
+const MemberDetailsSection = ({
+  formData,
+  formErrors,
+  handleChange,
+  handleAddBtnPressed,
+  handleChildRemoveBtnPressed,
+}) => {
   return (
     <>
       <h1 className="text-xl font-semibold mb-3">Member Details</h1>
       <div className="row g-3">
-        <CCol className="mb-3" md={4}>
-          <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">
-            Membership Number
-          </CFormLabel>
-          <CFormInput
-            className="bg-white border-bottom"
-            type="text"
-            id="exampleFormControlInput1"
-          />
-        </CCol>
-        <CCol className="mb-3" md={4}>
-          <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">
-            Date of Membership
-          </CFormLabel>
-          <CFormInput
-            className="bg-white"
-            type="text"
-            id="exampleFormControlInput1"
-          />
-        </CCol>
-        <CCol className="mb-3" md={4}>
-          <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">
-            RDS Number
-          </CFormLabel>
-          <CFormInput
-            className="bg-white"
-            type="text"
-            id="exampleFormControlInput1"
-          />
-        </CCol>
-        <CCol className="mb-3" md={12}>
-          <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">
-            Are you a member of any other union?
-          </CFormLabel>
-          <CFormInput
-            className="bg-white"
-            type="text"
-            id="exampleFormControlInput1"
-          />
-        </CCol>
-        {member.memberOfOtherUnion === "Yes" && (
-          <CCol className="mb-3" md={12}>
-            <CFormLabel
-              htmlFor="exampleFormControlInput1"
-              className="uppercase"
-            >
-              Other Unions
-            </CFormLabel>
-          </CCol>
+        <CustomCFormInputGroup
+          label="Membership Number"
+          name="membershipNo"
+          value={formData.membershipNo}
+          onChange={handleChange}
+          error={formErrors.membershipNo}
+          uppercase={true}
+          mdSize={4}
+        />
+        <CustomCFormInputGroup
+          label="Date of Membership"
+          name="dateOfMembership"
+          value={formData.dateOfMembership}
+          onChange={handleChange}
+          error={formErrors.dateOfMembership}
+          uppercase={true}
+          mdSize={4}
+        />
+        <CustomCFormInputGroup
+          label="RDS Number"
+          name="RDSNumber"
+          value={formData.RDSNumber}
+          onChange={handleChange}
+          error={formErrors.RDSNumber}
+          uppercase={true}
+          mdSize={4}
+        />
+        <CustomCFormSelectGroup
+          label="Are you a member of any other union?"
+          name="memberOfOtherUnion"
+          value={formData.memberOfOtherUnion}
+          onChange={handleChange}
+          error={formErrors.memberOfOtherUnion}
+          uppercase={true}
+          mdSize={6}
+          options={[
+            { value: "Yes", label: "Yes" },
+            { value: "No", label: "No" },
+          ]}
+        />
+        <CustomCFormAddInputGroup
+          label="Other Union Names"
+          name="unionName"
+          value={formData.unionName}
+          onChange={handleChange}
+          error={formErrors.unionName}
+          uppercase={true}
+          onAddInputBtnPressed={(e) =>
+            handleAddBtnPressed({ e, tempFieldName: "unionName" })
+          }
+          addListName="otherUnions"
+          required={false}
+          addBtnLabel="Add Union Name"
+        />
+        {formData.otherUnions.length > 0 && (
+          <CTable>
+            <CTableHead>
+              <CTableRow>
+                <CTableHeaderCell scope="col">Name</CTableHeaderCell>
+                <CTableHeaderCell scope="col"></CTableHeaderCell>
+              </CTableRow>
+            </CTableHead>
+            <CTableBody>
+              {formData["otherUnions"].map((child, index) => (
+                <CTableRow key={index}>
+                  <CTableDataCell>{child.name}</CTableDataCell>
+                  <CTableDataCell>
+                    <CButton
+                      color="danger"
+                      variant="ghost"
+                      name="childrenRemoveBtn"
+                      onClick={(_) =>
+                        handleChildRemoveBtnPressed({
+                          child,
+                          listName: "otherUnions",
+                        })
+                      }
+                    >
+                      Remove
+                    </CButton>
+                  </CTableDataCell>
+                </CTableRow>
+              ))}
+            </CTableBody>
+          </CTable>
         )}
-        <CCol className="mb-3" md={6}>
-          <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">
-            Name of the branch
-          </CFormLabel>
-          <CFormInput
-            className="bg-white"
-            type="text"
-            id="exampleFormControlInput1"
-          />
-        </CCol>
+        <CustomCFormInputGroup
+          label="Name of the branch"
+          name="branchName"
+          value={formData.branchName}
+          onChange={handleChange}
+          error={formErrors.branchName}
+          uppercase={true}
+          mdSize={6}
+        />
       </div>
     </>
   );

@@ -33,33 +33,23 @@ const AddMemberPage = () => {
   /**
    * Handle functions
    */
-  const handleNextBtn = (e) => {
-    // At the end of the form, submit the form
-    if (currentStep == stepComponents.length) {
-      e.preventDefault();
-      const { error, value } = schema.validate(formData, { abortEarly: false });
-      if (!error) {
-        //Add member logic
-        console.log("Form Data", formData);
-        // On success
-        toast.success("Successfull", {});
-        setCurrentStep(1);
-        setValue(initialValue);
-
-        // On error
-        // toast.error("Error", {});
-      } else {
-        console.log("Error", error);
-        const errors = {};
-        for (let item of error.details) {
-          errors[item.path[0]] = item.message;
-        }
-        setFormErrors(errors);
+  const handleNextBtn = async (e) => {
+    const { error, value } = schema.validate(formData, { abortEarly: false });
+    if (!error) {
+      // At the end of the form, submit the form
+      if (currentStep == stepComponents.length) {
+        e.preventDefault();
+        await submit();
+        return;
       }
-
-      return;
+      setCurrentStep(currentStep + 1);
+    } else {
+      const errors = {};
+      for (let item of error.details) {
+        errors[item.path[0]] = item.message;
+      }
+      setFormErrors(errors);
     }
-    setCurrentStep(currentStep + 1);
   };
 
   const handlePreviousBtn = () => {
@@ -76,6 +66,41 @@ const AddMemberPage = () => {
     }
   };
 
+  // Handle add button pressed
+  const handleAddBtnPressed = ({ e, tempFieldName }) => {
+    if (!formData[tempFieldName]) {
+      return;
+    }
+    const { name } = e.target;
+    console.log("name", name);
+    setFormData({
+      ...formData,
+      [name]: [...formData[name], { name: formData[tempFieldName] }],
+    });
+  };
+
+  // Handle child remove button from list
+  const handleChildRemoveBtnPressed = ({ child, listName }) => {
+    const listTemp = formData[listName].filter(
+      (item) => item.name !== child.name
+    );
+    setFormData({ ...formData, [listName]: listTemp });
+  };
+
+  // Submit function
+  const submit = async () => {
+    //Add member logic
+    const { childName, unionName, ...submitData } = formData;
+    console.log("Submit Data", submitData);
+    // On success
+    toast.success("Successfull", {});
+    setCurrentStep(1);
+    setValue(initialValue);
+
+    // On error
+    // toast.error("Error", {});
+  };
+
   /**
    * Stepper
    */
@@ -85,24 +110,26 @@ const AddMemberPage = () => {
       formData={formData}
       formErrors={formErrors}
     />,
-    // <FamilyDetailsSection
-    //   member={member}
-    //   handleChange={handleChange}
-    //   formData={formData}
-    //   formErrors={formErrors}
-    // />,
-    // <DepartmentDetailsSection
-    //   member={member}
-    //   handleChange={handleChange}
-    //   formData={formData}
-    //   formErrors={formErrors}
-    // />,
-    // <MemberDetailsSection
-    //   member={member}
-    //   handleChange={handleChange}
-    //   formData={formData}
-    //   formErrors={formErrors}
-    // />,
+    <FamilyDetailsSection
+      handleChange={handleChange}
+      formData={formData}
+      formErrors={formErrors}
+      handleAddBtnPressed={handleAddBtnPressed}
+      handleChildRemoveBtnPressed={handleChildRemoveBtnPressed}
+    />,
+    <DepartmentDetailsSection
+      member={member}
+      handleChange={handleChange}
+      formData={formData}
+      formErrors={formErrors}
+    />,
+    <MemberDetailsSection
+      handleChange={handleChange}
+      formData={formData}
+      formErrors={formErrors}
+      handleAddBtnPressed={handleAddBtnPressed}
+      handleChildRemoveBtnPressed={handleChildRemoveBtnPressed}
+    />,
   ];
 
   const returnStepComponent = (step) => {
@@ -131,7 +158,6 @@ export default AddMemberPage;
 
 const initialValue = {
   // personal details
-
   fullName: "",
   nameWithInitials: "",
   otherName: "",
@@ -149,35 +175,37 @@ const initialValue = {
   nominee: "",
   relationshipOfNominee: "",
 
-  // //Family details
-  // spouseName: "",
-  // children: [],
-  // fatherName: "",
-  // motherName: "",
-  // fatherInLawName: "",
-  // motherInLawName: "",
+  //Family details
+  spouseName: "",
+  children: [],
+  fatherName: "",
+  motherName: "",
+  fatherInLawName: "",
+  motherInLawName: "",
+  childName: "",
 
-  // // Department details
-  // title: "",
-  // grade: "",
-  // dateOfAppointment: "",
-  // permanentWorkStation: "",
-  // presentWorkStation: "",
-  // dateOfPension: "",
-  // officeOfRegionalAccountant: "",
-  // paySheetNo: "",
-  // employeeId: "",
-  // officeOfDPMG: "",
+  // Department details
+  title: "",
+  grade: "",
+  dateOfAppointment: "",
+  permanentWorkStation: "",
+  presentWorkStation: "",
+  dateOfPension: "",
+  officeOfRegionalAccountant: "",
+  paySheetNo: "",
+  employeeId: "",
+  officeOfDPMG: "",
 
-  // // Member details
-  // membershipNo: "",
-  // dateOfMembership: "",
-  // RDSNumber: "",
-  // memberOfOtherUnion: "",
-  // namesOfOtherUnions: [],
+  // Member details
+  membershipNo: "",
+  dateOfMembership: "",
+  RDSNumber: "",
+  memberOfOtherUnion: "",
+  otherUnions: [],
+  unionName: "",
 
-  // // Branch details
-  // branchName: "",
+  // Branch details
+  branchName: "",
 };
 
 // Joi validation schema
@@ -196,39 +224,56 @@ const schema = Joi.object({
     .optional()
     .label("Email Address"),
   mobileCN: Joi.string().length(10).regex(/^\d+$/).label("Mobile Number"),
-  officeCN: Joi.string().length(10).regex(/^\d+$/).optional().label("Office Number"),
-  homeCN: Joi.string().length(10).regex(/^\d+$/).optional().label("Home Number"),
+  officeCN: Joi.string()
+    .length(10)
+    .regex(/^\d+$/)
+    .optional()
+    .label("Office Number"),
+  homeCN: Joi.string()
+    .length(10)
+    .regex(/^\d+$/)
+    .optional()
+    .label("Home Number"),
   civilStatus: Joi.string().label("Civil Status"),
   nominee: Joi.string().label("Nominee"),
   relationshipOfNominee: Joi.string().label("Relationship of Nominee"),
 
-  // //Family details
-  // spouseName: Joi.string(),
-  // children: Joi.any(),
-  // fatherName: Joi.string(),
-  // motherName: Joi.string(),
-  // fatherInLawName: Joi.string(),
-  // motherInLawName: Joi.string(),
+  //Family details
+  spouseName: Joi.any().optional().label("Spouse Name"),
+  children: Joi.any().optional().label("Children"),
+  fatherName: Joi.any().optional().label("Father Name"),
+  motherName: Joi.any().optional().label("Mother Name"),
+  fatherInLawName: Joi.any().optional().label("Father In Law Name"),
+  motherInLawName: Joi.any().optional().label("Mother In Law Name"),
+  childName: Joi.any().optional().label("Child Name"),
 
-  // // Department details
-  // title: Joi.string(),
-  // grade: Joi.string(),
-  // dateOfAppointment: Joi.string(),
-  // permanentWorkStation: Joi.string(),
-  // presentWorkStation: Joi.string(),
-  // dateOfPension: Joi.string(),
-  // officeOfRegionalAccountant: Joi.string(),
-  // paySheetNo: Joi.string(),
-  // employeeId: Joi.string(),
-  // officeOfDPMG: Joi.string(),
+  // Department details
+  title: Joi.string().required().label("Title"),
+  grade: Joi.string().required().label("Grade"),
+  dateOfAppointment: Joi.date()
+    .less("now")
+    .required()
+    .label("Date of Appointment"),
+  permanentWorkStation: Joi.string().required().label("Permanent Work Station"),
+  presentWorkStation: Joi.string().required().label("Present Work Station"),
+  dateOfPension: Joi.string().required().label("Date of Pension"),
+  officeOfRegionalAccountant: Joi.string()
+    .required()
+    .label("Office of the Regional Accountant"),
+  paySheetNo: Joi.string().required().label("Pay Sheet No"),
+  employeeId: Joi.string().required().label("Employee Id"),
+  officeOfDPMG: Joi.string().required().label("Office of the DPMG"),
 
-  // // Member details
-  // membershipNo: Joi.string(),
-  // dateOfMembership: Joi.string(),
-  // RDSNumber: Joi.string(),
-  // memberOfOtherUnion: Joi.string(),
-  // namesOfOtherUnions: Joi.any(),
+  // Member details
+  membershipNo: Joi.string().required().label("Membership Number"),
+  dateOfMembership: Joi.string().required().label("Date of Membership"),
+  RDSNumber: Joi.string().required().label("RDS Number"),
+  memberOfOtherUnion: Joi.string()
+    .allow("Yes", "No")
+    .label("Member of Other Union"),
+  otherUnions: Joi.any().optional().label("Other Unions"),
+  unionName: Joi.string().required().label("Union Name"),
 
-  // // Branch details
-  // branchName: Joi.string(),
+  // Branch details
+  branchName: Joi.string(),
 });

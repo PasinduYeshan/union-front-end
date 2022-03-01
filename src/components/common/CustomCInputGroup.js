@@ -7,6 +7,8 @@ import {
   CFormTextarea,
   CCol,
   CFormSelect,
+  CInputGroup,
+  CButton,
 } from "@coreui/react";
 
 import CIcon from "@coreui/icons-react";
@@ -67,6 +69,9 @@ export function CustomCFormAddInputGroup({
   required = true,
   multiple = true,
   uppercase = false,
+  onAddInputBtnPressed,
+  addListName,
+  addBtnLabel = "Add",
 }) {
   return (
     <>
@@ -90,13 +95,15 @@ export function CustomCFormAddInputGroup({
             aria-describedby="button-addon2"
           />
           <CButton
+            name={addListName}
             type="button"
             color="secondary"
             variant="outline"
             id="button-addon2"
+            onClick={onAddInputBtnPressed}
           >
-            <CIcon icon={cilPlus} size="md" />
-            Add
+            {/* <CIcon icon={cilPlus} size="sm" className="mx-1"/> */}
+            {addBtnLabel}
           </CButton>
         </CInputGroup>
         <CFormFeedback invalid>{error}</CFormFeedback>
@@ -207,6 +214,7 @@ export function CustomCFormSelectGroup({
           value={value}
           onChange={onChange}
           aria-label="Default select example"
+          invalid={error ? true : false}
         >
           <option>Open this select menu</option>
           {options.map((option, index) => (

@@ -1,126 +1,102 @@
 import React from "react";
 
-import {
-  CForm,
-  CFormInput,
-  CFormLabel,
-  CFormTextarea,
-  CBadge,
-  CTableHeaderCell,
-  CTable,
-  CTableBody,
-  CTableDataCell,
-  CTableHead,
-  CTableHeader,
-  CTableRow,
-  CCol,
-} from "@coreui/react";
+import { CustomCFormInputGroup } from "src/components/common/CustomCInputGroup";
 
-const DepartmentDetailsSection = ({ member }) => {
+const DepartmentDetailsSection = ({ formData, formErrors, handleChange }) => {
   return (
     <>
       <h1 className="text-xl font-semibold mb-3">Departmental Details</h1>
       <div className="row g-3">
-        <CCol className="mb-3" xs={12}>
-          <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">
-            Title
-          </CFormLabel>
-          <CFormInput
-            className="bg-white border-bottom"
-            type="text"
-            id="exampleFormControlInput1"
-          />
-        </CCol>
-        <CCol className="mb-3" xs={12}>
-          <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">
-            Grade
-          </CFormLabel>
-          <CFormInput
-            className="bg-white"
-            type="text"
-            id="exampleFormControlInput1"
-          />
-        </CCol>
-        <CCol className="mb-3" xs={12}>
-          <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">
-            Date of Appointment
-          </CFormLabel>
-          <CFormInput
-            className="bg-white"
-            type="text"
-            id="exampleFormControlInput1"
-          />
-        </CCol>
-        <CCol className="mb-3" md={6}>
-          <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">
-            Permanent Work Station
-          </CFormLabel>
-          <CFormInput
-            className="bg-white"
-            type="text"
-            id="exampleFormControlInput1"
-          />
-        </CCol>
-        <CCol className="mb-3" md={6}>
-          <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">
-            Present Work Station
-          </CFormLabel>
-          <CFormInput
-            className="bg-white"
-            type="text"
-            id="exampleFormControlInput1"
-          />
-        </CCol>
-        <CCol className="mb-3" md={6}>
-          <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">
-            Date of Pension
-          </CFormLabel>
-          <CFormInput
-            className="bg-white"
-            type="text"
-            id="exampleFormControlInput1"
-          />
-        </CCol>
-        <CCol className="mb-3" md={6}>
-          <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">
-            Office of the Regional Accountant
-          </CFormLabel>
-          <CFormInput
-            className="bg-white"
-            type="text"
-            id="exampleFormControlInput1"
-          />
-        </CCol>
-        <CCol className="mb-3" md={4}>
-          <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">
-            Pay Sheet No
-          </CFormLabel>
-          <CFormInput
-            className="bg-white"
-            type="text"
-            id="exampleFormControlInput1"
-          />
-        </CCol>
-        <CCol className="mb-3" md={4}>
-          <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">
-            Employee ID
-          </CFormLabel>
-          <CFormInput
-            className="bg-white"
-            type="text"
-            id="exampleFormControlInput1"
-          />
-        </CCol>
-        <CCol className="mb-3" md={4}>
-          <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">
-            Office of the DPMG
-          </CFormLabel>
-          <CFormInput
-            className="bg-white"
-            type="text"
-            id="exampleFormControlInput1"
-          />
-        </CCol>
+        <CustomCFormInputGroup
+          label="Title"
+          name="title"
+          value={formData.title}
+          onChange={handleChange}
+          error={formErrors.title}
+          uppercase={true}
+        />
+        <CustomCFormInputGroup
+          label="Grade"
+          name="grade"
+          value={formData.grade}
+          onChange={handleChange}
+          error={formErrors.grade}
+          uppercase={true}
+          mdSize={6}
+        />
+        <CustomCFormInputGroup
+          label="Date of Appointment"
+          name="dateOfAppointment"
+          value={formData.dateOfAppointment}
+          onChange={handleChange}
+          error={formErrors.dateOfAppointment}
+          uppercase={true}
+          mdSize={6}
+          type="date"
+        />
+        <CustomCFormInputGroup
+          label="Permanent WOrk Station"
+          name="permanentWorkStation"
+          value={formData.permanentWorkStation}
+          onChange={handleChange}
+          error={formErrors.permanentWorkStation}
+          uppercase={true}
+          mdSize={6}
+        />
+        <CustomCFormInputGroup
+          label="Present Work Station"
+          name="presentWorkStation"
+          value={formData.presentWorkStation}
+          onChange={handleChange}
+          error={formErrors.presentWorkStation}
+          uppercase={true}
+          mdSize={6}
+        />
+        <CustomCFormInputGroup
+          label="Date of Pension"
+          name="dateOfPension"
+          value={formData.dateOfPension}
+          onChange={handleChange}
+          error={formErrors.dateOfPension}
+          uppercase={true}
+          mdSize={6}
+        />
+        <CustomCFormInputGroup
+          label="Office of the Regional Accountant"
+          name="officeOfRegionalAccountant"
+          value={formData.officeOfRegionalAccountant}
+          onChange={handleChange}
+          error={formErrors.officeOfRegionalAccountant}
+          uppercase={true}
+          mdSize={6}
+        />
+        <CustomCFormInputGroup
+          label="Pay Sheet No"
+          name="paySheetNo"
+          value={formData.paySheetNo}
+          onChange={handleChange}
+          error={formErrors.paySheetNo}
+          uppercase={true}
+          mdSize={4}
+        />
+        <CustomCFormInputGroup
+          label="Employee ID"
+          name="employeeId"
+          value={formData.employeeId}
+          onChange={handleChange}
+          error={formErrors.employeeId}
+          uppercase={true}
+          mdSize={4}
+        />
+        <CustomCFormInputGroup
+          label="Office of the DPMG"
+          name="officeOfDPMG"
+          value={formData.officeOfDPMG}
+          onChange={handleChange}
+          error={formErrors.officeOfDPMG}
+          uppercase={true}
+          mdSize={4}
+        />
       </div>
     </>
   );

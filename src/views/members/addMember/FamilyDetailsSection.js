@@ -1,103 +1,124 @@
 import React from "react";
 
 import {
-  CForm,
-  CFormInput,
-  CFormLabel,
-  CFormTextarea,
-  CBadge,
   CTableHeaderCell,
   CTable,
   CTableBody,
   CTableDataCell,
   CTableHead,
-  CTableHeader,
   CTableRow,
-  CCol,
+  CButton,
 } from "@coreui/react";
 
-const FamilyDetailsSection = ({ member }) => {
+import {
+  CustomCFormAddInputGroup,
+  CustomCFormInputGroup,
+} from "src/components/common/CustomCInputGroup";
+
+const FamilyDetailsSection = ({
+  formData,
+  handleChange,
+  formErrors,
+  handleAddBtnPressed,
+  handleChildRemoveBtnPressed,
+}) => {
   return (
     <>
       <h1 className="text-xl font-semibold mb-3">Family Details</h1>
       <div className="row g-3">
-        <CCol className="mb-3" xs={12}>
-          <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">
-            Spouse's Name
-          </CFormLabel>
-          <CFormInput
-            className="bg-white border-bottom"
-            type="text"
-            id="exampleFormControlInput1"
-          />
-        </CCol>
-        <CCol className="mb-3" xs={12}>
-          <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">
-            Children's Details
-          </CFormLabel>
-          {/* <CFormInput
-            className="bg-white"
-            type="text"
-            id="exampleFormControlInput1"
-            
-          /> */}
-          {/* <CTable>
+        <CustomCFormInputGroup
+          label="Spouse's Name"
+          name="spouseName"
+          value={formData.spouseName}
+          onChange={handleChange}
+          error={formErrors.spouseName}
+          uppercase={true}
+          required={false}
+        />
+        <CustomCFormAddInputGroup
+          label="Children's Name"
+          name="childName"
+          value={formData.childName}
+          onChange={handleChange}
+          error={formErrors.childName}
+          uppercase={true}
+          onAddInputBtnPressed={(e) =>
+            handleAddBtnPressed({ e, tempFieldName: "childName" })
+          }
+          addListName="children"
+          required={false}
+        />
+        {formData.children.length > 0 && (
+          <CTable>
             <CTableHead>
               <CTableRow>
                 <CTableHeaderCell scope="col">Name</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Date of Birth</CTableHeaderCell>
+                <CTableHeaderCell scope="col"></CTableHeaderCell>
               </CTableRow>
             </CTableHead>
             <CTableBody>
-              {member.children.map((child, index) => (
+              {formData["children"].map((child, index) => (
                 <CTableRow key={index}>
                   <CTableDataCell>{child.name}</CTableDataCell>
-                  <CTableDataCell>{child.dob}</CTableDataCell>
+                  <CTableDataCell>
+                    <CButton
+                      color="danger"
+                      variant="ghost"
+                      name="childrenRemoveBtn"
+                      onClick={(_) =>
+                        handleChildRemoveBtnPressed({
+                          child,
+                          listName: "children",
+                        })
+                      }
+                    >
+                      Remove
+                    </CButton>
+                  </CTableDataCell>
                 </CTableRow>
               ))}
             </CTableBody>
-          </CTable> */}
-        </CCol>
-        <CCol className="mb-3" xs={12}>
-          <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">
-            Father's Name
-          </CFormLabel>
-          <CFormInput
-            className="bg-white"
-            type="text"
-            id="exampleFormControlInput1"
-          />
-        </CCol>
-        <CCol className="mb-3" xs={12}>
-          <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">
-            Mother's Name
-          </CFormLabel>
-          <CFormInput
-            className="bg-white"
-            type="text"
-            id="exampleFormControlInput1"
-          />
-        </CCol>
-        <CCol className="mb-3" md={6}>
-          <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">
-            Father in Law's Name
-          </CFormLabel>
-          <CFormInput
-            className="bg-white"
-            type="text"
-            id="exampleFormControlInput1"
-          />
-        </CCol>
-        <CCol className="mb-3" md={6}>
-          <CFormLabel htmlFor="exampleFormControlInput1" className="uppercase">
-            Mother in Law's Name
-          </CFormLabel>
-          <CFormInput
-            className="bg-white"
-            type="text"
-            id="exampleFormControlInput1"
-          />
-        </CCol>
+          </CTable>
+        )}
+
+        <CustomCFormInputGroup
+          label="Father's Name"
+          name="fatherName"
+          value={formData.fatherName}
+          onChange={handleChange}
+          error={formErrors.fatherName}
+          uppercase={true}
+          required={false}
+        />
+        <CustomCFormInputGroup
+          label="Mother's Name"
+          name="motherName"
+          value={formData.motherName}
+          onChange={handleChange}
+          error={formErrors.motherName}
+          uppercase={true}
+          required={false}
+        />
+        <CustomCFormInputGroup
+          label="Father in Law's Name"
+          name="fatherInLawName"
+          value={formData.fatherInLawName}
+          onChange={handleChange}
+          error={formErrors.fatherInLawName}
+          uppercase={true}
+          mdSize={6}
+          required={false}
+        />
+        <CustomCFormInputGroup
+          label="Mother in Law's Name"
+          name="motherInLawName"
+          value={formData.motherInLawName}
+          onChange={handleChange}
+          error={formErrors.motherInLawName}
+          uppercase={true}
+          mdSize={6}
+          required={false}
+        />
       </div>
     </>
   );

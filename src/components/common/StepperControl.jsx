@@ -30,7 +30,7 @@ const StepperControl = ({
           <CButton
             color="primary"
             variant="outline"
-            onClick={handleNextBtn}
+            onClick={async (e) => handleNextBtn(e)}
             disabled={currentStep >= maxSteps ? true : false}
           >
             Next
