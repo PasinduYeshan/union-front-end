@@ -54,7 +54,6 @@ const IssueTable = () => {
     }
     return items;
   };
-
   return (
     <>
       <div className="shadow border-b border-gray-200 sm:rounded-lg bg-white p-4 mb-5">
@@ -62,6 +61,7 @@ const IssueTable = () => {
           <CTableHead>
             <CTableRow>
               <CTableHeaderCell scope="col">Title</CTableHeaderCell>
+              <CTableHeaderCell scope="col">Branch Name</CTableHeaderCell>
               <CTableHeaderCell scope="col">Name</CTableHeaderCell>
               <CTableHeaderCell scope="col">Issue Date</CTableHeaderCell>
               <CTableHeaderCell scope="col">Status</CTableHeaderCell>
@@ -72,6 +72,7 @@ const IssueTable = () => {
             {issues.map((issue, index) => (
               <CTableRow key={index}>
                 <CTableDataCell>{issue.title}</CTableDataCell>
+                <CTableDataCell>{issue.branchName}</CTableDataCell>
                 <CTableDataCell>{issue.name}</CTableDataCell>
                 <CTableDataCell>{issue.issueDate}</CTableDataCell>
                 <CTableDataCell>
@@ -131,111 +132,47 @@ export default IssueTable;
 
 const issues = [
   {
-    issueId: "ksdfjklsd3213",
+    issueId: "ksdfjklsd3223",
     title: "Salary Problem",
     name: "John Doe",
+    branchName: "Horana",
     issueDate: "2020-01-01",
     status: "Open",
-    telephone : "07898989898",
+    contactNo: "07898989898",
     description: "Salary should be increased",
+    membershipNo: "123456789",
   },
   {
-    issueId: "ksdfjklsd3213",
-    title: "Salary Problem",
+    issueId: "ksdfjklsd3214",
+    title: "Government Problem",
     name: "John Doe",
+    branchName: "Horana",
     issueDate: "2020-01-01",
     status: "Open",
-    telephone : "07898989898",
+    contactNo: "07898989898",
     description: "Salary should be increased",
+    membershipNo: "123456789",
   },
   {
-    issueId: "ksdfjklsd3213",
+    issueId: "ksdfjklsd3215",
     title: "Salary Problem",
     name: "John Doe",
+    branchName: "Horana",
     issueDate: "2020-01-01",
     status: "Open",
-    telephone : "07898989898",
+    contactNo: "07898989898",
     description: "Salary should be increased",
+    membershipNo: "123456789",
   },
   {
-    issueId: "ksdfjklsd3213",
-    title: "Salary Problem",
+    issueId: "ksdfjklsd3216",
+    title: "Government Problem",
     name: "John Doe",
-    issueDate: "2020-01-01",
-    status: "Viewed",
-    telephone : "07898989898",
-    description: "Salary should be increased",
-  },
-  {
-    issueId: "ksdfjklsd3213",
-    title: "Salary Problem",
-    name: "John Doe",
+    branchName: "Horana",
     issueDate: "2020-01-01",
     status: "Open",
-    telephone : "07898989898",
+    contactNo: "07898989898",
     description: "Salary should be increased",
-  },
-  {
-    issueId: "ksdfjklsd3213",
-    title: "Salary Problem",
-    name: "John Doe",
-    issueDate: "2020-01-01",
-    status: "ActionTaken",
-    telephone : "07898989898",
-    description: "Salary should be increased",
-  },
-  {
-    issueId: "ksdfjklsd3213",
-    title: "Salary Problem",
-    name: "John Doe",
-    issueDate: "2020-01-01",
-    status: "ActionTaken",
-    telephone : "07898989898",
-    description: "Salary should be increased",
-  },
-  {
-    issueId: "ksdfjklsd3213",
-    title: "Salary Problem",
-    name: "John Doe",
-    issueDate: "2020-01-01",
-    status: "ActionTaken",
-    telephone : "07898989898",
-    description: "Salary should be increased",
-  },
-  {
-    issueId: "ksdfjklsd3213",
-    title: "Salary Problem",
-    name: "John Doe",
-    issueDate: "2020-01-01",
-    status: "ActionTaken",
-    telephone : "07898989898",
-    description: "Salary should be increased",
-  },
-  {
-    issueId: "ksdfjklsd3213",
-    title: "Salary Problem",
-    name: "John Doe",
-    issueDate: "2020-01-01",
-    status: "ActionTaken",
-    telephone : "07898989898",
-    description: "Salary should be increased",
-  },
-  {
-    issueId: "ksdfjklsd3213",
-    title: "Salary Problem",
-    name: "John Doe",
-    issueDate: "2020-01-01",
-    status: "ActionTaken",
-    telephone : "07898989898",
-    description: "Salary should be increased",
-  },
-  {
-    issueId: "ksdfjklsd3213",
-    title: "Salary Problem",
-    name: "John Doe",
-    issueDate: "2020-01-01",
-    status: "ActionTaken",
-    telephone : "07898989898",
-    description: "Salary should be increased",
+    membershipNo: "123456789",
   },
 ];

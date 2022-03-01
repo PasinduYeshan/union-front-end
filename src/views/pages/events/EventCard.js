@@ -27,8 +27,14 @@ const EventCard = ({ event }) => {
             className="mySwiper !bg-transparent"
           >
             {event.images.map((image, index) => (
-              <SwiperSlide className=" !h-64 !bg-transparent px-0 sm:px-2">
-                <img src={getImageFromBucket(image)} className="w-full h-full object-cover bg-transparent" />
+              <SwiperSlide
+                key={index}
+                className=" !h-64 !bg-transparent px-0 sm:px-2"
+              >
+                <img
+                  src={getImageFromBucket(image)}
+                  className="w-full h-full object-cover bg-transparent"
+                />
               </SwiperSlide>
             ))}
           </Swiper>

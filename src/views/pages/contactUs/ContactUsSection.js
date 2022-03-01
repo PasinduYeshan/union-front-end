@@ -21,7 +21,7 @@ const ContactUsSection = () => {
     membershipNo: Joi.string().required().label("Membership No"),
     contactNo: Joi.string().required().label("Contact No"),
     branchName: Joi.string().required().label("Branch Name"),
-    issue: Joi.string().min(10).required().label("Issue"),
+    description: Joi.string().min(10).required().label("Issue"),
     images: Joi.any(),
   });
 
@@ -109,10 +109,10 @@ const ContactUsSection = () => {
                 />
                 <CustomCFormTextAreaGroup
                   label="Issue"
-                  name="issue"
-                  value={formData.issue}
+                  name="description"
+                  value={formData.description}
                   onChange={handleChange}
-                  error={formErrors.issue}
+                  error={formErrors.description}
                 />
                 <CustomCFormFilesGroup
                   label="Images"
@@ -153,7 +153,7 @@ const initialValue = {
   name: "",
   membershipNo: "",
   contactNo: "",
-  issue: "",
+  description: "",
   branchName: "",
   images: [],
 };
