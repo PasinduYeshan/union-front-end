@@ -32,3 +32,13 @@ export function saveImg(urlArr) {
     }
   })();
 }
+
+// Delete keys from object where value is emplty
+export function deleteEmptyKeys(obj) {
+  for (let key in obj) {
+    if (obj[key] === "") {
+      delete obj[key];
+    }
+  }
+  return obj;
+}

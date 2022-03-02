@@ -27,8 +27,10 @@ const BSTableBody = ({ accounts }) => {
                 : ""}
             </CTableDataCell>
             <CTableDataCell>
-              <CBadge color={account.status ? "success" : "warning"}>
-                {account.status ? "Active" : "Inactive"}
+              <CBadge
+                color={account.status == "Active" ? "success" : "warning"}
+              >
+                {account.status}
               </CBadge>
             </CTableDataCell>
             <CTableDataCell>
@@ -41,7 +43,7 @@ const BSTableBody = ({ accounts }) => {
                   )
                 }
               >
-                Edit
+                <span className="text-sm"> Edit</span>
               </CButton>
             </CTableDataCell>
           </CTableRow>

@@ -10,12 +10,19 @@ import {
   CPagination,
 } from "@coreui/react";
 
+const FilterTable = React.lazy(() => import("./FilterTable"));
+
 const AccountTable = ({
   maxPages,
   pageNumber,
   setPageNumber,
   children,
   tableHeaderCells,
+  filterData,
+  filterErrors,
+  handleFilterChange,
+  handleFilterSubmit,
+  handleClearFilter,
 }) => {
   // Functions
   const handlePageChangePrevious = () => {
@@ -44,6 +51,13 @@ const AccountTable = ({
   return (
     <>
       <div className="shadow border-b border-gray-200 sm:rounded-lg bg-white p-4 mb-5">
+        <FilterTable
+          filterData={filterData}
+          filterErrors={filterErrors}
+          handleFilterChange={handleFilterChange}
+          handleFilterSubmit={handleFilterSubmit}
+          handleClearFilter={handleClearFilter}
+        />
         <CTable>
           <CTableHead>
             <CTableRow>

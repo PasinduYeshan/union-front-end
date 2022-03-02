@@ -3,8 +3,43 @@ import React, { useState } from "react";
 const AccountTable = React.lazy(() => import("../AccountTable"));
 const BSTableBody = React.lazy(() => import("./BSTableBody"));
 
+import { deleteEmptyKeys } from "src/utils/function";
+
 const BSAccountsPage = () => {
   const [bsAccounts, setBsAccounts] = useState(bsAccountsData);
+  const [filteredBSAccounts, setFilteredBSAccounts] = useState(bsAccounts);
+  // Handle filter
+  const [filterData, setFilterData] = useState({
+    branchName: "",
+    status: "",
+  });
+  const [filterErrors, setFilterErrors] = useState({});
+
+  // From store
+  const branchSecrataryAccounts = bsAccountsData;
+
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+    setFilterData({ ...filterData, [name]: value });
+  };
+
+  const handleFilterSubmit = (e) => {
+    e.preventDefault();
+    const filters = deleteEmptyKeys(filterData);
+    const filteredAccounts = branchSecrataryAccounts.filter((account) => {
+      for (let key in filters) {
+        console.log(key, filters[key]);
+        if (filters[key] != account[key]) return false;
+      }
+      return true;
+    });
+    setFilteredBSAccounts(filteredAccounts);
+  };
+
+  const handleClearFilter = () => {
+    setFilterData({});
+    setFilteredBSAccounts(bsAccounts);
+  };
 
   // Handle pagination
   const maxPages = 1;
@@ -22,13 +57,18 @@ const BSAccountsPage = () => {
   return (
     <>
       <AccountTable
-        accounts={bsAccounts}
+        accounts={filteredBSAccounts}
         maxPages={maxPages}
         pageNumber={pageNumber}
         setPageNumber={setPageNumber}
         tableHeaderCells={tableHeaderCells}
+        filterData={filterData}
+        filterErrors={filterErrors}
+        handleFilterChange={handleFilterChange}
+        handleFilterSubmit={handleFilterSubmit}
+        handleClearFilter={handleClearFilter}
       >
-        <BSTableBody accounts={bsAccounts} />
+        <BSTableBody accounts={filteredBSAccounts} />
       </AccountTable>
     </>
   );
@@ -44,7 +84,7 @@ const bsAccountsData = [
     email: "john@gmail.com",
     contactNo: "07898989898",
     branchName: "Horana",
-    status: true,
+    status: "Active",
     NIC: "123456789",
     accountType: "bsEditor",
   },
@@ -55,7 +95,7 @@ const bsAccountsData = [
     email: "john@gmail.com",
     contactNo: "07898989898",
     branchName: "Horana",
-    status: true,
+    status: "Active",
     NIC: "123456789",
     accountType: "bsEditor",
   },
@@ -66,7 +106,7 @@ const bsAccountsData = [
     email: "john@gmail.com",
     contactNo: "07898989898",
     branchName: "Horana",
-    status: false,
+    status: "Inactive",
     NIC: "123456789",
     accountType: "bsViewer",
   },

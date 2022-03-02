@@ -28,6 +28,7 @@ export function CustomCFormInputGroup({
   required = true,
   multiple = true,
   uppercase = false,
+  inputClassName = "",
 }) {
   return (
     <>
@@ -38,7 +39,7 @@ export function CustomCFormInputGroup({
         >{`${label}${required ? "*" : ""}`}</CFormLabel>
         <CFormInput
           type={type}
-          className="!bg-white"
+          className={`!bg-white ${inputClassName}`}
           readOnly={readOnly}
           id={name}
           name={name}
@@ -69,6 +70,7 @@ export function CustomCFormAddInputGroup({
   required = true,
   multiple = true,
   uppercase = false,
+  inputClassName = "",
   onAddInputBtnPressed,
   addListName,
   addBtnLabel = "Add",
@@ -83,7 +85,7 @@ export function CustomCFormAddInputGroup({
         <CInputGroup>
           <CFormInput
             type={type}
-            className="!bg-white"
+            className={`!bg-white ${inputClassName}`}
             readOnly={readOnly}
             id={name}
             name={name}
@@ -124,6 +126,7 @@ export function CustomCFormTextAreaGroup({
   type = "text",
   required = true,
   uppercase = false,
+  inputClassName = "",
 }) {
   return (
     <>
@@ -134,7 +137,7 @@ export function CustomCFormTextAreaGroup({
         >{`${label}${required ? "*" : ""}`}</CFormLabel>
         <CFormTextarea
           type={type}
-          className="!bg-white"
+          className={`!bg-white ${inputClassName}`}
           readOnly={readOnly}
           id={name}
           name={name}
@@ -164,6 +167,7 @@ export function CustomCFormFilesGroup({
   required = true,
   multiple = true,
   uppercase = false,
+  inputClassName = "",
 }) {
   return (
     <>
@@ -174,7 +178,7 @@ export function CustomCFormFilesGroup({
         >{`${label}${required ? "*" : ""}`}</CFormLabel>
         <CFormInput
           type={type}
-          className="!bg-white"
+          className={`!bg-white ${inputClassName}`}
           readOnly={readOnly}
           id={name}
           name={name}
@@ -199,6 +203,7 @@ export function CustomCFormSelectGroup({
   mdSize = 12,
   required = true,
   uppercase = false,
+  inputClassName = "",
   options,
   value,
   defaultValue,
@@ -211,6 +216,7 @@ export function CustomCFormSelectGroup({
           className={uppercase ? "uppercase" : ""}
         >{`${label}${required ? "*" : ""}`}</CFormLabel>
         <CFormSelect
+           className={`!bg-white ${inputClassName}`}
           name={name}
           defaultValue={defaultValue}
           onChange={onChange}
