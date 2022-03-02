@@ -15,8 +15,14 @@ const AddMemberPage = React.lazy(() =>
 );
 
 // Accounts related pages
+const AddBSUserAccountPage = React.lazy(() =>
+  import("./views/accounts/branch-secratary/AddBSUserAccountPage")
+);
 const BSAccountsPage = React.lazy(() =>
-  import("./views/accounts/BSAccountsPage")
+  import("./views/accounts/branch-secratary/BSAccountsListPage")
+);
+const BSUserAccountPage = React.lazy(() =>
+  import("./views/accounts/branch-secratary/BSUserAccountPage")
 );
 
 //Event related pages
@@ -65,6 +71,16 @@ const routes = [
     path: "/office/accounts/branch-secrataries",
     name: "Branch Secrataries",
     component: BSAccountsPage,
+  },
+  {
+    path: "/office/accounts/add-branch-secratary",
+    name: "Add Branh Secratary",
+    component: AddBSUserAccountPage,
+  },
+  {
+    path: "/office/accounts/branch-secratary/:userId",
+    name: "View Branch Secratary",
+    component: BSUserAccountPage,
   },
 ];
 

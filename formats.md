@@ -82,6 +82,7 @@ adminAccount = {
     NIC : "12389721847V"
     status : active
     contactNo : "237493432"
+    accountType
 }
 
 allOtherUsers = {
@@ -91,6 +92,8 @@ allOtherUsers = {
     email : "admin@gmail.com"
     NIC : "3487623846V"
     contactNo : "237493432"
+    branchName : ""
+    accountType
 }
 
 accountType = ["superAdmin", "admin", "bsEditor", "bsViewer","officer"]

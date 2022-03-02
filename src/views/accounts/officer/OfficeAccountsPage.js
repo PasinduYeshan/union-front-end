@@ -1,11 +1,23 @@
 import React, { useState } from "react";
 
-const AccountTable = React.lazy(() => import("./AccountTable"));
+const AccountTable = React.lazy(() => import("../AccountTable"));
+const BSTableBody = React.lazy(() => import("./OfficeTableBody"));
 
 const BSAccountsPage = () => {
+  const [bsAccounts, setBsAccounts] = useState(bsAccountsData);
+
   // Handle pagination
-    const maxPages = 1;
+  const maxPages = 1;
   const [pageNumber, setPageNumber] = useState(1);
+
+  const tableHeaderCells = [
+    "Branch Name",
+    "Name",
+    "Email",
+    "Access Level",
+    "Status",
+    "",
+  ];
 
   return (
     <>
@@ -14,14 +26,17 @@ const BSAccountsPage = () => {
         maxPages={maxPages}
         pageNumber={pageNumber}
         setPageNumber={setPageNumber}
-      />
+        tableHeaderCells={tableHeaderCells}
+      >
+        <BSTableBody accounts={bsAccounts} />
+      </AccountTable>
     </>
   );
 };
 
 export default BSAccountsPage;
 
-const bsAccounts = [
+const bsAccountsData = [
   {
     userId: "1wrewer",
     name: "John Doe",
@@ -31,6 +46,7 @@ const bsAccounts = [
     branchName: "Horana",
     status: true,
     NIC: "123456789",
+    accountType: "bsEditor",
   },
   {
     userId: "1wrewers",
@@ -41,6 +57,7 @@ const bsAccounts = [
     branchName: "Horana",
     status: true,
     NIC: "123456789",
+    accountType: "bsEditor",
   },
   {
     userId: "1wrewere",
@@ -51,5 +68,6 @@ const bsAccounts = [
     branchName: "Horana",
     status: false,
     NIC: "123456789",
+    accountType: "bsViewer",
   },
 ];

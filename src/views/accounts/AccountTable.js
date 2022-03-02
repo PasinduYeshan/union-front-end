@@ -2,39 +2,21 @@ import React, { lazy, useState } from "react";
 import { useHistory } from "react-router-dom";
 
 import {
-  CAvatar,
-  CButton,
-  CButtonGroup,
-  CCard,
-  CCardBody,
-  CCardFooter,
-  CCardHeader,
-  CCol,
-  CProgress,
-  CRow,
   CTable,
-  CTableBody,
-  CTableDataCell,
   CTableHead,
   CTableHeaderCell,
   CTableRow,
-  CBadge,
   CPaginationItem,
   CPagination,
 } from "@coreui/react";
 
 const AccountTable = ({
-  accounts,
-  itemPerPage,
   maxPages,
   pageNumber,
   setPageNumber,
+  children,
+  tableHeaderCells,
 }) => {
-  // State
-
-  // Hooks
-  const history = useHistory();
-
   // Functions
   const handlePageChangePrevious = () => {
     pageNumber == 1 ? 1 : setPageNumber(pageNumber - 1);
@@ -58,46 +40,21 @@ const AccountTable = ({
     }
     return items;
   };
+
   return (
     <>
       <div className="shadow border-b border-gray-200 sm:rounded-lg bg-white p-4 mb-5">
         <CTable>
           <CTableHead>
             <CTableRow>
-              <CTableHeaderCell scope="col">Username</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Branch Name</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Name</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Issue Date</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Status</CTableHeaderCell>
-              <CTableHeaderCell scope="col"></CTableHeaderCell>
+              {tableHeaderCells.map((cell, index) => (
+                <CTableHeaderCell key={index} scope="col">
+                  {cell}
+                </CTableHeaderCell>
+              ))}
             </CTableRow>
           </CTableHead>
-          <CTableBody>
-            {accounts.map((account, index) => (
-              <CTableRow key={index}>
-                <CTableDataCell>{account.username}</CTableDataCell>
-                <CTableDataCell>{account.branchName}</CTableDataCell>
-                <CTableDataCell>{account.name}</CTableDataCell>
-                <CTableDataCell>{account.email}</CTableDataCell>
-                <CTableDataCell>
-                  <CBadge color={account.status ? "success" : "warning"}>
-                    {account.status ? "Active" : "Inactive"}
-                  </CBadge>
-                </CTableDataCell>
-                <CTableDataCell>
-                  <CButton
-                    color="info"
-                    variant="outline"
-                    onClick={() =>
-                      history.push(`/office/accounts/${account.userId}`)
-                    }
-                  >
-                    Edit
-                  </CButton>
-                </CTableDataCell>
-              </CTableRow>
-            ))}
-          </CTableBody>
+          {children}
         </CTable>
         {maxPages != 1 && (
           <div className="flex justify-end">
