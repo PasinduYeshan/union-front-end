@@ -1,4 +1,5 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 
 import {
   CButton,
@@ -9,6 +10,7 @@ import {
 } from "@coreui/react";
 
 const BSTableBody = ({ accounts }) => {
+  const history = useHistory();
   return (
     <>
       <CTableBody>
@@ -34,7 +36,9 @@ const BSTableBody = ({ accounts }) => {
                 color="info"
                 variant="outline"
                 onClick={() =>
-                  history.push(`/office/accounts/${account.userId}`)
+                  history.push(
+                    `/office/accounts/branch-secratary/${account.userId}`
+                  )
                 }
               >
                 Edit

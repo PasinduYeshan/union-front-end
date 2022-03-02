@@ -73,10 +73,16 @@ const routes = [
     component: BSAccountsPage,
   },
   {
-    path: "/office/accounts/add-branch-secratary",
+    path: "/office/accounts/branch-secratary",
+    name: "Branch Secratary",
+    exact: true,
+  },
+  {
+    path: "/office/accounts/branch-secratary/add",
     name: "Add Branh Secratary",
     component: AddBSUserAccountPage,
   },
+
   {
     path: "/office/accounts/branch-secratary/:userId",
     name: "View Branch Secratary",

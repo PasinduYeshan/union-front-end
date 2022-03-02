@@ -9,7 +9,7 @@ import {
 
 import { CButton } from "@coreui/react";
 
-const BSUserAccountPage = () => {
+const AddBSUserAccountPage = () => {
   const [formData, setFormData] = useState(initialValue);
   const [formErrors, setFormErrors] = useState({});
 
@@ -143,7 +143,12 @@ const BSUserAccountPage = () => {
           />
         </div>
         <div className="grid justify-end">
-          <CButton color="primary" variant="outline" className="mr-2">
+          <CButton
+            color="primary"
+            variant="outline"
+            className="mr-2"
+            onClick={handleSubmit}
+          >
             {" "}
             Submit{" "}
           </CButton>
@@ -153,7 +158,7 @@ const BSUserAccountPage = () => {
   );
 };
 
-export default BSUserAccountPage;
+export default AddBSUserAccountPage;
 
 const initialValue = {
   userName: "",

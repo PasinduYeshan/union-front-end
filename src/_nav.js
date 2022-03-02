@@ -53,7 +53,7 @@ const _nav = [
   {
     component: CNavItem,
     name: "Add Branch Secratary",
-    to: "/office/accounts/add-branch-secratary",
+    to: "/office/accounts/branch-secratary/add",
     icon: <CIcon icon={cilUserPlus} customClassName="nav-icon" />,
   },
   {

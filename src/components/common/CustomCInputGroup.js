@@ -201,6 +201,7 @@ export function CustomCFormSelectGroup({
   uppercase = false,
   options,
   value,
+  defaultValue,
 }) {
   return (
     <>
@@ -211,7 +212,7 @@ export function CustomCFormSelectGroup({
         >{`${label}${required ? "*" : ""}`}</CFormLabel>
         <CFormSelect
           name={name}
-          value={value}
+          defaultValue={defaultValue}
           onChange={onChange}
           aria-label="Default select example"
           invalid={error ? true : false}

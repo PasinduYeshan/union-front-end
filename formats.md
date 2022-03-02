@@ -75,25 +75,25 @@ images: [],
 
 // Accounts
 adminAccount = {
-    userId : "aljsflksjafkl23423"
-    userName : "Admin"
-    name : "Sumanajith"
-    email : "admin@gmail.com"
-    NIC : "12389721847V"
-    status : active
-    contactNo : "237493432"
-    accountType
+userId : "aljsflksjafkl23423"
+userName : "Admin"
+name : "Sumanajith"
+email : "admin@gmail.com"
+NIC : "12389721847V"
+status : active
+contactNo : "237493432"
+accountType
 }
 
 allOtherUsers = {
-    userId : "aljsflksjafkl23423"
-    userName : "Admin"
-    name : "Sumanajith"
-    email : "admin@gmail.com"
-    NIC : "3487623846V"
-    contactNo : "237493432"
-    branchName : ""
-    accountType
+userId : "aljsflksjafkl23423"
+userName : "Admin"
+name : "Sumanajith"
+email : "admin@gmail.com"
+NIC : "3487623846V"
+contactNo : "237493432"
+branchName : ""
+accountType
 }
 
-accountType = ["superAdmin", "admin", "bsEditor", "bsViewer","officer"]
+accountType = ["superAdmin", "adminEditor","adminViewer", "bsEditor", "bsViewer","officer"]
