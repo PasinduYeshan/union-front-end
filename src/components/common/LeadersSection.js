@@ -1,6 +1,26 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
+import { getImageFromBucket } from "src/utils/function";
+
+const leaders = {
+  president: {
+    name: "Shantha Kumara Meegama",
+    image: "https://uptosl.org/images/shantha.jpg",
+    contactNo: "071-2222222",
+  },
+  generalSecretary: {
+    name: "H.K. Kariyawasam",
+    image: "https://uptosl.org/images/page2_pic3.jpg",
+    contactNo: "071-2222222",
+  },
+  treasurer: {
+    name: "Harindra Weliwita",
+    image: "https://uptosl.org/images/weliwita.jpg",
+    contactNo: "071-2222222",
+  },
+};
+
 const LeaderSection = (props) => {
   const title =
     props.title ?? `The Talented People Behind the Scenes of the Organization`;
@@ -23,21 +43,21 @@ const LeaderSection = (props) => {
                   <div className="absolute -mt-20 w-full flex justify-center">
                     <div className="h-32 w-32">
                       <img
-                        src="https://cdn.tuk.dev/assets/photo-1564061170517-d3907caa96ea.jfif"
+                        src={getImageFromBucket(leaders.president.image)}
                         alt=""
-                        className="rounded-full object-cover h-full w-full shadow-md"
+                        className="rounded-full object-fill h-full w-full shadow-md"
                       />
                     </div>
                   </div>
                   <div className="px-6 pb-5 mt-16">
                     <div className="font-bold text-center pb-1 text-xl sm:text-2xl md:text-3xl lg:text-3xl">
-                      Andres Berlin
+                      {leaders.president.name}
                     </div>
                     <p className="text-gray-800 text-sm text-center">
                       Hon. President
                     </p>
                     <p className="text-center text-gray-600 text-base pt-3 font-normal">
-                      0777326320
+                      {leaders.president.contactNo}
                     </p>
                   </div>
                 </div>
@@ -47,21 +67,21 @@ const LeaderSection = (props) => {
                   <div className="absolute -mt-20 w-full flex justify-center">
                     <div className="h-32 w-32">
                       <img
-                        src="https://cdn.tuk.dev/assets/photo-1530577197743-7adf14294584.jfif"
+                        src={getImageFromBucket(leaders.generalSecretary.image)}
                         alt=""
-                        className="rounded-full object-cover h-full w-full shadow-md"
+                        className="rounded-full object-fill h-full w-full shadow-md"
                       />
                     </div>
                   </div>
                   <div className="px-6 pb-5 mt-16">
                     <div className="font-bold text-center pb-1 text-xl sm:text-2xl md:text-3xl lg:text-3xl">
-                      Silene Tokyo
+                      {leaders.generalSecretary.name}
                     </div>
                     <p className="text-gray-800 text-sm text-center">
                       Hon. General Secretary
                     </p>
                     <p className="text-center text-gray-600 text-base pt-3 font-normal">
-                      0777326320
+                      {leaders.generalSecretary.contactNo}
                     </p>
                   </div>
                 </div>
@@ -71,21 +91,21 @@ const LeaderSection = (props) => {
                   <div className="absolute -mt-20 w-full flex justify-center">
                     <div className="h-32 w-32">
                       <img
-                        src="https://cdn.tuk.dev/assets/photo-1566753323558-f4e0952af115.jfif"
+                        src={getImageFromBucket(leaders.treasurer.image)}
                         alt=""
-                        className="rounded-full object-cover h-full w-full shadow-md"
+                        className="rounded-full object-fill h-full w-full shadow-md"
                       />
                     </div>
                   </div>
                   <div className="px-6 pb-5 mt-16">
                     <div className="font-bold text-center pb-1 text-xl sm:text-2xl md:text-3xl lg:text-3xl">
-                      Johnson Stone
+                      {leaders.treasurer.name}
                     </div>
                     <p className="text-gray-800 text-sm text-center">
                       Hon. Treasurer
                     </p>
                     <p className="text-center text-gray-600 text-base pt-3 font-normal">
-                      0777326320
+                      {leaders.treasurer.contactNo}
                     </p>
                   </div>
                 </div>

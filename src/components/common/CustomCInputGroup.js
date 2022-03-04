@@ -143,11 +143,9 @@ export function CustomCFormTextAreaGroup({
           name={name}
           onChange={onChange}
           value={value}
-          // required
           invalid={error ? true : false}
           placeholder={placeholder}
           rows="4"
-          required={required}
         />
         <CFormFeedback invalid>{error}</CFormFeedback>
       </CCol>

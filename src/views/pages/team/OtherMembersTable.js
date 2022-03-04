@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function OtherMembersTable() {
+export default function OtherMembersTable({ people }) {
   return (
     <div className="px-10 pt-0">
       <div className="-my-2 sm:-mx-8 lg:-mx-10">
@@ -32,7 +32,7 @@ export default function OtherMembersTable() {
               <tbody className="bg-white divide-y divide-gray-200">
                 {people.map((person, index) => (
                   <tr key={index}>
-                    <td className="px-8 py-4 whitespace-nowrap">
+                    <td className="px-4 py-3 whitespace-nowrap">
                       <div className="flex items-center">
                         <div className="flex-shrink-0 h-10 w-10">
                           <img
@@ -51,12 +51,12 @@ export default function OtherMembersTable() {
                         </div>
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td className="px-2 py-2 whitespace-nowrap">
                       <div className="text-sm text-gray-900">
                         {person.position}
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td className="px-2 py-2 whitespace-nowrap">
                       <div className="text-sm text-gray-900">
                         {person.telephone}
                       </div>
@@ -71,66 +71,3 @@ export default function OtherMembersTable() {
     </div>
   );
 }
-
-const people = [
-  {
-    name: "Jane Cooper",
-    position: "Secretary",
-
-    telephone: "0777453652",
-  },
-  {
-    name: "Jane Cooper",
-    position: "Secretary",
-
-    telephone: "0777453652",
-  },
-  {
-    name: "Jane Cooper",
-    position: "Secretary",
-
-    telephone: "0777453652",
-  },
-  {
-    name: "Jane Cooper",
-    position: "Secretary",
-
-    telephone: "0777453652",
-  },
-  {
-    name: "Jane Cooper",
-    position: "Secretary",
-
-    telephone: "0777453652",
-  },
-  {
-    name: "Jane Cooper",
-    position: "Secretary",
-
-    telephone: "0777453652",
-  },
-  {
-    name: "Jane Cooper",
-    position: "Secretary",
-
-    telephone: "0777453652",
-  },
-  {
-    name: "Jane Cooper",
-    position: "Secretary",
-
-    telephone: "0777453652",
-  },
-  {
-    name: "Jane Cooper",
-    position: "Secretary",
-
-    telephone: "0777453652",
-  },
-  {
-    name: "Jane Cooper",
-    position: "Secretary",
-
-    telephone: "0777453652",
-  },
-];
