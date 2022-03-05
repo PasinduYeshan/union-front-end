@@ -1,6 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import CIcon from "@coreui/icons-react";
 import { CButton } from "@coreui/react";
+import { selectBranchNames } from "../../store/meta/select";
+import { thunks } from "../../store/";
 
 import { cilFilter } from "@coreui/icons";
 
@@ -14,7 +17,25 @@ const FilterTable = ({
   bsAccounts,
   handleClearFilter,
 }) => {
+  const dispatch = useDispatch();
   const [showFilterData, setShowFilterData] = useState(false);
+
+  const [branchNameOptions, setBranchNameOptions] = useState([]);
+
+  const branchNames = useSelector(selectBranchNames);
+
+  useEffect(() => {
+    dispatch(thunks.meta.setBranchNames());
+
+    if (branchNames) {
+      const branchNameOptions = branchNames.map((branchName) => ({
+        value: branchName.name,
+        label: branchName.name,
+      }));
+      setBranchNameOptions(branchNameOptions);
+    }
+  }, [branchNames]);
+
   return (
     <>
       <div className="mb-4 text-sm">
@@ -66,17 +87,14 @@ const FilterTable = ({
             inputClassName="text-sm"
             hidden={!bsAccounts}
             label="Branch Name"
-            name="accountType"
-            value={filterData.accountType}
+            name="branchName"
+            value={filterData.branchName}
             onChange={handleFilterChange}
-            error={filterErrors.accountType}
+            error={filterErrors.branchName}
             uppercase={true}
             required={false}
             mdSize={4}
-            options={[
-              { value: "bsEditor", label: "Editor" },
-              { value: "bsViewer", label: "Viewer" },
-            ]}
+            options={branchNameOptions}
           />
         </div>
         <div className="flex flex-row justify-end">

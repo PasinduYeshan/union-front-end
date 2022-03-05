@@ -17,7 +17,7 @@ const WordAboutUs = () => {
             transition={{ duration: 0.7, ease: "easeOut" }}
           >
             <img
-              src="images/landing/c1.jpg"
+              src="images/landing/74044_6.jpg"
               className="h-full w-full object-cover max-h-100"
             ></img>
           </motion.div>

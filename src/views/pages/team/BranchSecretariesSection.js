@@ -14,12 +14,10 @@ export default function BranchSecretariesSection() {
         </h1>
       </div>
       <div className="container w-full grid lg:grid-cols-2 justify-center">
-      <BranchSecretariesTable people={people.slice(0, midPoint)} />
-      <BranchSecretariesTable people={people.slice(-midPoint)} />
+        <BranchSecretariesTable people={people.slice(0, midPoint)} />
+        <BranchSecretariesTable people={people.slice(-midPoint)} />
+      </div>
     </div>
-
-    </div>
-    
   );
 }
 

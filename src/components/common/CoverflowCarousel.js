@@ -12,10 +12,9 @@ import "swiper/css/pagination";
 // import required modules
 import { EffectCoverflow, Pagination } from "swiper";
 
-export default function App() {
+export default function CoverflowCarousel({ images }) {
   return (
-      <>
-         
+    <>
       <Swiper
         effect={"coverflow"}
         grabCursor={true}
@@ -32,35 +31,12 @@ export default function App() {
         modules={[EffectCoverflow, Pagination]}
         className="mySwiper coreflow-swiper"
       >
-        <SwiperSlide className="coreflow-swiper-slide">
-          <img src="https://swiperjs.com/demos/images/nature-1.jpg" className="coreflow-swiper-slide-img"/>
-        </SwiperSlide>
-        <SwiperSlide className="coreflow-swiper-slide">
-          <img src="https://swiperjs.com/demos/images/nature-2.jpg" className="coreflow-swiper-slide-img"/>
-        </SwiperSlide>
-        <SwiperSlide className="coreflow-swiper-slide">
-          <img src="https://swiperjs.com/demos/images/nature-3.jpg" className="coreflow-swiper-slide-img"/>
-        </SwiperSlide>
-        <SwiperSlide className="coreflow-swiper-slide">
-          <img src="https://swiperjs.com/demos/images/nature-4.jpg" className="coreflow-swiper-slide-img"/>
-        </SwiperSlide>
-        <SwiperSlide className="coreflow-swiper-slide">
-          <img src="https://swiperjs.com/demos/images/nature-5.jpg" className="coreflow-swiper-slide-img"/>
-        </SwiperSlide>
-        <SwiperSlide className="coreflow-swiper-slide">
-          <img src="https://swiperjs.com/demos/images/nature-6.jpg" className="coreflow-swiper-slide-img"/>
-        </SwiperSlide>
-        <SwiperSlide className="coreflow-swiper-slide">
-          <img src="https://swiperjs.com/demos/images/nature-7.jpg" className="coreflow-swiper-slide-img"/>
-        </SwiperSlide>
-        <SwiperSlide className="coreflow-swiper-slide">
-          <img src="https://swiperjs.com/demos/images/nature-8.jpg" className="coreflow-swiper-slide-img"/>
-        </SwiperSlide>
-        <SwiperSlide className="coreflow-swiper-slide">
-          <img src="https://swiperjs.com/demos/images/nature-9.jpg" className="coreflow-swiper-slide-img"/>
-        </SwiperSlide>
-              </Swiper>
-             
+        {images.map((img, index) => (
+          <SwiperSlide key={index} className="coreflow-swiper-slide">
+            <img src={img} className="coreflow-swiper-slide-img" />
+          </SwiperSlide>
+        ))}
+      </Swiper>
     </>
   );
 }

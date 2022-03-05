@@ -6,6 +6,9 @@ const OtherMembersSection = () => {
   const midPoint = Math.floor(otherMembers.length / 2);
   return (
     <>
+      <h1 className="xl:text-3xl text-2xl text-center text-gray-800 font-extrabold pb-6 sm:w-4/6 w-5/6 mx-auto">
+        Executive Committee Members
+      </h1>
       <div className="container w-full grid grid-cols-1 lg:grid-cols-2 justify-center">
         <OtherMembersTable people={otherMembers.slice(0, midPoint)} />
         <OtherMembersTable people={otherMembers.slice(-midPoint)} />

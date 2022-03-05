@@ -131,6 +131,7 @@ const AddBSUserAccountPage = () => {
             error={formErrors.password}
             uppercase={true}
             mdSize={6}
+            type="password"
           />
           <CustomCFormInputGroup
             label="Confirm Password"
@@ -140,6 +141,7 @@ const AddBSUserAccountPage = () => {
             error={formErrors.confirmPassword}
             uppercase={true}
             mdSize={6}
+            type="password"
           />
         </div>
         <div className="grid justify-end">

@@ -5,6 +5,17 @@ const CoverflowCarousel = React.lazy(() =>
   import("../../../components/common/CoverflowCarousel")
 );
 
+const images = [
+  "images/event-carousel/1.jpg",
+  "images/event-carousel/2.jpg",
+  "images/event-carousel/3.jpg",
+  "images/event-carousel/4.jpg",
+  "images/event-carousel/5.jpg",
+  "images/event-carousel/6.jpg",
+  "images/event-carousel/7.jpg",
+  "images/event-carousel/8.jpg",
+];
+
 const EventCarouselSection = () => {
   return (
     <>
@@ -15,7 +26,7 @@ const EventCarouselSection = () => {
         >
           <span className="block xl:inline">Events</span>
         </h1>
-        <CoverflowCarousel />
+        <CoverflowCarousel images={images} />
         <div className="flex mt-5 sm:mt-8 justify-center">
           <div className="rounded-md shadow">
             <Link
