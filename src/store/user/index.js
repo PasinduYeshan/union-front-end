@@ -1,14 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const intialState = {
-//   userData: {
-//     userId: "",
-//     name: "",
-//     email: "",
-//     telephone: "",
-//     accountType: "",
-//   },
-    userData : adminUserData,
+const initialState = {
+  userData: {
+    userId: "",
+    name: "",
+    email: "",
+    telephone: "",
+    accountType: "",
+  },
+    // userData : adminUserData,
   tokens: {
     accessToken: "",
     refreshToken: "",

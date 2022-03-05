@@ -2,16 +2,7 @@ import React, { lazy, useState } from "react";
 import { useHistory } from "react-router-dom";
 
 import {
-  CAvatar,
   CButton,
-  CButtonGroup,
-  CCard,
-  CCardBody,
-  CCardFooter,
-  CCardHeader,
-  CCol,
-  CProgress,
-  CRow,
   CTable,
   CTableBody,
   CTableDataCell,
@@ -23,10 +14,46 @@ import {
   CPagination,
 } from "@coreui/react";
 
+import { deleteEmptyKeys } from "src/utils/function";
+import FilterTable from "./FilterTable";
+
 const IssueTable = () => {
   // State
   const maxPages = 4;
   const [pageNumber, setPageNumber] = useState(1);
+  const [filteredData, setFilteredData] = useState(issuesData);
+  const [issues, setIssues] = useState(issuesData);
+  // Handle filter
+  const [filterData, setFilterData] = useState({
+    branchName: "",
+    status: "",
+  });
+  const [filterErrors, setFilterErrors] = useState({});
+
+  // Handle filter
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+    setFilterData({ ...filterData, [name]: value });
+  };
+
+  const handleFilterSubmit = (e) => {
+    e.preventDefault();
+    const filters = deleteEmptyKeys(filterData);
+    const filteredValues = issues.filter((account) => {
+      for (let key in filters) {
+        console.log(key, filters[key], account[key]);
+        if (filters[key].toLowerCase() != account[key].toLowerCase())
+          return false;
+      }
+      return true;
+    });
+    setFilteredData(filteredValues);
+  };
+
+  const handleClearFilter = () => {
+    setFilterData({});
+    setFilteredData(issues);
+  };
 
   // Hooks
   const history = useHistory();
@@ -57,6 +84,13 @@ const IssueTable = () => {
   return (
     <>
       <div className="shadow border-b border-gray-200 sm:rounded-lg bg-white p-4 mb-5">
+        <FilterTable
+          filterData={filterData}
+          filterErrors={filterErrors}
+          handleFilterChange={handleFilterChange}
+          handleFilterSubmit={handleFilterSubmit}
+          handleClearFilter={handleClearFilter}
+        />
         <CTable>
           <CTableHead>
             <CTableRow>
@@ -69,7 +103,7 @@ const IssueTable = () => {
             </CTableRow>
           </CTableHead>
           <CTableBody>
-            {issues.map((issue, index) => (
+            {filteredData.map((issue, index) => (
               <CTableRow key={index}>
                 <CTableDataCell>{issue.title}</CTableDataCell>
                 <CTableDataCell>{issue.branchName}</CTableDataCell>
@@ -130,12 +164,12 @@ const IssueTable = () => {
 
 export default IssueTable;
 
-const issues = [
+const issuesData = [
   {
     issueId: "ksdfjklsd3223",
     title: "Salary Problem",
     name: "John Doe",
-    branchName: "Horana",
+    branchName: "Badulla",
     issueDate: "2020-01-01",
     status: "Open",
     contactNo: "07898989898",
@@ -146,7 +180,7 @@ const issues = [
     issueId: "ksdfjklsd3214",
     title: "Government Problem",
     name: "John Doe",
-    branchName: "Horana",
+    branchName: "Galle",
     issueDate: "2020-01-01",
     status: "Open",
     contactNo: "07898989898",
@@ -157,7 +191,7 @@ const issues = [
     issueId: "ksdfjklsd3215",
     title: "Salary Problem",
     name: "John Doe",
-    branchName: "Horana",
+    branchName: "Galle",
     issueDate: "2020-01-01",
     status: "Open",
     contactNo: "07898989898",
@@ -168,9 +202,9 @@ const issues = [
     issueId: "ksdfjklsd3216",
     title: "Government Problem",
     name: "John Doe",
-    branchName: "Horana",
+    branchName: "Kandy",
     issueDate: "2020-01-01",
-    status: "Open",
+    status: "Viewed",
     contactNo: "07898989898",
     description: "Salary should be increased",
     membershipNo: "123456789",

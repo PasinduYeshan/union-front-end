@@ -51,7 +51,7 @@ const WordAboutUs = () => {
             </p>
             <Link
               to="/about-us"
-              className="mt-4 flex items-center justify-center px-7 py-2 !border-indigo-400 border-2 text-base font-medium rounded-md
+              className="mt-4 max-h-16 flex items-center justify-center px-7 py-2 !border-indigo-400 border-2 text-base font-medium rounded-md
                  text-black bg-transparent outline-slate-100 hover:scale-110 md:py-4 md:text-lg md:px-10 shadow max-w-fit"
             >
               Read More
