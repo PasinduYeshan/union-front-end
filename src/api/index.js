@@ -40,24 +40,73 @@ function readStatus(res) {
 async function ajaxResolver(axiosRes, options = null) {
   try {
     const res = await axiosRes;
-    console.log("this is reponse", res);
-    if (options && options.fullBody) return [readStatus(res), res.data];
-    else return [readStatus(res), res.data.data];
+    if (options && options.fullBody) return { ...readStatus(res), data: res.data };
+    else return { ...readStatus(res), data: res.data.data };
   } catch (e) {
     const res = e.response;
     console.log("this is error", e);
-    return [readStatus(res), null];
+    return { ...readStatus(res), data: null };
   }
 }
 
 export default {
   user: {
-    login: {
-      async user(credentials) {
-        return ajaxResolver(axios.post("/api/auth/login", credentials), {
+    async login(credentials) {
+      return ajaxResolver(axios.post("/api/user/login", credentials), {
+          fullBody: true,
+      });
+    },
+    async registerSA(userData) {
+      return ajaxResolver(axios.post("/api/user/register-sa", userData), {
         //   fullBody: true,
-        });
-      },
+      });
+    },
+    async register(userData) {
+      return ajaxResolver(axios.post("/api/user/register", userData), {
+        //   fullBody: true,
+      });
+    },
+    async updateUser(userId, userData) {
+      return ajaxResolver(axios.post(`/api/user/update/${userId}`, userData), {
+        //   fullBody: true,
+      });
+    },
+    async updateProfile(userData) {
+      return ajaxResolver(axios.post("/api/user/update-profile", userData), {
+        //   fullBody: true,
+      });
+    },
+    async updatePassword(passwordData) {
+      return ajaxResolver(
+        axios.post("/api/user/update-password", passwordData),
+        {
+          //   fullBody: true,
+        }
+      );
+    },
+    async changePassword(userId, passwordData) {
+      return ajaxResolver(
+        axios.post(`/api/user/update/${userId}`, passwordData),
+        {
+          //   fullBody: true,
+        }
+      );
+    },
+    async forgotPassword(username) {
+      return ajaxResolver(
+        axios.post(`/api/user/update/${userId}`, { username }),
+        {
+          //   fullBody: true,
+        }
+      );
+    },
+    async resetPassword(username) {
+      return ajaxResolver(
+        axios.post(`/api/user/update/${userId}`, { username }),
+        {
+          //   fullBody: true,
+        }
+      );
     },
   },
 };

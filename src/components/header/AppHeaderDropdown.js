@@ -36,16 +36,14 @@ const AppHeaderDropdown = () => {
           Account
         </CDropdownHeader>
         //!TODO : Profile and Logout Settings
-        <CDropdownItem href="#">
+        <CDropdownItem href="/office/profile">
           <CIcon icon={cilUser} className="me-2" />
           Profile
         </CDropdownItem>
         <CDropdownDivider />
-        <CDropdownItem>
-          <Link to="/">
-            <CIcon icon={cilLockLocked} className="me-2" />
-            Log Out
-          </Link>
+        <CDropdownItem href="/">
+          <CIcon icon={cilLockLocked} className="me-2" />
+          Log Out
         </CDropdownItem>
       </CDropdownMenu>
     </CDropdown>

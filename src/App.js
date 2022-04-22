@@ -1,6 +1,8 @@
 import React, { Component } from "react";
+import { useDispatch } from "react-redux";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import "./scss/style.scss";
+import { thunks } from "./store";
 
 // Toaster
 import { ToastContainer, toast } from "react-toastify";
@@ -31,87 +33,87 @@ const AboutUsPage = React.lazy(() =>
 );
 const EventsPage = React.lazy(() => import("./views/pages/events/EventsPage"));
 
-class App extends Component {
-  render() {
-    return (
-      <BrowserRouter>
-        <ToastContainer
-          position="top-right"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-        />
-        <React.Suspense fallback={loading}>
-          <Switch>
-            <Route
-              exact
-              path="/login"
-              name="Login Page"
-              render={(props) => <LoginPage {...props} />}
-            />
-            <Route
-              exact
-              path="/contact-us"
-              name="Login Page"
-              render={(props) => <ContactUsPage {...props} />}
-            />
-            <Route
-              exact
-              path="/team"
-              name="Team Page"
-              render={(props) => <TeamPage {...props} />}
-            />
-            <Route
-              exact
-              path="/about-us"
-              name="About Us"
-              render={(props) => <AboutUsPage {...props} />}
-            />
-            <Route
-              exact
-              path="/events"
-              name="Events"
-              render={(props) => <EventsPage {...props} />}
-            />
-            {/* <Route
+function App() {
+  const dispatch = useDispatch();
+  dispatch(thunks.user.checkToken());
+  return (
+    <BrowserRouter>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+      <React.Suspense fallback={loading}>
+        <Switch>
+          <Route
+            exact
+            path="/login"
+            name="Login Page"
+            render={(props) => <LoginPage {...props} />}
+          />
+          <Route
+            exact
+            path="/contact-us"
+            name="Login Page"
+            render={(props) => <ContactUsPage {...props} />}
+          />
+          <Route
+            exact
+            path="/team"
+            name="Team Page"
+            render={(props) => <TeamPage {...props} />}
+          />
+          <Route
+            exact
+            path="/about-us"
+            name="About Us"
+            render={(props) => <AboutUsPage {...props} />}
+          />
+          <Route
+            exact
+            path="/events"
+            name="Events"
+            render={(props) => <EventsPage {...props} />}
+          />
+          {/* <Route
               exact
               path="/register"
               name="Register Page"
               render={(props) => <Register {...props} />}
             /> */}
-            <Route
-              exact
-              path="/404"
-              name="Page 404"
-              render={(props) => <Page404Error {...props} />}
-            />
-            {/* <Route
+          <Route
+            exact
+            path="/404"
+            name="Page 404"
+            render={(props) => <Page404Error {...props} />}
+          />
+          {/* <Route
               exact
               path="/500"
               name="Page 500"
               render={(props) => <Page500 {...props} />}
             /> */}
-            <Route
-              exact
-              path="/"
-              name="Home Page"
-              render={(props) => <HomePage {...props} />}
-            />
-            <Route
-              path="/office"
-              name="Office Home"
-              render={(props) => <DefaultLayout {...props} />}
-            />
-          </Switch>
-        </React.Suspense>
-      </BrowserRouter>
-    );
-  }
+          <Route
+            exact
+            path="/"
+            name="Home Page"
+            render={(props) => <HomePage {...props} />}
+          />
+          <Route
+            path="/office"
+            name="Office Home"
+            render={(props) => <DefaultLayout {...props} />}
+          />
+        </Switch>
+      </React.Suspense>
+    </BrowserRouter>
+  );
 }
 
 export default App;

@@ -10,8 +10,8 @@ const initialState = {
   },
     // userData : adminUserData,
   tokens: {
-    accessToken: "",
-    refreshToken: "",
+    access: "",
+    refresh: "",
   },
 };
 

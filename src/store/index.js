@@ -4,6 +4,7 @@ import metaReducer, { setBranchNames } from "./meta";
 import MetaThunk from "./meta/thunk";
 
 import userReducer, { setTokens, setUserData } from "./user";
+import userThunk from "./user/thunk";
 
 const store = configureStore({
   reducer: {
@@ -31,4 +32,5 @@ export const actions = {
 
 export const thunks = {
   meta: MetaThunk,
+  user : userThunk
 };

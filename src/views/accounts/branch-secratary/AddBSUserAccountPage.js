@@ -1,6 +1,9 @@
 import React, { useState } from "react";
+import {useSelector} from 'react-redux'
 import { toast } from "react-toastify";
 import Joi from "joi";
+import api, { registerAccessToken } from "../../../api"
+import store from "../../../store"; 
 
 import {
   CustomCFormInputGroup,
@@ -16,6 +19,7 @@ const AddBSUserAccountPage = () => {
   // Joi schema
   const schema = Joi.object({
     username: Joi.string().required().label("Username"),
+    name: Joi.string().required().label("Name"),
     password: Joi.string().required().label("Password"),
     email: Joi.string()
       .email({ tlds: { allow: false } })
@@ -28,6 +32,7 @@ const AddBSUserAccountPage = () => {
     confirmPassword: Joi.ref("password"),
   });
 
+  // Handle input change
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (name === "images") {
@@ -38,11 +43,26 @@ const AddBSUserAccountPage = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  // Handle add branch secretary user account
+  const handleSubmit = async (e) => {
+    const accessToken = store.getState().user.tokens.access;
+      console.log("accessToken", accessToken);
     const { error, value } = schema.validate(formData, { abortEarly: false });
     if (!error) {
       e.preventDefault();
-      toast.success("Successfully Added");
+
+      const accessToken = store.getState().user.tokens.access;
+      console.log("accessToken", accessToken);
+      // Register access token to axios request header
+      registerAccessToken(accessToken);
+      const res = await api.user.register(formData);
+      
+      if (res.status === 200) {
+        toast.success("Successfully Added");
+        setFormData(initialValue);
+      } else {
+        toast.error(res.message);
+      }
       return;
     } else {
       const errors = {};
@@ -94,10 +114,10 @@ const AddBSUserAccountPage = () => {
           />
           <CustomCFormInputGroup
             label="Contact Number"
-            name="contactNumber"
-            value={formData.contactNumber}
+            name="contactNo"
+            value={formData.contactNo}
             onChange={handleChange}
-            error={formErrors.contactNumber}
+            error={formErrors.contactNo}
             uppercase={true}
             mdSize={6}
           />
@@ -163,7 +183,7 @@ const AddBSUserAccountPage = () => {
 export default AddBSUserAccountPage;
 
 const initialValue = {
-  userName: "",
+  username: "",
   name: "",
   email: "",
   NIC: "",

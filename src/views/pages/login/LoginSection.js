@@ -1,14 +1,16 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import Joi from "joi";
 import { LockClosedIcon } from "@heroicons/react/solid";
+import { toast } from "react-toastify";
 
-import { CCol } from "@coreui/react";
-
+import { thunks } from "src/store";
 import { CustomCFormInputGroup } from "../../../components/common/CustomCInputGroup";
 
 export default function LoginSection(props) {
   const history = useHistory();
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -37,12 +39,23 @@ export default function LoginSection(props) {
 
   const forgotPassword = () => {};
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     const { error, value } = schema.validate(formData, { abortEarly: false });
     if (!error) {
       //Login loogic
-      history.replace("/office/dashboard");
+      console.log("Login loogic");
+      const res = await dispatch(thunks.user.userLogin(formData));
+      if (res.status === 200) {
+        // Save token to local storage
+        if (rememberMe) {
+          localStorage.setItem("upto-access-token", res.data.token.access);
+          localStorage.setItem("upto-refresh-token", res.data.token.refresh);
+        }
+        history.replace("/office/dashboard");
+      } else {
+        toast.error(res.message);
+      }
     } else {
       const errors = {};
       for (let item of error.details) {
