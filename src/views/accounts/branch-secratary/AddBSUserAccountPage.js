@@ -1,9 +1,10 @@
-import React, { useState } from "react";
-import {useSelector} from 'react-redux'
+import React, { useState, useEffect } from "react";
+import {useDispatch, useSelector} from 'react-redux'
 import { toast } from "react-toastify";
 import Joi from "joi";
 import api, { registerAccessToken } from "../../../api"
-import store from "../../../store"; 
+import store, {thunks, selectors} from "../../../store";
+
 
 import {
   CustomCFormInputGroup,
@@ -13,8 +14,26 @@ import {
 import { CButton } from "@coreui/react";
 
 const AddBSUserAccountPage = () => {
+  const dispatch = useDispatch(); 
   const [formData, setFormData] = useState(initialValue);
   const [formErrors, setFormErrors] = useState({});
+  const branchNameOptions = useSelector(selectors.meta.selectBranchNameOptions);
+
+
+  // Fetch branches
+  useEffect(() => {
+    const fetchData = async () => {
+      dispatch(thunks.meta.getBranches());
+      if (res.status === 200) {
+        setFormData(res.data);
+      } else {
+        console.log("Error Occurred while fetching branches", res);
+        toast.error("Error Occurred, Sorry for the inconvenience");
+      }
+    };
+
+    fetchData().catch((err) => console.log(err));
+  },[]);
 
   // Joi schema
   const schema = Joi.object({
@@ -94,7 +113,7 @@ const AddBSUserAccountPage = () => {
             uppercase={true}
             mdSize={6}
           />
-          <CustomCFormInputGroup
+          <CustomCFormSelectGroup
             label="Branch Name"
             name="branchName"
             value={formData.branchName}
@@ -102,6 +121,7 @@ const AddBSUserAccountPage = () => {
             error={formErrors.branchName}
             uppercase={true}
             mdSize={6}
+            options={branchNameOptions}
           />
           <CustomCFormInputGroup
             label="NIC"

@@ -220,6 +220,7 @@ export function CustomCFormSelectGroup({
           onChange={onChange}
           aria-label="Default select example"
           invalid={error ? true : false}
+          value={value}
         >
           <option>Open this select menu</option>
           {options.map((option, index) => (

@@ -2,15 +2,14 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CIcon from "@coreui/icons-react";
 import { CButton } from "@coreui/react";
-import { selectBranchNames } from "../../store/meta/select";
-import { thunks } from "../../store/";
+import { thunks, selectors } from "src/store";
 
 import { cilFilter } from "@coreui/icons";
 
 import { CustomCFormSelectGroup } from "src/components/common/CustomCInputGroup";
 
 const FilterTable = ({
-  filterData,
+  filters,
   filterErrors,
   handleFilterChange,
   handleFilterSubmit,
@@ -19,27 +18,36 @@ const FilterTable = ({
 }) => {
   const dispatch = useDispatch();
   const [showFilterData, setShowFilterData] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const [branchNameOptions, setBranchNameOptions] = useState([]);
+  const branchNameOptions = useSelector(selectors.meta.selectBranchNameOptions);
 
-  const branchNames = useSelector(selectBranchNames);
-
+  // Fetch branch names and set branches
   useEffect(() => {
-    dispatch(thunks.meta.setBranchNames());
+    const setBranchNames = async () => {
+      setLoading(true);
+      const res = await dispatch(thunks.meta.getBranches("test"));
+      if (res.status != 200) {
+        toast.error("Check your internet connection");
+        setLoading(false);
+        return;
+      }
+      if (res.data) {
+        const branchNameOptions = res.data.map((branch) => ({
+          value: branch.branchName,
+          label: branch.branchName,
+        }));
+        setBranchNameOptions(branchNameOptions);
+      }
+    };
 
-    if (branchNames) {
-      const branchNameOptions = branchNames.map((branchName) => ({
-        value: branchName.name,
-        label: branchName.name,
-      }));
-      setBranchNameOptions(branchNameOptions);
-    }
-  }, [branchNames]);
+    setBranchNames().catch((err) => console.log(err));
+  }, []);
 
   return (
     <>
       <div className="mb-4 text-sm">
-        <div className="grid justify-end text-sm">
+        <div className="grid justify-end text-sm mb-3">
           <CButton
             color="info"
             variant="outline"
@@ -56,7 +64,7 @@ const FilterTable = ({
             hidden={!bsAccounts}
             label="Account Status"
             name="status"
-            value={filterData.status}
+            value={filters.status}
             onChange={handleFilterChange}
             error={filterErrors.status}
             uppercase={true}
@@ -72,7 +80,7 @@ const FilterTable = ({
             hidden={!bsAccounts}
             label="Access Level"
             name="accountType"
-            value={filterData.accountType}
+            value={filters.accountType}
             onChange={handleFilterChange}
             error={filterErrors.accountType}
             uppercase={true}
@@ -88,7 +96,7 @@ const FilterTable = ({
             hidden={!bsAccounts}
             label="Branch Name"
             name="branchName"
-            value={filterData.branchName}
+            value={filters.branchName}
             onChange={handleFilterChange}
             error={filterErrors.branchName}
             uppercase={true}

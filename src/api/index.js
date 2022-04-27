@@ -108,5 +108,20 @@ export default {
         }
       );
     },
+    async getUserAccounts(accountType) {
+      return ajaxResolver(
+        axios.get(`/api/user/get-active-users`, {params : {accountType}}),
+        {
+          //   fullBody: true,
+        }
+      );
+    },
   },
+  meta: {
+    async branches() {
+      return ajaxResolver(axios.get("/api/meta/branches"), {
+        // fullBody: true,
+      });
+    },
+  }
 };

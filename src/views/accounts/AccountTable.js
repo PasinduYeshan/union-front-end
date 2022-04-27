@@ -18,7 +18,7 @@ const AccountTable = ({
   setPageNumber,
   children,
   tableHeaderCells,
-  filterData,
+  filters,
   filterErrors,
   handleFilterChange,
   handleFilterSubmit,
@@ -52,7 +52,7 @@ const AccountTable = ({
     <>
       <div className="shadow border-b border-gray-200 sm:rounded-lg bg-white p-4 mb-5">
         <FilterTable
-          filterData={filterData}
+          filters={filters}
           filterErrors={filterErrors}
           handleFilterChange={handleFilterChange}
           handleFilterSubmit={handleFilterSubmit}

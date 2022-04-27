@@ -1,85 +1,15 @@
-import { setBranchNames } from "./index.js";
+import { setBranches } from "./index.js";
+import api from "../../api";
 
-export default class MetaThunk {
-  static setBranchNames = () => (dispatch) => {
-    dispatch(setBranchNames(branchNames));
-  };
+const metaThunk = {
+  getBranches() {
+    return async (dispatch) => {
+      const res = await api.meta.branches();
+      if (res.status === 200) {
+        dispatch(setBranches(res.data));
+      }
+    };
+  },
 }
 
-const branchNames = [
-  {
-    name: "Anuradhapura",
-  },
-  {
-    name: "Awissawella",
-  },
-  {
-    name: "Batticaloa",
-  },
-  {
-    name: "Baddulla",
-  },
-  {
-    name: "Colombo District",
-  },
-  {
-    name: "Chilaw",
-  },
-  {
-    name: "Central Mail Exchange",
-  },
-  {
-    name: "Galle",
-  },
-  {
-    name: "Gampaha",
-  },
-  {
-    name: "Colombo Headquarters",
-  },
-  {
-    name: "Hatton",
-  },
-  {
-    name: "Jaffna",
-  },
-  {
-    name: "Kalutara",
-  },
-  {
-    name: "Kandy",
-  },
-  {
-    name: "Kegalle",
-  },
-  {
-    name: "Kurunegala",
-  },
-  {
-    name: "Kalminai",
-  },
-  {
-    name: "Matara",
-  },
-  {
-    name: "Matale",
-  },
-  {
-    name: "Nuwara Eliya",
-  },
-  {
-    name: "Negambo",
-  },
-  {
-    name: "Polonnaruwa",
-  },
-  {
-    name: "Ratnapura",
-  },
-  {
-    name: "Trincomalee",
-  },
-  {
-    name: "Vavuniya",
-  },
-];
+export default metaThunk;

@@ -41,7 +41,6 @@ const IssueTable = () => {
     const filters = deleteEmptyKeys(filterData);
     const filteredValues = issues.filter((account) => {
       for (let key in filters) {
-        console.log(key, filters[key], account[key]);
         if (filters[key].toLowerCase() != account[key].toLowerCase())
           return false;
       }

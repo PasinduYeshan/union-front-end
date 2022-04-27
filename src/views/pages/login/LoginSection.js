@@ -7,6 +7,8 @@ import { toast } from "react-toastify";
 
 import { thunks } from "src/store";
 import { CustomCFormInputGroup } from "../../../components/common/CustomCInputGroup";
+import { LoadingIndicator } from "src/components";
+import { selectAccountType } from "src/store/user/select";
 
 export default function LoginSection(props) {
   const history = useHistory();
@@ -17,6 +19,7 @@ export default function LoginSection(props) {
   });
   const [rememberMe, setRememberMe] = useState(false);
   const [formErrors, setFormErrors] = useState({});
+  const [loading, setLoading] = useState(false);
 
   // Joi validation schema
   const schema = Joi.object({
@@ -41,17 +44,15 @@ export default function LoginSection(props) {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const { error, value } = schema.validate(formData, { abortEarly: false });
     if (!error) {
       //Login loogic
-      console.log("Login loogic");
       const res = await dispatch(thunks.user.userLogin(formData));
       if (res.status === 200) {
         // Save token to local storage
-        if (rememberMe) {
-          localStorage.setItem("upto-access-token", res.data.token.access);
-          localStorage.setItem("upto-refresh-token", res.data.token.refresh);
-        }
+        localStorage.setItem("upto-access-token", res.data.token.access);
+        localStorage.setItem("upto-refresh-token", res.data.token.refresh);
         history.replace("/office/dashboard");
       } else {
         toast.error(res.message);
@@ -63,6 +64,7 @@ export default function LoginSection(props) {
       }
       setFormErrors(errors);
     }
+    // setLoading(false);
   };
   return (
     <>
@@ -144,10 +146,12 @@ export default function LoginSection(props) {
 
                 <div>
                   <button
+                    disabled={loading}
                     onClick={handleLogin}
                     type="submit"
                     className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                   >
+                    {loading ? LoadingIndicator('sm') : null}
                     <span className="absolute left-0 inset-y-0 flex items-center pl-3">
                       <LockClosedIcon
                         className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400"

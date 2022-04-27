@@ -1,10 +1,12 @@
 import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 
-import metaReducer, { setBranchNames } from "./meta";
-import MetaThunk from "./meta/thunk";
+import metaReducer, * as metaActions from "./meta";
+import metaThunk from "./meta/thunk";
+import * as metaSelectors from "./meta/select";
 
-import userReducer, { setTokens, setUserData } from "./user";
+import userReducer, * as userActions from "./user";
 import userThunk from "./user/thunk";
+import * as userSelectors from "./user/select";
 
 const store = configureStore({
   reducer: {
@@ -21,16 +23,16 @@ const store = configureStore({
 export default store;
 
 export const actions = {
-  user: {
-    setTokens,
-    setUserData,
-  },
-  meta: {
-    setBranchNames,
-  },
+  user: userActions,
+  meta: metaActions,
 };
 
 export const thunks = {
-  meta: MetaThunk,
+  meta: metaThunk,
   user : userThunk
 };
+
+export const selectors = {
+  meta: metaSelectors,
+  user: userSelectors,
+}

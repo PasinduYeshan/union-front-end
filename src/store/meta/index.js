@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    branchNames: [],
+  branches: [],
+  branchNameOptions: [],
 };
 
 /**
@@ -10,14 +11,22 @@ const initialState = {
 const metaSlice = createSlice({
   name: "meta",
   initialState,
+  
   reducers: {
-    setBranchNames: (state, action) => {
-      state.branchNames = action.payload;
+    setBranches: (state, action) => {
+      const branches = action.payload;
+      state.branches = branches;
+      // Set branch name options for filters
+      const branchNameOptions = branches.map((branch) => ({
+        value: branch.branchName,
+        label: branch.branchName,
+      }));
+      state.branchNameOptions = branchNameOptions;
     },
   },
 });
 
-export const { setBranchNames } = metaSlice.actions;
+export const { setBranches } = metaSlice.actions;
 export default metaSlice.reducer;
 
 

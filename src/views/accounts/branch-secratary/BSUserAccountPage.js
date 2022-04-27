@@ -51,7 +51,6 @@ const BSUserAccountPage = () => {
 
   const handleSubmit = (e) => {
     const { error, value } = schema.validate(formData, { abortEarly: false });
-    console.log(formData, error);
     if (!error) {
       e.preventDefault();
       toast.success("Successfully Added");

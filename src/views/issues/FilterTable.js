@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { selectBranchNames } from "../../store/meta/select";
 
 import CIcon from "@coreui/icons-react";
 import { CButton } from "@coreui/react";
 import { cilFilter } from "@coreui/icons";
 
 import { CustomCFormSelectGroup } from "src/components/common/CustomCInputGroup";
-import { thunks } from "../../store/index";
+import { thunks , selectors} from "../../store/index";
 
 const FilterTable = ({
   filterData,
@@ -18,9 +17,8 @@ const FilterTable = ({
 }) => {
   const dispatch = useDispatch();
   const [showFilterData, setShowFilterData] = useState(false);
-  const [branchNameOptions, setBranchNameOptions] = useState([]);
-
-  const branchNames = useSelector(selectBranchNames);
+  
+  const branchNameOptions = useSelector(selectors.meta.selectBranchNameOptions);
 
   useEffect(() => {
     dispatch(thunks.meta.setBranchNames());

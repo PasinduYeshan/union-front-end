@@ -1,35 +1,67 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
+import api, { registerAccessToken } from "src/api";
+import store from "src/store";
+
+// Components
 const AccountTable = React.lazy(() => import("../AccountTable"));
 const BSTableBody = React.lazy(() => import("./BSTableBody"));
 
 import { deleteEmptyKeys } from "src/utils/function";
+import { toast } from "react-toastify";
 
 const BSAccountsPage = () => {
-  const [bsAccounts, setBsAccounts] = useState(bsAccountsData);
-  const [filteredBSAccounts, setFilteredBSAccounts] = useState(bsAccounts);
-  // Handle filter
-  const [filterData, setFilterData] = useState({
+  const [loading, setLoading] = useState(false);
+  const [bsAccounts, setBsAccounts] = useState([]);
+  const [filteredData, setFilteredBSAccounts] = useState([]);
+  const [filters, setFilters] = useState({
     branchName: "",
     status: "",
+    accountType: "",
   });
   const [filterErrors, setFilterErrors] = useState({});
 
-  // From store
-  const branchSecrataryAccounts = bsAccountsData;
+  /**
+   * Fetch Branch Secretaries Accounts
+   */
+  useEffect(() => {
+    let isSubscribed = true;
+    setLoading(true);
+    const fetchData = async () => {
+      registerAccessToken(store.getState().user.tokens.access);
+      const res = await api.user.getUserAccounts("branchSecretary");
+      console.log(res);
+      if (res.status === 200) {
+        setBsAccounts(res.data);
+        setFilteredBSAccounts(res.data);
+      } else {
+        console.log("Error Occurred while fetching BS accounts", res);
+        toast.error("Error Occurred, Sorry for the inconvenience");
+      }
+      setLoading(false);
+    };
+    fetchData().catch((err) => console.log(err));
+    setLoading(false);
 
+    // Cancel any pending request
+    return () => (isSubscribed = false);
+  }, []);
+
+  /**
+   * Handle Filter Change
+   * @param {*} e
+   */
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
-    setFilterData({ ...filterData, [name]: value });
+    setFilters({ ...filters, [name]: value });
   };
 
   const handleFilterSubmit = (e) => {
     e.preventDefault();
-    const filters = deleteEmptyKeys(filterData);
-    const filteredAccounts = branchSecrataryAccounts.filter((account) => {
-      for (let key in filters) {
-        console.log(key, filters[key]);
-        if (filters[key] != account[key]) return false;
+    const filterItems = deleteEmptyKeys(filters);
+    const filteredAccounts = bsAccounts.filter((account) => {
+      for (let key in filterItems) {
+        if (filterItems[key] != account[key]) return false;
       }
       return true;
     });
@@ -37,7 +69,8 @@ const BSAccountsPage = () => {
   };
 
   const handleClearFilter = () => {
-    setFilterData({});
+    setFilters({ branchName: "", status: "", accountType: "" });
+    console.log(filters);
     setFilteredBSAccounts(bsAccounts);
   };
 
@@ -57,18 +90,18 @@ const BSAccountsPage = () => {
   return (
     <>
       <AccountTable
-        accounts={filteredBSAccounts}
+        accounts={filteredData}
         maxPages={maxPages}
         pageNumber={pageNumber}
         setPageNumber={setPageNumber}
         tableHeaderCells={tableHeaderCells}
-        filterData={filterData}
+        filters={filters}
         filterErrors={filterErrors}
         handleFilterChange={handleFilterChange}
         handleFilterSubmit={handleFilterSubmit}
         handleClearFilter={handleClearFilter}
       >
-        <BSTableBody accounts={filteredBSAccounts} />
+        <BSTableBody accounts={filteredData} />
       </AccountTable>
     </>
   );
@@ -76,38 +109,4 @@ const BSAccountsPage = () => {
 
 export default BSAccountsPage;
 
-const bsAccountsData = [
-  {
-    userId: "1wrewer",
-    name: "John Doe",
-    username: "johndoe",
-    email: "john@gmail.com",
-    contactNo: "07898989898",
-    branchName: "Galle",
-    status: "Active",
-    NIC: "123456789",
-    accountType: "bsEditor",
-  },
-  {
-    userId: "1wrewers",
-    name: "John Doe",
-    username: "johndoe",
-    email: "john@gmail.com",
-    contactNo: "07898989898",
-    branchName: "Kandy",
-    status: "Active",
-    NIC: "123456789",
-    accountType: "bsEditor",
-  },
-  {
-    userId: "1wrewere",
-    name: "John Doe",
-    username: "johndoe",
-    email: "john@gmail.com",
-    contactNo: "07898989898",
-    branchName: "Galle",
-    status: "Inactive",
-    NIC: "123456789",
-    accountType: "bsViewer",
-  },
-];
+
