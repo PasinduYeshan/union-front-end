@@ -72,7 +72,6 @@ const AddMemberPage = () => {
       return;
     }
     const { name } = e.target;
-    console.log("name", name);
     setFormData({
       ...formData,
       [name]: [...formData[name], { name: formData[tempFieldName] }],
@@ -91,7 +90,6 @@ const AddMemberPage = () => {
   const submit = async () => {
     //Add member logic
     const { childName, unionName, ...submitData } = formData;
-    console.log("Submit Data", submitData);
     // On success
     toast.success("Successfull", {});
     setCurrentStep(1);

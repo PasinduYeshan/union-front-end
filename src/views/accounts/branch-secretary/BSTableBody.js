@@ -38,9 +38,10 @@ const BSTableBody = ({ accounts }) => {
                 color="info"
                 variant="outline"
                 onClick={() =>
-                  history.push(
-                    `/office/accounts/branch-secratary/${account.userId}`
-                  )
+                  history.push({
+                    pathname: `/office/accounts/branch-secretary/account`,
+                    state: { userId: account.userId },
+                  })
                 }
               >
                 <span className="text-sm"> Edit</span>

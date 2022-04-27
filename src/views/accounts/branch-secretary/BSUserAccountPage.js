@@ -1,17 +1,16 @@
-import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useParams, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import Joi from "joi";
-
+import { CButton, CFormSwitch } from "@coreui/react";
 import {
   CustomCFormInputGroup,
   CustomCFormSelectGroup,
 } from "src/components/common/CustomCInputGroup";
-
-import { CButton, CFormSwitch } from "@coreui/react";
+import api from "src/api";
 
 const BSUserAccountPage = () => {
-  const { userId } = useParams();
+  const userId = useLocation().state.userId;
 
   const [formData, setFormData] = useState(userAccount);
   const [formErrors, setFormErrors] = useState({});
@@ -21,6 +20,25 @@ const BSUserAccountPage = () => {
   });
   const [updateMode, setUpdateMode] = useState(false);
   const [changePassword, setChangePassword] = useState(false);
+
+  // Fetch user Data from backend
+  useEffect(() => {
+    let isSubscribed = true;
+    const fetchUserData = async () => {
+      const res = await api.user.getUserAccount(userId);
+      if (res.status === 200) {
+        setFormData(res.data);
+      } else {
+        console.log("Error fetching user data", res);
+        toast.error("Check your internet connection");
+      }
+    };
+
+    fetchUserData().catch((err) => console.log(err));
+
+    // Cancel any pending request
+    return () => (isSubscribed = false);
+  }, []);
 
   // Joi schema
   const schema = Joi.object({

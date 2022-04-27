@@ -26,18 +26,11 @@ const FilterTable = ({
   useEffect(() => {
     const setBranchNames = async () => {
       setLoading(true);
-      const res = await dispatch(thunks.meta.getBranches("test"));
+      const res = await dispatch(thunks.meta.getBranches());
       if (res.status != 200) {
         toast.error("Check your internet connection");
         setLoading(false);
         return;
-      }
-      if (res.data) {
-        const branchNameOptions = res.data.map((branch) => ({
-          value: branch.branchName,
-          label: branch.branchName,
-        }));
-        setBranchNameOptions(branchNameOptions);
       }
     };
 

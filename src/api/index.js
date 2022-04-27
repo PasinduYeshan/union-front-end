@@ -1,4 +1,5 @@
 import axios from "axios";
+import store from "src/store";
 
 /**
  * Setup Axios
@@ -40,7 +41,8 @@ function readStatus(res) {
 async function ajaxResolver(axiosRes, options = null) {
   try {
     const res = await axiosRes;
-    if (options && options.fullBody) return { ...readStatus(res), data: res.data };
+    if (options && options.fullBody)
+      return { ...readStatus(res), data: res.data };
     else return { ...readStatus(res), data: res.data.data };
   } catch (e) {
     const res = e.response;
@@ -53,7 +55,7 @@ export default {
   user: {
     async login(credentials) {
       return ajaxResolver(axios.post("/api/user/login", credentials), {
-          fullBody: true,
+        fullBody: true,
       });
     },
     async registerSA(userData) {
@@ -62,21 +64,25 @@ export default {
       });
     },
     async register(userData) {
+      registerAccessToken(store.getState().auth.accessToken);
       return ajaxResolver(axios.post("/api/user/register", userData), {
         //   fullBody: true,
       });
     },
     async updateUser(userId, userData) {
+      registerAccessToken(store.getState().auth.accessToken);
       return ajaxResolver(axios.post(`/api/user/update/${userId}`, userData), {
         //   fullBody: true,
       });
     },
     async updateProfile(userData) {
+      registerAccessToken(store.getState().auth.accessToken);
       return ajaxResolver(axios.post("/api/user/update-profile", userData), {
         //   fullBody: true,
       });
     },
     async updatePassword(passwordData) {
+      registerAccessToken(store.getState().auth.accessToken);
       return ajaxResolver(
         axios.post("/api/user/update-password", passwordData),
         {
@@ -85,6 +91,7 @@ export default {
       );
     },
     async changePassword(userId, passwordData) {
+      registerAccessToken(store.getState().auth.accessToken);
       return ajaxResolver(
         axios.post(`/api/user/update/${userId}`, passwordData),
         {
@@ -109,12 +116,20 @@ export default {
       );
     },
     async getUserAccounts(accountType) {
+      registerAccessToken(store.getState().auth.accessToken);
       return ajaxResolver(
-        axios.get(`/api/user/get-active-users`, {params : {accountType}}),
+        axios.get(`/api/user/user-accounts`, { params: { accountType } }),
         {
           //   fullBody: true,
         }
       );
+    },
+
+    async getUserAccount(userId) {
+      registerAccessToken(store.getState().auth.accessToken);
+      return ajaxResolver(axios.get(`/api/user/user-account/${userId}`), {
+        //   fullBody: true,
+      });
     },
   },
   meta: {
@@ -123,5 +138,5 @@ export default {
         // fullBody: true,
       });
     },
-  }
+  },
 };

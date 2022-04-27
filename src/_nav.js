@@ -48,18 +48,18 @@ const _nav = [
   // },
   {
     component: CNavTitle,
-    name: "Branch Secrataries",
+    name: "Branch Secretaries",
   },
   {
     component: CNavItem,
-    name: "Add Branch Secratary",
-    to: "/office/accounts/branch-secratary/add",
+    name: "Add Branch Secretary",
+    to: "/office/accounts/branch-secretary/add",
     icon: <CIcon icon={cilUserPlus} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
-    name: "Branch Secrataries",
-    to: "/office/accounts/branch-secrataries",
+    name: "Branch Secretaries",
+    to: "/office/accounts/branch-secretaries",
     icon: <CIcon icon={cilAddressBook} customClassName="nav-icon" />,
   },
 

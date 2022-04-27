@@ -34,7 +34,6 @@ const ViewMemberPage = () => {
   // const { value, handleChange } = useInput("");
 
   useEffect(() => {
-    console.log("Re-rendering ViewMemberPage");
   }, []);
 
   /**
@@ -55,11 +54,8 @@ const ViewMemberPage = () => {
   };
 
   const handleSearch = (event) => {
-    console.log(event.target);
     if (event.target.name === "oldNICSearch") {
-      console.log("oldNIC", value.oldNIC);
     } else {
-      console.log("newNICSearch", value.newNIC);
     }
     setMember(memberData);
   };

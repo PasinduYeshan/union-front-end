@@ -1,5 +1,5 @@
 import jwtDecode from "jwt-decode";
-import api, { registerAccessToken } from "../../api";
+import api from "../../api";
 import { setUserData, setTokens } from "./index";
 
 const userThunk = {
@@ -17,7 +17,6 @@ const userThunk = {
   checkToken() {
     return async (dispatch) => {
       const accessToken = localStorage.getItem("upto-access-token");
-      console.log(accessToken);
       if (!accessToken) return;
       const payload = jwtDecode(accessToken);
       if (!payload) return;

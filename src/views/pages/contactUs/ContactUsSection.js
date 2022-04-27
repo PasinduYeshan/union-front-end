@@ -45,8 +45,7 @@ const ContactUsSection = () => {
       //Issue send logic
       let fData = new FormData();
       fData = addDataToFormData(fData, formData);
-      console.log("Toast run");
-      toast.success("Successfull", {});
+      toast.success("Successful", {});
     } else {
       const errors = {};
       for (let item of error.details) {

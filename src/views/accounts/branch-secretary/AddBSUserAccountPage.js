@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import {useDispatch, useSelector} from 'react-redux'
 import { toast } from "react-toastify";
 import Joi from "joi";
-import api, { registerAccessToken } from "../../../api"
+import api from "../../../api"
 import store, {thunks, selectors} from "../../../store";
 
 
@@ -72,8 +72,6 @@ const AddBSUserAccountPage = () => {
 
       const accessToken = store.getState().user.tokens.access;
       console.log("accessToken", accessToken);
-      // Register access token to axios request header
-      registerAccessToken(accessToken);
       const res = await api.user.register(formData);
       
       if (res.status === 200) {

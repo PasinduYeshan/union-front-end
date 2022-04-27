@@ -8,6 +8,7 @@ const metaThunk = {
       if (res.status === 200) {
         dispatch(setBranches(res.data));
       }
+      return res;
     };
   },
 }

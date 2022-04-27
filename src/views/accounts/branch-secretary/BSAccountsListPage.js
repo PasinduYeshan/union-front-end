@@ -30,7 +30,6 @@ const BSAccountsPage = () => {
     const fetchData = async () => {
       registerAccessToken(store.getState().user.tokens.access);
       const res = await api.user.getUserAccounts("branchSecretary");
-      console.log(res);
       if (res.status === 200) {
         setBsAccounts(res.data);
         setFilteredBSAccounts(res.data);
@@ -70,7 +69,6 @@ const BSAccountsPage = () => {
 
   const handleClearFilter = () => {
     setFilters({ branchName: "", status: "", accountType: "" });
-    console.log(filters);
     setFilteredBSAccounts(bsAccounts);
   };
 

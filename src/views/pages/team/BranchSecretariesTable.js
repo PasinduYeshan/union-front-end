@@ -1,6 +1,6 @@
 import React from "react";
 
-const BranchSecratariesTable = ({ people }) => {
+const BranchSecretariesTable = ({ people }) => {
   return (
     <>
       <div className="px-10 overflow-auto pt-0">
@@ -74,4 +74,4 @@ const BranchSecratariesTable = ({ people }) => {
   );
 };
 
-export default BranchSecratariesTable;
+export default BranchSecretariesTable;
