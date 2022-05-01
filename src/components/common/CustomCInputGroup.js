@@ -44,9 +44,10 @@ export function CustomCFormInputGroup({
           id={name}
           name={name}
           onChange={onChange}
+          // defaultValue={value}
           value={value}
           // required={required}
-          invalid={error ? true : false}
+          // invalid={error ? true : false}
           placeholder={placeholder}
           multiple={multiple}
         />
@@ -214,7 +215,7 @@ export function CustomCFormSelectGroup({
           className={uppercase ? "uppercase" : ""}
         >{`${label}${required ? "*" : ""}`}</CFormLabel>
         <CFormSelect
-           className={`!bg-white ${inputClassName}`}
+          className={`!bg-white ${inputClassName}`}
           name={name}
           defaultValue={defaultValue}
           onChange={onChange}

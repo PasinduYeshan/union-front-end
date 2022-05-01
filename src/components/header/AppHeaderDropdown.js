@@ -22,10 +22,21 @@ import {
 } from "@coreui/icons";
 import CIcon from "@coreui/icons-react";
 
+import { useDispatch } from "react-redux";
+import store, { thunks } from "src/store";
+
 import avatar8 from "./../../assets/images/avatars/avatar.png";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 const AppHeaderDropdown = () => {
+  const dispatch = useDispatch();
+  const history = useHistory();
+
+  const submitLogOut = () => {
+    dispatch(thunks.user.userLogout());
+    history.replace("/");
+  };
+
   return (
     <CDropdown variant="nav-item">
       <CDropdownToggle placement="bottom-end" className="py-0" caret={false}>
@@ -41,7 +52,7 @@ const AppHeaderDropdown = () => {
           Profile
         </CDropdownItem>
         <CDropdownDivider />
-        <CDropdownItem href="/">
+        <CDropdownItem onClick={submitLogOut}>
           <CIcon icon={cilLockLocked} className="me-2" />
           Log Out
         </CDropdownItem>

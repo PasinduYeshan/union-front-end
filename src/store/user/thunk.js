@@ -13,7 +13,18 @@ const userThunk = {
       return res;
     };
   },
-  
+
+  userLogout() {
+    return async (dispatch) => {
+      dispatch(setUserData({}));
+      dispatch(setTokens({}));
+      localStorage.removeItem("upto-access-token");
+      localStorage.removeItem("upto-refresh-token");
+      console.log("this works");
+      history.push("/");
+    };
+  },
+
   checkToken() {
     return async (dispatch) => {
       const accessToken = localStorage.getItem("upto-access-token");

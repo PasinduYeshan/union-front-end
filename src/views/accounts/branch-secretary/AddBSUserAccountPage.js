@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import {useDispatch, useSelector} from 'react-redux'
+import { useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import Joi from "joi";
-import api from "../../../api"
-import store, {thunks, selectors} from "../../../store";
-
+import api, {registerAccessToken} from "../../../api";
+import store, { thunks, selectors, accessToken } from "../../../store";
 
 import {
   CustomCFormInputGroup,
@@ -14,32 +14,29 @@ import {
 import { CButton } from "@coreui/react";
 
 const AddBSUserAccountPage = () => {
-  const dispatch = useDispatch(); 
+  const dispatch = useDispatch();
+  const history = useHistory();
   const [formData, setFormData] = useState(initialValue);
   const [formErrors, setFormErrors] = useState({});
   const branchNameOptions = useSelector(selectors.meta.selectBranchNameOptions);
 
-
   // Fetch branches
   useEffect(() => {
     const fetchData = async () => {
-      dispatch(thunks.meta.getBranches());
-      if (res.status === 200) {
-        setFormData(res.data);
-      } else {
+      const res = await dispatch(thunks.meta.getBranches());
+      if (res.status != 200) {
         console.log("Error Occurred while fetching branches", res);
         toast.error("Error Occurred, Sorry for the inconvenience");
       }
     };
 
     fetchData().catch((err) => console.log(err));
-  },[]);
+  }, []);
 
   // Joi schema
   const schema = Joi.object({
     username: Joi.string().required().label("Username"),
     name: Joi.string().required().label("Name"),
-    password: Joi.string().required().label("Password"),
     email: Joi.string()
       .email({ tlds: { allow: false } })
       .required()
@@ -48,7 +45,6 @@ const AddBSUserAccountPage = () => {
     NIC: Joi.string().required().label("NIC"),
     branchName: Joi.string().required().label("Branch Name"),
     accountType: Joi.string().required().label("Access Level"),
-    confirmPassword: Joi.ref("password"),
   });
 
   // Handle input change
@@ -64,16 +60,11 @@ const AddBSUserAccountPage = () => {
 
   // Handle add branch secretary user account
   const handleSubmit = async (e) => {
-    const accessToken = store.getState().user.tokens.access;
-      console.log("accessToken", accessToken);
     const { error, value } = schema.validate(formData, { abortEarly: false });
     if (!error) {
       e.preventDefault();
-
-      const accessToken = store.getState().user.tokens.access;
-      console.log("accessToken", accessToken);
+      if (!registerAccessToken(accessToken(), history)) return;
       const res = await api.user.register(formData);
-      
       if (res.status === 200) {
         toast.success("Successfully Added");
         setFormData(initialValue);
@@ -161,26 +152,6 @@ const AddBSUserAccountPage = () => {
               { value: "bsViewer", label: "Viewer" },
             ]}
           />
-          <CustomCFormInputGroup
-            label="Password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            error={formErrors.password}
-            uppercase={true}
-            mdSize={6}
-            type="password"
-          />
-          <CustomCFormInputGroup
-            label="Confirm Password"
-            name="confirmPassword"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-            error={formErrors.confirmPassword}
-            uppercase={true}
-            mdSize={6}
-            type="password"
-          />
         </div>
         <div className="grid justify-end">
           <CButton
@@ -208,6 +179,4 @@ const initialValue = {
   contactNo: "",
   accountType: "",
   branchName: "",
-  password: "",
-  confirmPassword: "",
 };

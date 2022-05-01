@@ -36,3 +36,7 @@ export const selectors = {
   meta: metaSelectors,
   user: userSelectors,
 }
+
+export function accessToken(){
+  return store.getState().user.tokens.access;
+}

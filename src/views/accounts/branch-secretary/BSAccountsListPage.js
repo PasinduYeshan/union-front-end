@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from "react";
-
+import { useHistory } from "react-router-dom";
 import api, { registerAccessToken } from "src/api";
-import store from "src/store";
+import store, {accessToken} from "src/store";
+import { toast } from "react-toastify";
+import { deleteEmptyKeys } from "src/utils/function";
 
 // Components
 const AccountTable = React.lazy(() => import("../AccountTable"));
 const BSTableBody = React.lazy(() => import("./BSTableBody"));
 
-import { deleteEmptyKeys } from "src/utils/function";
-import { toast } from "react-toastify";
 
 const BSAccountsPage = () => {
+  const history = useHistory();
   const [loading, setLoading] = useState(false);
   const [bsAccounts, setBsAccounts] = useState([]);
   const [filteredData, setFilteredBSAccounts] = useState([]);
@@ -28,7 +29,7 @@ const BSAccountsPage = () => {
     let isSubscribed = true;
     setLoading(true);
     const fetchData = async () => {
-      registerAccessToken(store.getState().user.tokens.access);
+      if (!registerAccessToken(accessToken(), history)) return;
       const res = await api.user.getUserAccounts("branchSecretary");
       if (res.status === 200) {
         setBsAccounts(res.data);

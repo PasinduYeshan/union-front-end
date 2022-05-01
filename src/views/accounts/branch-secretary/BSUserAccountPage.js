@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import Joi from "joi";
@@ -8,12 +9,16 @@ import {
   CustomCFormSelectGroup,
 } from "src/components/common/CustomCInputGroup";
 import api from "src/api";
+import store, { selectors, thunks } from "src/store";
 
 const BSUserAccountPage = () => {
   const userId = useLocation().state.userId;
+  const branchNameOptions = useSelector(selectors.meta.selectBranchNameOptions);
+  const dispatch = useDispatch();
 
-  const [formData, setFormData] = useState(userAccount);
-  const [formErrors, setFormErrors] = useState({});
+  const [formData, setFormData] = useState(initialState);
+  const [initialAccount, setInitialAccount] = useState({});
+  const [formErrors, setFormErrors] = useState(initialState);
   const [passwordData, setPasswordData] = useState({
     password: "",
     confirmPassword: "",
@@ -28,10 +33,12 @@ const BSUserAccountPage = () => {
       const res = await api.user.getUserAccount(userId);
       if (res.status === 200) {
         setFormData(res.data);
+        setInitialAccount(res.data);
       } else {
         console.log("Error fetching user data", res);
         toast.error("Check your internet connection");
       }
+      dispatch(thunks.meta.getBranches());
     };
 
     fetchUserData().catch((err) => console.log(err));
@@ -67,11 +74,21 @@ const BSUserAccountPage = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
+    if (!updateMode) {
+      return;
+    }
     const { error, value } = schema.validate(formData, { abortEarly: false });
+    console.log("this run", formData);
     if (!error) {
       e.preventDefault();
-      toast.success("Successfully Added");
+      const res = await api.user.updateUser(userId, formData);
+      if (res.status === 200) {
+        toast.success("Account Updated Successfully");
+      } else {
+        console.log("Error updating user", res);
+        toast.error("Error Occurred, Please Try Again");
+      }
       return;
     } else {
       const errors = {};
@@ -109,22 +126,36 @@ const BSUserAccountPage = () => {
             id="formSwitchCheckDefault"
             onChange={() => {
               setUpdateMode(!updateMode);
-              setFormData(userAccount);
+              setFormData(initialAccount);
             }}
           />
         </div>
         <div className="row g-3">
-          <CustomCFormInputGroup
-            label="Name"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            error={formErrors.name}
-            uppercase={true}
-            required={false}
-            readOnly={!updateMode}
-          />
-          <CustomCFormInputGroup
+          {updateMode ? (
+            <CustomCFormInputGroup
+              label="Name"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              error={formErrors.name}
+              uppercase={true}
+              required={false}
+              readOnly={!updateMode}
+            />
+          ) : (
+            <CustomCFormInputGroup
+              label="Name"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              error={formErrors.name}
+              uppercase={true}
+              required={false}
+              readOnly={!updateMode}
+            />
+          )}
+
+          {/* <CustomCFormInputGroup
             label="Email Address"
             name="email"
             value={formData.email}
@@ -135,17 +166,29 @@ const BSUserAccountPage = () => {
             readOnly={!updateMode}
             mdSize={6}
           />
-          <CustomCFormInputGroup
-            label="Branch Name"
-            name="branchName"
-            value={formData.branchName}
-            onChange={handleChange}
-            error={formErrors.branchName}
-            uppercase={true}
-            required={false}
-            readOnly={!updateMode}
-            mdSize={6}
-          />
+          {updateMode ? (
+            <CustomCFormSelectGroup
+              label="Branch Name"
+              name="branchName"
+              value={formData.branchName}
+              onChange={handleChange}
+              error={formErrors.branchName}
+              uppercase={true}
+              required={false}
+              mdSize={4}
+              options={branchNameOptions}
+            />
+          ) : (
+            <CustomCFormInputGroup
+              label="Branch Name"
+              name="branchName"
+              value={formData.branchName}
+              uppercase={true}
+              required={false}
+              readOnly={!updateMode}
+              mdSize={4}
+            />
+          )}
           <CustomCFormInputGroup
             label="NIC"
             name="NIC"
@@ -184,7 +227,7 @@ const BSUserAccountPage = () => {
             <CustomCFormSelectGroup
               label="Access Level"
               name="accountType"
-              defaultValue={formData.accountType}
+              value={formData.accountType}
               onChange={handleChange}
               error={formErrors.accountType}
               uppercase={true}
@@ -210,7 +253,7 @@ const BSUserAccountPage = () => {
             <CustomCFormSelectGroup
               label="Account Status"
               name="status"
-              defaultValue={formData.status}
+              value={formData.status}
               onChange={handleChange}
               error={formErrors.status}
               uppercase={true}
@@ -231,7 +274,7 @@ const BSUserAccountPage = () => {
               readOnly={!updateMode}
               mdSize={4}
             />
-          )}
+          )} */}
         </div>
         <div className="grid justify-end" hidden={!updateMode}>
           <CButton
@@ -257,7 +300,7 @@ const BSUserAccountPage = () => {
         </div>
 
         <div className="row g-3" hidden={!updateMode | !changePassword}>
-          <CustomCFormInputGroup
+          {/* <CustomCFormInputGroup
             label="Password"
             name="password"
             value={formData.password}
@@ -278,7 +321,7 @@ const BSUserAccountPage = () => {
             required={false}
             readOnly={!updateMode}
             mdSize={6}
-          />
+          /> */}
           <div className="grid justify-end">
             <CButton
               color="primary"
@@ -297,14 +340,13 @@ const BSUserAccountPage = () => {
 
 export default BSUserAccountPage;
 
-const userAccount = {
-  userId: "1wrewer",
-  name: "John Doe",
-  username: "johndoe",
-  email: "john@gmail.com",
-  contactNo: "07898989898",
-  branchName: "Horana",
-  status: "Active",
-  NIC: "123456789",
-  accountType: "bsEditor",
+const initialState = {
+  name: "",
+  email: "",
+  branchName: "",
+  NIC: "",
+  contactNo: "",
+  username: "",
+  accountType: "",
+  status: "",
 };
