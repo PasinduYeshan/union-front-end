@@ -23,6 +23,7 @@ const AccountTable = ({
   handleFilterChange,
   handleFilterSubmit,
   handleClearFilter,
+  accountsType,
 }) => {
   // Functions
   const handlePageChangePrevious = () => {
@@ -57,6 +58,7 @@ const AccountTable = ({
           handleFilterChange={handleFilterChange}
           handleFilterSubmit={handleFilterSubmit}
           handleClearFilter={handleClearFilter}
+          accountsType={accountsType}
         />
         <CTable>
           <CTableHead>

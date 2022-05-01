@@ -20,6 +20,7 @@ const BSUserAccountPage = () => {
   const userId = useLocation().state.userId;
   const branchNameOptions = useSelector(selectors.meta.selectBranchNameOptions);
 
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState(initialState);
   const [initialAccount, setInitialAccount] = useState({});
   const [formErrors, setFormErrors] = useState(initialState);
@@ -32,6 +33,7 @@ const BSUserAccountPage = () => {
   useEffect(() => {
     let isSubscribed = true;
 
+    setLoading(true);
     const fetchUserData = async () => {
       if (!registerAccessToken(accessToken(), history)) return;
       const res = await api.user.getUserAccount(userId);
@@ -48,6 +50,7 @@ const BSUserAccountPage = () => {
     };
 
     fetchUserData().catch((err) => console.log(err));
+    setLoading(false);
 
     // Cancel any pending request
     return () => (isSubscribed = false);
@@ -68,6 +71,43 @@ const BSUserAccountPage = () => {
     accountType: Joi.string().optional().label("Access Level"),
   });
 
+  /*
+  * Handling account type related logic
+  */
+  const getAccountTypeLabel = (accountType) => {
+    switch (accountType) {
+      case "bsEditor":
+        return "Editor";
+      case "bsViewer":
+        return "Viewer";
+      case "adminEditor":
+        return "Editor";
+      case "adminViewer":
+        return "Viewer";
+      case "officer":
+        return "Officer";
+      default:
+        return "";
+    }
+  };
+
+  const getAccountTypeOptions = (accountType) => {
+    switch (accountType) {
+      case "bsEditor" || "bsViewer":
+        return ["bsEditor", "bsViewer"];
+      case "adminEditor" || "adminViewer":
+        return ["adminEditor", "adminViewer"];
+      case "officer":
+        return ["officer"];
+      default:
+        return [];
+    }
+  }
+  
+
+  /*
+   * Handling Button Presses
+   */
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (name === "images") {
@@ -221,7 +261,7 @@ const BSUserAccountPage = () => {
             mdSize: 4,
           })}
 
-          {updateMode ? (
+          {updateMode && formData.accountType != "officer" ? (
             <CustomCFormSelectGroup
               label="Access Level"
               name="accountType"
@@ -231,19 +271,16 @@ const BSUserAccountPage = () => {
               uppercase={true}
               required={false}
               mdSize={4}
-              options={[
-                { value: "bsEditor", label: "Editor" },
-                { value: "bsViewer", label: "Viewer" },
-              ]}
+              options={getAccountTypeOptions(formData.accountType)}
             />
           ) : (
             <CustomCFormInputGroup
               label="Access Level"
               name="accountType"
-              value={formData.accountType == "bsEditor" ? "Editor" : "Viewer"}
+              value={getAccountTypeLabel(formData.accountType)}
               uppercase={true}
               required={false}
-              readOnly={!updateMode}
+              readOnly={(!updateMode || formData.accountType == "officer")}
               mdSize={4}
             />
           )}

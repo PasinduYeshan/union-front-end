@@ -15,14 +15,14 @@ const AddMemberPage = React.lazy(() =>
 );
 
 // Accounts related pages
-const AddBSUserAccountPage = React.lazy(() =>
-  import("./views/accounts/branch-secretary/AddBSUserAccountPage")
+const AddUserAccountPage = React.lazy(() =>
+  import("./views/accounts/AddUserAccountPage")
 );
-const BSAccountsPage = React.lazy(() =>
-  import("./views/accounts/branch-secretary/BSAccountsListPage")
+const UserAccountListPage = React.lazy(() =>
+  import("./views/accounts/UserAccountListPage")
 );
-const BSUserAccountPage = React.lazy(() =>
-  import("./views/accounts/branch-secretary/BSUserAccountPage")
+const UserAccountsPage = React.lazy(() =>
+  import("./views/accounts/UserAccountPage")
 );
 
 //Event related pages
@@ -67,10 +67,11 @@ const routes = [
     exact: true,
     name: "Accounts",
   },
+  // Branch Secretary related pages
   {
     path: "/office/accounts/branch-secretaries",
     name: "Branch Secretaries",
-    component: BSAccountsPage,
+    component: UserAccountListPage,
   },
   {
     path: "/office/accounts/branch-secretary",
@@ -80,13 +81,57 @@ const routes = [
   {
     path: "/office/accounts/branch-secretary/add",
     name: "Add Branch Secretary",
-    component: AddBSUserAccountPage,
+    component: AddUserAccountPage,
   },
 
   {
     path: "/office/accounts/branch-secretary/account",
     name: "View Branch Secretary",
-    component: BSUserAccountPage,
+    component: UserAccountsPage,
+  },
+  // Admin related pages
+  {
+    path: "/office/accounts/admins",
+    name: "Admins",
+    component: UserAccountListPage,
+  },
+  {
+    path: "/office/accounts/admin",
+    name: "Admin",
+    exact: true,
+  },
+  {
+    path: "/office/accounts/admin/add",
+    name: "Add Admin",
+    component: AddUserAccountPage,
+  },
+
+  {
+    path: "/office/accounts/admin/account",
+    name: "View Admin",
+    component: UserAccountsPage,
+  },
+  // Officer related pages
+  {
+    path: "/office/accounts/officers",
+    name: "Officers",
+    component: UserAccountListPage,
+  },
+  {
+    path: "/office/accounts/officer",
+    name: "Officer",
+    exact: true,
+  },
+  {
+    path: "/office/accounts/officer/add",
+    name: "Add Officer",
+    component: AddUserAccountPage,
+  },
+
+  {
+    path: "/office/accounts/officer/account",
+    name: "View Officer",
+    component: UserAccountsPage,
   },
 ];
 

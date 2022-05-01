@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import api, { registerAccessToken } from "src/api";
-import store, {accessToken} from "src/store";
+import store, { accessToken } from "src/store";
 import { toast } from "react-toastify";
 import { deleteEmptyKeys } from "src/utils/function";
 
 // Components
-const AccountTable = React.lazy(() => import("../AccountTable"));
-const BSTableBody = React.lazy(() => import("./BSTableBody"));
-
+const AccountTable = React.lazy(() => import("./AccountTable"));
+const BSTableBody = React.lazy(() => import("./UserAccountTableBody"));
 
 const BSAccountsPage = () => {
   const history = useHistory();
+  const currentLocation = useLocation().pathname;
+
   const [loading, setLoading] = useState(false);
   const [bsAccounts, setBsAccounts] = useState([]);
   const [filteredData, setFilteredBSAccounts] = useState([]);
@@ -21,16 +22,37 @@ const BSAccountsPage = () => {
     accountType: "",
   });
   const [filterErrors, setFilterErrors] = useState({});
+  const [accountsType, setAccountsType] = useState("");
+  /*
+   * Account Type
+   */
+  // Get account types
 
-  /**
-   * Fetch Branch Secretaries Accounts
+  /*
+   * Fetch User Accounts
    */
   useEffect(() => {
     let isSubscribed = true;
+    
+    const locations = currentLocation.split("/")[3];
+    let fetchAccountType = "";
+    switch (locations) {
+      case "branch-secretaries":
+        fetchAccountType = "branchSecretary";
+        break;
+      case "officers":
+        fetchAccountType = "officer";
+        break;
+      case "admins":
+        fetchAccountType = "admin";
+        break;
+      default:
+        break;
+    }
     setLoading(true);
     const fetchData = async () => {
       if (!registerAccessToken(accessToken(), history)) return;
-      const res = await api.user.getUserAccounts("branchSecretary");
+      const res = await api.user.getUserAccounts(fetchAccountType);
       if (res.status === 200) {
         setBsAccounts(res.data);
         setFilteredBSAccounts(res.data);
@@ -42,7 +64,7 @@ const BSAccountsPage = () => {
     };
     fetchData().catch((err) => console.log(err));
     setLoading(false);
-
+    setAccountsType(fetchAccountType);
     // Cancel any pending request
     return () => (isSubscribed = false);
   }, []);
@@ -99,6 +121,7 @@ const BSAccountsPage = () => {
         handleFilterChange={handleFilterChange}
         handleFilterSubmit={handleFilterSubmit}
         handleClearFilter={handleClearFilter}
+        accountsType={accountsType}
       >
         <BSTableBody accounts={filteredData} />
       </AccountTable>
@@ -107,5 +130,3 @@ const BSAccountsPage = () => {
 };
 
 export default BSAccountsPage;
-
-

@@ -20,32 +20,25 @@ import {
 import { CNavGroup, CNavItem, CNavTitle } from "@coreui/react";
 
 const _nav = [
-  // {
-  //   component: CNavItem,
-  //   name: 'Dashboard',
-  //   to: '/office/dashboard',
-  //   icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
-  //   badge: {
-  //     color: 'info',
-  //     text: 'NEW',
-  //   },
-  // },
-  // {
-  //   component: CNavTitle,
-  //   name: 'Theme',
-  // },
-  // {
-  //   component: CNavItem,
-  //   name: 'Colors',
-  //   to: '/theme/colors',
-  //   icon: <CIcon icon={cilDrop} customClassName="nav-icon" />,
-  // },
-  // {
-  //   component: CNavItem,
-  //   name: 'Typography',
-  //   to: '/theme/typography',
-  //   icon: <CIcon icon={cilPencil} customClassName="nav-icon" />,
-  // },
+  // Admins
+  {
+    component: CNavTitle,
+    name: "Admins",
+  },
+  {
+    component: CNavItem,
+    name: "Add Admin",
+    to: "/office/accounts/admin/add",
+    icon: <CIcon icon={cilUserPlus} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: "Admins",
+    to: "/office/accounts/admins",
+    icon: <CIcon icon={cilAddressBook} customClassName="nav-icon" />,
+  },
+
+  // Branch Secretary
   {
     component: CNavTitle,
     name: "Branch Secretaries",
@@ -60,6 +53,24 @@ const _nav = [
     component: CNavItem,
     name: "Branch Secretaries",
     to: "/office/accounts/branch-secretaries",
+    icon: <CIcon icon={cilAddressBook} customClassName="nav-icon" />,
+  },
+
+  // Officer
+  {
+    component: CNavTitle,
+    name: "Officers",
+  },
+  {
+    component: CNavItem,
+    name: "Add Officer",
+    to: "/office/accounts/officer/add",
+    icon: <CIcon icon={cilUserPlus} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: "Officers",
+    to: "/office/accounts/officers",
     icon: <CIcon icon={cilAddressBook} customClassName="nav-icon" />,
   },
 

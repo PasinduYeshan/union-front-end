@@ -15,6 +15,7 @@ const FilterTable = ({
   handleFilterSubmit,
   bsAccounts,
   handleClearFilter,
+  accountsType,
 }) => {
   const dispatch = useDispatch();
   const [showFilterData, setShowFilterData] = useState(false);
@@ -36,6 +37,29 @@ const FilterTable = ({
 
     setBranchNames().catch((err) => console.log(err));
   }, []);
+
+  /*
+   * Account Type Related Functions
+   */
+
+  const getAccountTypeOptions = () => {
+    switch (accountsType) {
+      case "branchSecretary":
+        return [
+          { value: "bsEditor", label: "Editor" },
+          { value: "bsViewer", label: "Viewer" },
+        ];
+      case "admin":
+        return [
+          { value: "adminEditor", label: "Editor" },
+          { value: "adminViewer", label: "Viewer" },
+        ];
+      case "officer":
+        return [{ value: "officer", label: "Officer" }];
+      default:
+        return [];
+    }
+  };
 
   return (
     <>
@@ -68,22 +92,21 @@ const FilterTable = ({
               { value: "Inactive", label: "Inactive" },
             ]}
           />
-          <CustomCFormSelectGroup
-            inputClassName="text-sm"
-            hidden={!bsAccounts}
-            label="Access Level"
-            name="accountType"
-            value={filters.accountType}
-            onChange={handleFilterChange}
-            error={filterErrors.accountType}
-            uppercase={true}
-            required={false}
-            mdSize={4}
-            options={[
-              { value: "bsEditor", label: "Editor" },
-              { value: "bsViewer", label: "Viewer" },
-            ]}
-          />
+          {accountsType != "officer" && (
+            <CustomCFormSelectGroup
+              inputClassName="text-sm"
+              hidden={!bsAccounts}
+              label="Access Level"
+              name="accountType"
+              value={filters.accountType}
+              onChange={handleFilterChange}
+              error={filterErrors.accountType}
+              uppercase={true}
+              required={false}
+              mdSize={4}
+              options={getAccountTypeOptions()}
+            />
+          )}
           <CustomCFormSelectGroup
             inputClassName="text-sm"
             hidden={!bsAccounts}

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import Joi from "joi";
-import api, {registerAccessToken} from "../../../api";
-import store, { thunks, selectors, accessToken } from "../../../store";
+import api, { registerAccessToken } from "../../api";
+import store, { thunks, selectors, accessToken } from "../../store";
 
 import {
   CustomCFormInputGroup,
@@ -16,9 +16,41 @@ import { CButton } from "@coreui/react";
 const AddBSUserAccountPage = () => {
   const dispatch = useDispatch();
   const history = useHistory();
+  const currentLocation = useLocation().pathname;
+
   const [formData, setFormData] = useState(initialValue);
   const [formErrors, setFormErrors] = useState({});
   const branchNameOptions = useSelector(selectors.meta.selectBranchNameOptions);
+  const [accountType, setAccountType] = useState("");
+  const [accountTypeOptions, setAccountTypeOptions] = useState([]);
+
+  // Set accountsType
+  useEffect(() => {
+    // Get account types
+    const locations = currentLocation.split("/");
+    switch (locations[3]) {
+      case "branch-secretary":
+        setAccountType("branchSecretary");
+        setAccountTypeOptions([
+          { value: "bsEditor", label: "Editor" },
+          { value: "bsViewer", label: "Viewer" },
+        ]);
+        break;
+      case "officer":
+        setAccountTypeOptions([{ value: "officer", label: "Officer" }]);
+        setAccountType("officer");
+        break;
+      case "admin":
+        setAccountTypeOptions([
+          { value: "adminEditor", label: "Editor" },
+          { value: "adminViewer", label: "Viewer" },
+        ]);
+        setAccountType("admin");
+        break;
+      default:
+        break;
+    }
+  }, []);
 
   // Fetch branches
   useEffect(() => {
@@ -46,6 +78,14 @@ const AddBSUserAccountPage = () => {
     branchName: Joi.string().required().label("Branch Name"),
     accountType: Joi.string().required().label("Access Level"),
   });
+
+  /*
+   * Account Type Related Functions
+   */
+
+  /*
+   * Form related functions
+   */
 
   // Handle input change
   const handleChange = (e) => {
@@ -147,10 +187,7 @@ const AddBSUserAccountPage = () => {
             error={formErrors.accountType}
             uppercase={true}
             mdSize={6}
-            options={[
-              { value: "bsEditor", label: "Editor" },
-              { value: "bsViewer", label: "Viewer" },
-            ]}
+            options={accountTypeOptions}
           />
         </div>
         <div className="grid justify-end">
