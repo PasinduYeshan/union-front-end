@@ -118,15 +118,15 @@ export default {
         },
         async forgotPassword(username) {
             return ajaxResolver(
-                axios.post(`/api/user/update/${userId}`, {username}),
+                axios.post(`/api/user/forgot-password`, {username}),
                 {
                     //   fullBody: true,
                 }
             );
         },
-        async resetPassword(username) {
+        async resetPassword(resetData) {
             return ajaxResolver(
-                axios.post(`/api/user/update/${userId}`, {username}),
+                axios.post(`/api/user/update/${userId}`, resetData),
                 {
                     //   fullBody: true,
                 }

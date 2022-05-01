@@ -20,8 +20,6 @@ const userThunk = {
       dispatch(setTokens({}));
       localStorage.removeItem("upto-access-token");
       localStorage.removeItem("upto-refresh-token");
-      console.log("this works");
-      history.push("/");
     };
   },
 
