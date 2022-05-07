@@ -47,7 +47,7 @@ export function CustomCFormInputGroup({
           // defaultValue={value}
           value={value}
           // required={required}
-          // invalid={error ? true : false}
+          invalid={error ? true : false}
           placeholder={placeholder}
           multiple={multiple}
         />

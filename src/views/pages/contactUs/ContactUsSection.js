@@ -1,19 +1,41 @@
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
+import {useSelector, useDispatch} from 'react-redux';
 import Joi from "joi";
 import { ReplyIcon } from "@heroicons/react/solid";
 import { toast } from "react-toastify";
 
+import store, { thunks, selectors } from "src/store";
+import api from "src/api";
+
 import {
   CustomCFormTextAreaGroup,
   CustomCFormInputGroup,
+  CustomCFormSelectGroup,
   CustomCFormFilesGroup,
 } from "src/components/common/CustomCInputGroup";
 import { addDataToFormData, printFormData } from "src/utils/function";
 
 const ContactUsSection = () => {
+  const dispatch = useDispatch();
+
   // States
   const [formData, setFormData] = useState(initialValue);
   const [formErrors, setFormErrors] = useState({});
+
+  const branchNameOptions = useSelector(selectors.meta.selectBranchNameOptions);
+
+  // Fetch branch name options from database
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await dispatch(thunks.meta.getBranches());
+      if (res && res.status != 200) {
+        console.log("Error fetching branch name options", res);
+        toast.error("Error occurred. Please try again later.");
+      }
+    }
+
+    fetchData().catch(err => console.log(err));
+  }, []);
 
   // Joi validation schema
   const schema = Joi.object({
@@ -21,6 +43,7 @@ const ContactUsSection = () => {
     membershipNo: Joi.string().required().label("Membership No"),
     contactNo: Joi.string().required().label("Contact No"),
     branchName: Joi.string().required().label("Branch Name"),
+    title: Joi.string().required().label("Title"),
     description: Joi.string().min(10).required().label("Issue"),
     images: Joi.any(),
   });
@@ -38,19 +61,26 @@ const ContactUsSection = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
+    console.log(formData);
     e.preventDefault();
     const { error, value } = schema.validate(formData, { abortEarly: false });
     if (!error) {
       //Issue send logic
       let fData = new FormData();
       fData = addDataToFormData(fData, formData);
-      toast.success("Successful", {});
+      const res = await api.issue.add(fData);
+      if (res && res.status === 200) {
+        toast.success("Issue sent successfully.");
+      } else {
+        toast.error(res.message ? res.message : "Error occurred. Please try again later.");
+      }
     } else {
       const errors = {};
       for (let item of error.details) {
         errors[item.path[0]] = item.message;
       }
+      console.log("Erros", errors);
       setFormErrors(errors);
     }
   };
@@ -85,19 +115,20 @@ const ContactUsSection = () => {
                   onChange={handleChange}
                   error={formErrors.name}
                 />
-                <CustomCFormInputGroup
+                <CustomCFormSelectGroup
                   label="Branch Name"
                   name="branchName"
                   value={formData.branchName}
                   onChange={handleChange}
                   error={formErrors.branchName}
+                  options={branchNameOptions}
                 />
                 <CustomCFormInputGroup
                   label="Membership Number"
                   name="membershipNo"
-                  value={formData.membershipNO}
+                  value={formData.membershipNo}
                   onChange={handleChange}
-                  error={formErrors.membershipNO}
+                  error={formErrors.membershipNo}
                 />
                 <CustomCFormInputGroup
                   label="Contact Number"
@@ -106,8 +137,15 @@ const ContactUsSection = () => {
                   onChange={handleChange}
                   error={formErrors.contactNo}
                 />
+                <CustomCFormInputGroup
+                  label="Issue Title"
+                  name="title"
+                  value={formData.title}
+                  onChange={handleChange}
+                  error={formErrors.title}
+                />
                 <CustomCFormTextAreaGroup
-                  label="Issue"
+                  label="Issue Description"
                   name="description"
                   value={formData.description}
                   onChange={handleChange}
@@ -148,10 +186,12 @@ const ContactUsSection = () => {
 
 export default ContactUsSection;
 
+// Initial empty strings for the form
 const initialValue = {
   name: "",
   membershipNo: "",
   contactNo: "",
+  title: "",
   description: "",
   branchName: "",
   images: [],

@@ -4,6 +4,7 @@ import api, { registerAccessToken } from "src/api";
 import store, { accessToken } from "src/store";
 import { toast } from "react-toastify";
 import { deleteEmptyKeys } from "src/utils/function";
+import { useDispatch } from "react-redux";
 
 // Components
 const AccountTable = React.lazy(() => import("./AccountTable"));
@@ -11,6 +12,7 @@ const BSTableBody = React.lazy(() => import("./UserAccountTableBody"));
 
 const BSAccountsPage = () => {
   const history = useHistory();
+  const dispatch = useDispatch();
   const currentLocation = useLocation().pathname;
 
   const [loading, setLoading] = useState(false);
@@ -51,7 +53,7 @@ const BSAccountsPage = () => {
     }
     setLoading(true);
     const fetchData = async () => {
-      if (!registerAccessToken(accessToken(), history)) return;
+      if (!registerAccessToken(accessToken(), history, dispatch)) return;
       const res = await api.user.getUserAccounts(fetchAccountType);
       if (res.status === 200) {
         setBsAccounts(res.data);

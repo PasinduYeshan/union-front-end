@@ -63,7 +63,7 @@ export default function LoginSection(props) {
         localStorage.setItem("upto-refresh-token", res.data.token.refresh);
         history.replace("/office/dashboard");
       } else {
-        toast.error(res.message);
+        toast.error(res.message ? res.message : "Error occurred. Please try again later.");
       }
     } else {
       const errors = {};

@@ -103,13 +103,13 @@ const AddBSUserAccountPage = () => {
     const { error, value } = schema.validate(formData, { abortEarly: false });
     if (!error) {
       e.preventDefault();
-      if (!registerAccessToken(accessToken(), history)) return;
+      if (!registerAccessToken(accessToken(), history, dispatch)) return;
       const res = await api.user.register(formData);
       if (res.status === 200) {
         toast.success("Successfully Added");
         setFormData(initialValue);
       } else {
-        toast.error(res.message);
+        toast.error(res.message ? res.message : "Error occurred. Please try again later.");
       }
       return;
     } else {

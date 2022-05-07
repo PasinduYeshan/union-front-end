@@ -9,6 +9,12 @@ export function getImageFromBucket(imageName) {
 // Add data to formData
 export function addDataToFormData(formData, data) {
   for (let key in data) {
+    if (key === "images") {
+      for (let i = 0; i < data[key].length; i++) {
+        formData.append(key, data[key][i]);
+      }
+      continue;
+    }
     formData.set(key, data[key]);
   }
   return formData;
@@ -38,7 +44,7 @@ export function deleteEmptyKeys(obj) {
   for (let key in obj) {
     if (obj[key] === "") {
       delete obj[key];
-    }else if(obj[key] === "Open this select menu"){
+    } else if (obj[key] === "Open this select menu") {
       delete obj[key];
     }
   }

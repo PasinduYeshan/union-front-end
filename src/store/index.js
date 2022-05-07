@@ -38,5 +38,6 @@ export const selectors = {
 }
 
 export function accessToken(){
-  return store.getState().user.tokens.access;
+  const accessToken = store.getState().user.tokens.access;
+  return accessToken;
 }

@@ -33,7 +33,7 @@ const NavigationBar = (props) => {
                   <div className="flex items-center flex-grow flex-shrink-0 lg:flex-grow-0">
                     <div className="flex items-center justify-between w-full md:w-auto">
                       <Link to="/">
-                        <span className="sr-only">Workflow</span>
+                        {/* <span className="sr-only">Workflow</span> */}
                         <img
                           className="h-8 w-auto sm:h-10"
                           src="images/logo.png"
@@ -47,7 +47,7 @@ const NavigationBar = (props) => {
                       </div>
                     </div>
                   </div>
-                  <div className="hidden md:block md:ml-10 md:pr-4 md:space-x-8 lg:justify-end">
+                  <div className="hidden md:block md:ml-2 md:pr-4 md:space-x-6 log:space-x-8 lg:justify-end">
                     {navigation.map((item) => (
                       <Link
                         key={item.name}

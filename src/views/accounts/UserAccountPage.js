@@ -35,7 +35,7 @@ const BSUserAccountPage = () => {
 
     setLoading(true);
     const fetchUserData = async () => {
-      if (!registerAccessToken(accessToken(), history)) return;
+      if (!registerAccessToken(accessToken(), history, dispatch)) return;
       const res = await api.user.getUserAccount(userId);
 
       if (res.status === 200) {
@@ -129,8 +129,7 @@ const BSUserAccountPage = () => {
       if (res.status === 200) {
         toast.success("Account Updated Successfully");
       } else {
-        console.log("Error updating user", res);
-        toast.error("Error Occurred, Please Try Again");
+        toast.error(res.message ? res.message : "Error occurred. Please try again later.");
       }
       return;
     } else {
