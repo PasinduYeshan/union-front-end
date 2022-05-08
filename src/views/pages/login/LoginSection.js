@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import Joi from "joi";
+import jwtDecode from "jwt-decode";
 import { LockClosedIcon } from "@heroicons/react/solid";
 import { toast } from "react-toastify";
 
 import { thunks } from "src/store";
 import { CustomCFormInputGroup } from "../../../components/common/CustomCInputGroup";
 import { LoadingIndicator } from "src/components";
-import store, {accessToken} from "src/store";
+import store, { accessToken } from "src/store";
 
 export default function LoginSection(props) {
   const history = useHistory();
@@ -24,10 +25,13 @@ export default function LoginSection(props) {
   // Check if the user is already Logged in
   // If logged in redirect to user home page
   useEffect(() => {
-    if (accessToken()) {
+    const token = accessToken();
+    if (token) {
+      const { exp } = jwtDecode(token);
+      if (Date.now() >= exp * 1000) return;
       history.replace("/office/dashboard");
     }
-  },[]);
+  }, []);
 
   // Joi validation schema
   const schema = Joi.object({
@@ -63,7 +67,9 @@ export default function LoginSection(props) {
         localStorage.setItem("upto-refresh-token", res.data.token.refresh);
         history.replace("/office/dashboard");
       } else {
-        toast.error(res.message ? res.message : "Error occurred. Please try again later.");
+        toast.error(
+          res.message ? res.message : "Error occurred. Please try again later."
+        );
       }
     } else {
       const errors = {};
@@ -159,7 +165,7 @@ export default function LoginSection(props) {
                     type="submit"
                     className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                   >
-                    {loading ? LoadingIndicator('sm') : null}
+                    {loading ? LoadingIndicator("sm") : null}
                     <span className="absolute left-0 inset-y-0 flex items-center pl-3">
                       <LockClosedIcon
                         className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400"

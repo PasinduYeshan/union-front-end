@@ -1,5 +1,6 @@
-import React, { lazy, useState } from "react";
+import React, { lazy, useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
+import { convertTZ } from "src/utils/function";
 
 import {
   CButton,
@@ -16,53 +17,93 @@ import {
 
 import { deleteEmptyKeys } from "src/utils/function";
 import FilterTable from "./FilterTable";
+import api, { registerAccessToken } from "src/api";
+import { toast } from "react-toastify";
+import { accessToken } from "src/store";
+import { useDispatch } from "react-redux";
 
 const IssueTable = () => {
-  // State
-  const maxPages = 4;
+  const history = useHistory();
+  const dispatch = useDispatch();
+
+  const recordsPerPage = 10;
+  const [maxPages, setMaxPages] = useState(0);
   const [pageNumber, setPageNumber] = useState(1);
-  const [filteredData, setFilteredData] = useState(issuesData);
-  const [issues, setIssues] = useState(issuesData);
-  // Handle filter
+  const [filteredData, setFilteredData] = useState([]);
+  const [issues, setIssues] = useState([]);
+  const [totalIssueCount, setTotalIssueCount] = useState(0);
+  const [loading, setLoading] = useState(false);
+
   const [filterData, setFilterData] = useState({
     branchName: "",
     status: "",
   });
   const [filterErrors, setFilterErrors] = useState({});
 
-  // Handle filter
+  // Fetch issues from back end
+  useEffect(() => {
+    fetchData({ page: pageNumber }).catch((e) => console.log(e));
+  }, []);
+
+  const fetchData = async (qeury) => {
+    setLoading(true);
+    if (!registerAccessToken(accessToken(), history, dispatch)) return;
+    const res = await api.issue.get({ ...qeury, limit: recordsPerPage });
+    if (res.status != 200) {
+      toast.error(res.message ? res.message : "Something went wrong");
+      setLoading(false);
+      return;
+    } else {
+      setTotalIssueCount(res.data.count);
+      setIssues(res.data.issues);
+      setFilteredData(res.data.issues);
+      setMaxPages(Math.ceil(res.data.count / recordsPerPage));
+      setLoading(false);
+    }
+  };
+
+  /**
+   * Filter related handlers
+   */
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
     setFilterData({ ...filterData, [name]: value });
   };
 
-  const handleFilterSubmit = (e) => {
+  const handleFilterSubmit = async (e) => {
     e.preventDefault();
     const filters = deleteEmptyKeys(filterData);
-    const filteredValues = issues.filter((account) => {
-      for (let key in filters) {
-        if (filters[key].toLowerCase() != account[key].toLowerCase())
-          return false;
-      }
-      return true;
+    await fetchData({ ...filters, page: 1 });
+    setPageNumber(1);
+  };
+
+  const handleClearFilter = async () => {
+    setFilterData({
+      branchName: "",
+      status: "",
     });
-    setFilteredData(filteredValues);
+    await fetchData({ page: 1 });
   };
 
-  const handleClearFilter = () => {
-    setFilterData({});
-    setFilteredData(issues);
+  /**
+   * Pagination related functions
+   */
+  const handlePageChangePrevious = async () => {
+    if (pageNumber == 1) {
+      return;
+    } else {
+      await fetchData({ page: pageNumber - 1 });
+      setPageNumber(pageNumber - 1);
+    }
   };
 
-  // Hooks
-  const history = useHistory();
-
-  // Functions
-  const handlePageChangePrevious = () => {
-    pageNumber == 1 ? 1 : setPageNumber(pageNumber - 1);
-  };
-  const handlePageChangeNext = () => {
-    pageNumber == maxPages ? maxPages : setPageNumber(pageNumber + 1);
+  const handlePageChangeNext = async () => {
+    if (pageNumber == maxPages) {
+      return;
+    } else {
+      await fetchData({ page: pageNumber + 1 });
+      setPageNumber(pageNumber + 1);
+    }
   };
 
   const PaginationPages = () => {
@@ -72,7 +113,10 @@ const IssueTable = () => {
         <CPaginationItem
           key={i}
           active={i === pageNumber}
-          onClick={() => setPageNumber(i)}
+          onClick={async () => {
+            setPageNumber(i);
+            await fetchData({ page: i });
+          }}
         >
           {i}
         </CPaginationItem>
@@ -80,9 +124,10 @@ const IssueTable = () => {
     }
     return items;
   };
+
   return (
     <>
-      <div className="shadow border-b border-gray-200 sm:rounded-lg bg-white p-4 mb-5">
+      <div className="shadow border-b border-gray-200 sm:rounded-lg bg-white p-4 mb-5 justify-center">
         <FilterTable
           filterData={filterData}
           filterErrors={filterErrors}
@@ -107,11 +152,11 @@ const IssueTable = () => {
                 <CTableDataCell>{issue.title}</CTableDataCell>
                 <CTableDataCell>{issue.branchName}</CTableDataCell>
                 <CTableDataCell>{issue.name}</CTableDataCell>
-                <CTableDataCell>{issue.issueDate}</CTableDataCell>
+                <CTableDataCell>{convertTZ(issue.issueDate)}</CTableDataCell>
                 <CTableDataCell>
                   <CBadge
                     color={
-                      issue.status == "Open"
+                      issue.status == "Pending"
                         ? "warning"
                         : issue.status == "Viewed"
                         ? "info"
@@ -126,7 +171,10 @@ const IssueTable = () => {
                     color="info"
                     variant="outline"
                     onClick={() =>
-                      history.push(`/office/issues/${issue.issueId}`)
+                      history.push({
+                        pathname: "/office/issues/view-issue",
+                        state: { issueId: issue.issueId },
+                      })
                     }
                   >
                     View
@@ -162,50 +210,3 @@ const IssueTable = () => {
 };
 
 export default IssueTable;
-
-const issuesData = [
-  {
-    issueId: "ksdfjklsd3223",
-    title: "Salary Problem",
-    name: "John Doe",
-    branchName: "Badulla",
-    issueDate: "2020-01-01",
-    status: "Open",
-    contactNo: "07898989898",
-    description: "Salary should be increased",
-    membershipNo: "123456789",
-  },
-  {
-    issueId: "ksdfjklsd3214",
-    title: "Government Problem",
-    name: "John Doe",
-    branchName: "Galle",
-    issueDate: "2020-01-01",
-    status: "Open",
-    contactNo: "07898989898",
-    description: "Salary should be increased",
-    membershipNo: "123456789",
-  },
-  {
-    issueId: "ksdfjklsd3215",
-    title: "Salary Problem",
-    name: "John Doe",
-    branchName: "Galle",
-    issueDate: "2020-01-01",
-    status: "Open",
-    contactNo: "07898989898",
-    description: "Salary should be increased",
-    membershipNo: "123456789",
-  },
-  {
-    issueId: "ksdfjklsd3216",
-    title: "Government Problem",
-    name: "John Doe",
-    branchName: "Kandy",
-    issueDate: "2020-01-01",
-    status: "Viewed",
-    contactNo: "07898989898",
-    description: "Salary should be increased",
-    membershipNo: "123456789",
-  },
-];

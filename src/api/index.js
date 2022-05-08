@@ -3,7 +3,7 @@ import store from "src/store";
 import jwtDecode from "jwt-decode";
 import { toast } from "react-toastify";
 import { useHistory } from "react-router-dom";
-import {thunks} from "src/store";
+import { thunks } from "src/store";
 
 /**
  * Setup Axios
@@ -53,6 +53,11 @@ function readStatus(res) {
       status: 408,
       message: "Check your internet connection",
     };
+  } else if (!res.data.message) {
+    return {
+      status: res.status,
+      message: "Something went wrong",
+    };
   }
   return {
     status: res.status,
@@ -72,9 +77,14 @@ async function ajaxResolver(axiosRes, options = null) {
       return { ...readStatus(res), data: res.data };
     else return { ...readStatus(res), data: res.data.data };
   } catch (e) {
-    const res = e.response;
-    console.log("this is error", e);
-    return { ...readStatus(res), data: null };
+    console.log("Axios error", e);
+    if (e.response) {
+      return { ...readStatus(e.response), data: null };
+    } else if (e.request) {
+      return { ...readStatus(e.request), data: null };
+    } else {
+      return { ...readStatus(e), data: null };
+    }
   }
 }
 
@@ -173,14 +183,19 @@ export default {
     },
     async update(issueId, issueData) {
       return ajaxResolver(
-        axios.post(`/api/issue/update/${issueId}`, issueData),
+        axios.put(`/api/issue/update/${issueId}`, issueData),
         {
           // fullBody: true,
         }
       );
     },
     async get(filter) {
-      return ajaxResolver(axios.post("/api/issue/get", { params: filter }), {
+      return ajaxResolver(axios.get("/api/issue/get", { params: filter }), {
+        // fullBody: true,
+      });
+    },
+    async getOne(issueId) {
+      return ajaxResolver(axios.get(`/api/issue/get/${issueId}`), {
         // fullBody: true,
       });
     },

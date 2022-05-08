@@ -25,8 +25,6 @@ const UserAccountsPage = React.lazy(() =>
   import("./views/accounts/UserAccountPage")
 );
 
-//Event related pages
-
 const routes = [
   { path: "/office", exact: true, name: "Office" },
   {
@@ -35,6 +33,7 @@ const routes = [
     name: "Dashboard",
     component: Dashboard,
   },
+  // Issues
   {
     path: "/office/issues",
     exact: true,
@@ -42,7 +41,7 @@ const routes = [
     component: IssueTable,
   },
   {
-    path: "/office/issues/:issueId",
+    path: "/office/issues/view-issue",
     exact: true,
     name: "Issue Details",
     component: IssuePage,

@@ -50,3 +50,10 @@ export function deleteEmptyKeys(obj) {
   }
   return obj;
 }
+
+// Convert date into lk region
+export function convertTZ(date) {
+  let dateObj = new Date(date);
+  let dateStr = dateObj.toLocaleDateString("en-US", { timeZone: "Asia/Colombo" });
+  return dateStr;
+}

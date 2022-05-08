@@ -20,17 +20,10 @@ const FilterTable = ({
   
   const branchNameOptions = useSelector(selectors.meta.selectBranchNameOptions);
 
+  // Fetch branch names
   useEffect(() => {
-    dispatch(thunks.meta.setBranchNames());
-
-    if (branchNames) {
-      const branchNameOptions = branchNames.map((branchName) => ({
-        value: branchName.name,
-        label: branchName.name,
-      }));
-      setBranchNameOptions(branchNameOptions);
-    }
-  }, [branchNames]);
+    dispatch(thunks.meta.getBranches());
+  }, []);
 
   return (
     <>
@@ -58,9 +51,9 @@ const FilterTable = ({
             required={false}
             mdSize={4}
             options={[
-              { value: "Open", label: "Open" },
+              { value: "Pending", label: "Pending" },
               { value: "Viewed", label: "Viewed" },
-              { value: "ActionTaken", label: "Action Taken" },
+              { value: "Resolved", label: "Resolved" },
             ]}
           />
           <CustomCFormSelectGroup
