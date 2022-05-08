@@ -1,7 +1,13 @@
-import React, { useCallback, useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import _ from "lodash";
 import Joi from "joi";
 import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+
+import store, { accessToken, selectors, thunks } from "src/store";
+import api, { registerAccessToken } from "src/api";
+import { deleteEmptyKeys } from 'src/utils/function';
 
 // Stepper
 const StepperControl = React.lazy(() =>
@@ -19,29 +25,112 @@ const DepartmentDetailsSection = React.lazy(() =>
 const MemberDetailsSection = React.lazy(() => import("./MemberDetailsSection"));
 
 const AddMemberPage = () => {
-  /**
-   * State
-   */
+  const dispatch = useDispatch();
+  const history = useHistory();
+
   const [currentStep, setCurrentStep] = useState(1);
   const [member, setValue] = useState(initialValue);
   const [formData, setFormData] = useState(initialValue);
   const [formErrors, setFormErrors] = useState({});
 
-  // TODO : Study on this
-  // const { value, handleChange } = useInput("");
+  // Fetch branch names
+  useEffect(() => {
+    dispatch(thunks.meta.getBranches());
+  }, []);
+
+  // Submit function
+  const submit = async () => {
+    //Add member logic
+    const { childName, unionName, ...submitData } = formData;
+    if (!registerAccessToken(accessToken(), history, dispatch)) return;
+    const res = await api.member.add(deleteEmptyKeys(submitData));
+    if (res && res.status === 200) {
+      toast.success("Member added successfully");
+      setCurrentStep(1);
+      setValue(initialValue);
+    } else {
+      toast.error(res.message ? res.message : "Something went wrong");
+    }
+  };
 
   /**
-   * Handle functions
+   * Handlers
    */
+
   const handleNextBtn = async (e) => {
-    const { error, value } = schema.validate(formData, { abortEarly: false });
+    let schema;
+    let checkData;
+    switch (currentStep) {
+      case 1:
+        schema = personalDetailsSchema;
+        checkData = _.pick(formData, [
+          "fullName",
+          "nameWithInitials",
+          "otherName",
+          "oldNIC",
+          "newNIC",
+          "dob",
+          "sex",
+          "permanentAddress",
+          "mailingAddress",
+          "emailAddress",
+          "mobileCN",
+          "officeCN",
+          "homeCN",
+          "civilStatus",
+          "nominee",
+          "relationshipOfNominee",
+        ]);
+        break;
+      case 2:
+        schema = familyDetailsSchema;
+        checkData = _.pick(formData, [
+          "spouseName",
+          "children",
+          "fatherName",
+          "motherName",
+          "fatherInLawName",
+          "motherInLawName",
+          "childName",
+        ]);
+        break;
+      case 3:
+        schema = departmentDetailsSchema;
+        checkData = _.pick(formData, [
+          "title",
+          "grade",
+          "dateOfAppointment",
+          "permanentWorkStation",
+          "presentWorkStation",
+          "dateOfPension",
+          "officeOfRegionalAccountant",
+          "paySheetNo",
+          "employeeId",
+          "officeOfDPMG",
+        ]);
+        break;
+      default:
+        schema = memberDetailsSchema;
+        checkData = _.pick(formData, [
+          "membershipNo",
+          "dateOfMembership",
+          "RDSNumber",
+          "memberOfOtherUnion",
+          "otherUnions",
+          "unionName",
+          "branchName",
+        ]);
+        break;
+    }
+    const { error, value } = schema.validate(checkData, { abortEarly: false });
+    console.log("Here", error);
     if (!error) {
       // At the end of the form, submit the form
       if (currentStep == stepComponents.length) {
-        e.preventDefault();
         await submit();
         return;
       }
+      console.log(currentStep);
       setCurrentStep(currentStep + 1);
     } else {
       const errors = {};
@@ -49,6 +138,10 @@ const AddMemberPage = () => {
         errors[item.path[0]] = item.message;
       }
       setFormErrors(errors);
+      // setTimeout(() => {
+      //   setCurrentStep(currentStep + 1);
+      //   return;
+      // }, 2000);
     }
   };
 
@@ -68,14 +161,16 @@ const AddMemberPage = () => {
 
   // Handle add button pressed
   const handleAddBtnPressed = ({ e, tempFieldName }) => {
+    const { name } = e.target;
     if (!formData[tempFieldName]) {
       return;
     }
-    const { name } = e.target;
+
     setFormData({
       ...formData,
       [name]: [...formData[name], { name: formData[tempFieldName] }],
     });
+    console.log(formData);
   };
 
   // Handle child remove button from list
@@ -84,19 +179,6 @@ const AddMemberPage = () => {
       (item) => item.name !== child.name
     );
     setFormData({ ...formData, [listName]: listTemp });
-  };
-
-  // Submit function
-  const submit = async () => {
-    //Add member logic
-    const { childName, unionName, ...submitData } = formData;
-    // On success
-    toast.success("Successfull", {});
-    setCurrentStep(1);
-    setValue(initialValue);
-
-    // On error
-    // toast.error("Error", {});
   };
 
   /**
@@ -207,7 +289,7 @@ const initialValue = {
 };
 
 // Joi validation schema
-const schema = Joi.object({
+const personalDetailsSchema = Joi.object({
   fullName: Joi.string().label("Full Name"),
   nameWithInitials: Joi.string().label("Name With Initials"),
   otherName: Joi.optional().label("Other Name"),
@@ -218,24 +300,29 @@ const schema = Joi.object({
   permanentAddress: Joi.string().label("Permanent Address"),
   mailingAddress: Joi.string().label("Mailing Address"),
   emailAddress: Joi.string()
-    .email({ tlds: { allow: false } })
+    .allow("")
     .optional()
+    .email({ tlds: { allow: false } })
     .label("Email Address"),
   mobileCN: Joi.string().length(10).regex(/^\d+$/).label("Mobile Number"),
   officeCN: Joi.string()
     .length(10)
     .regex(/^\d+$/)
+    .allow("")
     .optional()
     .label("Office Number"),
   homeCN: Joi.string()
     .length(10)
     .regex(/^\d+$/)
+    .allow("")
     .optional()
     .label("Home Number"),
   civilStatus: Joi.string().label("Civil Status"),
   nominee: Joi.string().label("Nominee"),
   relationshipOfNominee: Joi.string().label("Relationship of Nominee"),
+});
 
+const familyDetailsSchema = Joi.object({
   //Family details
   spouseName: Joi.any().optional().label("Spouse Name"),
   children: Joi.any().optional().label("Children"),
@@ -244,7 +331,9 @@ const schema = Joi.object({
   fatherInLawName: Joi.any().optional().label("Father In Law Name"),
   motherInLawName: Joi.any().optional().label("Mother In Law Name"),
   childName: Joi.any().optional().label("Child Name"),
+});
 
+const departmentDetailsSchema = Joi.object({
   // Department details
   title: Joi.string().required().label("Title"),
   grade: Joi.string().required().label("Grade"),
@@ -261,7 +350,9 @@ const schema = Joi.object({
   paySheetNo: Joi.string().required().label("Pay Sheet No"),
   employeeId: Joi.string().required().label("Employee Id"),
   officeOfDPMG: Joi.string().required().label("Office of the DPMG"),
+});
 
+const memberDetailsSchema = Joi.object({
   // Member details
   membershipNo: Joi.string().required().label("Membership Number"),
   dateOfMembership: Joi.string().required().label("Date of Membership"),

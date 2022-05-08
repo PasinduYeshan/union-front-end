@@ -102,102 +102,80 @@ export default {
       });
     },
     async registerSA(userData) {
-      return ajaxResolver(axios.post("/api/user/register-sa", userData), {
-        //   fullBody: true,
-      });
+      return ajaxResolver(axios.post("/api/user/register-sa", userData));
     },
     async register(userData) {
-      return ajaxResolver(axios.post("/api/user/register", userData), {
-        //   fullBody: true,
-      });
+      return ajaxResolver(axios.post("/api/user/register", userData));
     },
     async updateUser(userId, userData) {
-      return ajaxResolver(axios.post(`/api/user/update/${userId}`, userData), {
-        //   fullBody: true,
-      });
+      return ajaxResolver(axios.post(`/api/user/update/${userId}`, userData));
     },
     async updateProfile(userData) {
-      return ajaxResolver(axios.post("/api/user/update-profile", userData), {
-        //   fullBody: true,
-      });
+      return ajaxResolver(axios.post("/api/user/update-profile", userData));
     },
     async updatePassword(passwordData) {
       return ajaxResolver(
-        axios.post("/api/user/update-password", passwordData),
-        {
-          //   fullBody: true,
-        }
+        axios.post("/api/user/update-password", passwordData)
       );
     },
     async changePassword(userId, passwordData) {
       return ajaxResolver(
-        axios.post(`/api/user/update/${userId}`, passwordData),
-        {
-          //   fullBody: true,
-        }
+        axios.post(`/api/user/update/${userId}`, passwordData)
       );
     },
     async forgotPassword(username) {
       return ajaxResolver(
-        axios.post(`/api/user/forgot-password`, { username }),
-        {
-          //   fullBody: true,
-        }
+        axios.post(`/api/user/forgot-password`, { username })
       );
     },
     async resetPassword(resetData) {
-      return ajaxResolver(axios.post(`/api/user/update/${userId}`, resetData), {
-        //   fullBody: true,
-      });
+      return ajaxResolver(axios.post(`/api/user/update/${userId}`, resetData));
     },
     async getUserAccounts(accountType) {
       return ajaxResolver(
-        axios.get(`/api/user/user-accounts`, { params: { accountType } }),
-        {
-          //   fullBody: true,
-        }
+        axios.get(`/api/user/user-accounts`, { params: { accountType } })
       );
     },
 
     async getUserAccount(userId) {
-      return ajaxResolver(axios.get(`/api/user/user-account/${userId}`), {
-        //   fullBody: true,
-      });
+      return ajaxResolver(axios.get(`/api/user/user-account/${userId}`));
     },
   },
   meta: {
     async branches() {
-      return ajaxResolver(axios.get("/api/meta/branches"), {
-        // fullBody: true,
-      });
+      return ajaxResolver(axios.get("/api/meta/branches"));
     },
   },
   issue: {
     async add(issueData) {
       return ajaxResolver(
-        axios.post("/api/issue/add", issueData, formDataConfig),
-        {
-          // fullBody: true,
-        }
+        axios.post("/api/issue/add", issueData, formDataConfig)
       );
     },
     async update(issueId, issueData) {
-      return ajaxResolver(
-        axios.put(`/api/issue/update/${issueId}`, issueData),
-        {
-          // fullBody: true,
-        }
-      );
+      return ajaxResolver(axios.put(`/api/issue/update/${issueId}`, issueData));
     },
     async get(filter) {
-      return ajaxResolver(axios.get("/api/issue/get", { params: filter }), {
-        // fullBody: true,
-      });
+      return ajaxResolver(axios.get("/api/issue/get", { params: filter }));
     },
     async getOne(issueId) {
-      return ajaxResolver(axios.get(`/api/issue/get/${issueId}`), {
-        // fullBody: true,
-      });
+      return ajaxResolver(axios.get(`/api/issue/get/${issueId}`));
+    },
+  },
+  member: {
+    async add(memberData) {
+      return ajaxResolver(axios.post("/api/member/add", memberData));
+    },
+    async update(memberId, memberData) {
+      return ajaxResolver(
+        axios.put(`/api/member/update/${memberId}`, memberData)
+      );
+    },
+    async get(query) {
+      return ajaxResolver(axios.get("/api/member/get", { params: query }));
+    },
+    async find(query) {
+      return ajaxResolver(axios.get("/api/member/get", { params: query }));
     },
   },
 };

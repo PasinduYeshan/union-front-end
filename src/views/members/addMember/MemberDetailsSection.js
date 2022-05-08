@@ -1,4 +1,5 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
 import {
   CTableHeaderCell,
@@ -9,6 +10,8 @@ import {
   CTableRow,
   CButton,
 } from "@coreui/react";
+
+import {selectors} from "src/store";
 
 import {
   CustomCFormAddInputGroup,
@@ -23,6 +26,7 @@ const MemberDetailsSection = ({
   handleAddBtnPressed,
   handleChildRemoveBtnPressed,
 }) => {
+  const branchNameOptions = useSelector(selectors.meta.selectBranchNameOptions);
   return (
     <>
       <h1 className="text-xl font-semibold mb-3">Member Details</h1>
@@ -44,6 +48,7 @@ const MemberDetailsSection = ({
           error={formErrors.dateOfMembership}
           uppercase={true}
           mdSize={4}
+          type="date"
         />
         <CustomCFormInputGroup
           label="RDS Number"
@@ -113,7 +118,7 @@ const MemberDetailsSection = ({
             </CTableBody>
           </CTable>
         )}
-        <CustomCFormInputGroup
+        <CustomCFormSelectGroup
           label="Name of the branch"
           name="branchName"
           value={formData.branchName}
@@ -121,6 +126,7 @@ const MemberDetailsSection = ({
           error={formErrors.branchName}
           uppercase={true}
           mdSize={6}
+          options={branchNameOptions}
         />
       </div>
     </>

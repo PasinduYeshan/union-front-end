@@ -60,6 +60,7 @@ const DepartmentDetailsSection = ({ formData, formErrors, handleChange }) => {
           error={formErrors.dateOfPension}
           uppercase={true}
           mdSize={6}
+          type="date"
         />
         <CustomCFormInputGroup
           label="Office of the Regional Accountant"
