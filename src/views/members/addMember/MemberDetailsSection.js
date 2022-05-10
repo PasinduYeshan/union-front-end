@@ -11,7 +11,7 @@ import {
   CButton,
 } from "@coreui/react";
 
-import {selectors} from "src/store";
+import { selectors } from "src/store";
 
 import {
   CustomCFormAddInputGroup,
@@ -79,45 +79,14 @@ const MemberDetailsSection = ({
           onChange={handleChange}
           error={formErrors.unionName}
           uppercase={true}
-          onAddInputBtnPressed={(e) =>
-            handleAddBtnPressed({ e, tempFieldName: "unionName" })
-          }
+          onAddInputBtnPressed={handleAddBtnPressed}
+          handleChildRemoveBtnPressed={handleChildRemoveBtnPressed}
           addListName="otherUnions"
+          list={formData.otherUnions}
           required={false}
           addBtnLabel="Add Union Name"
         />
-        {formData.otherUnions.length > 0 && (
-          <CTable>
-            <CTableHead>
-              <CTableRow>
-                <CTableHeaderCell scope="col">Name</CTableHeaderCell>
-                <CTableHeaderCell scope="col"></CTableHeaderCell>
-              </CTableRow>
-            </CTableHead>
-            <CTableBody>
-              {formData["otherUnions"].map((child, index) => (
-                <CTableRow key={index}>
-                  <CTableDataCell>{child.name}</CTableDataCell>
-                  <CTableDataCell>
-                    <CButton
-                      color="danger"
-                      variant="ghost"
-                      name="childrenRemoveBtn"
-                      onClick={(_) =>
-                        handleChildRemoveBtnPressed({
-                          child,
-                          listName: "otherUnions",
-                        })
-                      }
-                    >
-                      Remove
-                    </CButton>
-                  </CTableDataCell>
-                </CTableRow>
-              ))}
-            </CTableBody>
-          </CTable>
-        )}
+
         <CustomCFormSelectGroup
           label="Name of the branch"
           name="branchName"

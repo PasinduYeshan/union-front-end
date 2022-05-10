@@ -13,6 +13,9 @@ const ViewMemberPage = React.lazy(() =>
 const AddMemberPage = React.lazy(() =>
   import("./views/members/addMember/AddMemberPage")
 );
+const MemberTable = React.lazy(() =>
+  import("./views/members/memberList/MemberTable")
+);
 
 // Accounts related pages
 const AddUserAccountPage = React.lazy(() =>
@@ -47,17 +50,23 @@ const routes = [
     component: IssuePage,
   },
   {
-    path: "/office/member",
+    path: "/office/members",
     exact: true,
-    name: "Member",
+    name: "Members",
+    component: MemberTable,
   },
   {
-    path: "/office/member/view-member",
+    path: "/office/members/view-member",
     name: "Member Details",
     component: ViewMemberPage,
   },
   {
-    path: "/office/member/add-member",
+    path: "/office/members/get-member",
+    name: "Member Details",
+    component: ViewMemberPage,
+  },
+  {
+    path: "/office/members/add-member",
     name: "Add Member",
     component: AddMemberPage,
   },

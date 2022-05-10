@@ -178,7 +178,6 @@ const BSUserAccountPage = () => {
         </div>
         <div className="row g-3">
           {CustomCFormInputGroup({
-            updateMode,
             label: "Name",
             name: "name",
             value: formData.name,
@@ -190,7 +189,6 @@ const BSUserAccountPage = () => {
           })}
 
           {CustomCFormInputGroup({
-            updateMode,
             label: "Email Address",
             name: "email",
             value: formData.email,
@@ -224,7 +222,6 @@ const BSUserAccountPage = () => {
             />
           )}
           {CustomCFormInputGroup({
-            updateMode,
             label: "NIC",
             name: "NIC",
             value: formData.NIC,
@@ -236,7 +233,6 @@ const BSUserAccountPage = () => {
             mdSize: 4,
           })}
           {CustomCFormInputGroup({
-            updateMode,
             label: "Contact Number",
             name: "contactNo",
             value: formData.contactNo,
@@ -248,7 +244,6 @@ const BSUserAccountPage = () => {
             mdSize: 4,
           })}
           {CustomCFormInputGroup({
-            updateMode,
             label: "Username",
             name: "username",
             value: formData.username,

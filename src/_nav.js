@@ -82,13 +82,19 @@ const _nav = [
   {
     component: CNavItem,
     name: "Add Member",
-    to: "/office/member/add-member",
+    to: "/office/members/add-member",
     icon: <CIcon icon={cilUserPlus} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
+    name: "Members",
+    to: "/office/members",
+    icon: <CIcon icon={cilAddressBook} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
     name: "View Member",
-    to: "/office/member/view-member",
+    to: "/office/members/get-member",
     icon: <CIcon icon={cilAddressBook} customClassName="nav-icon" />,
   },
   {

@@ -2,13 +2,19 @@ import React from "react";
 
 import {
   CFormFeedback,
-  CFormLabel,
   CFormInput,
   CFormTextarea,
-  CCol,
   CFormSelect,
   CInputGroup,
   CButton,
+  CFormLabel,
+  CTableHeaderCell,
+  CTable,
+  CTableBody,
+  CTableDataCell,
+  CTableHead,
+  CTableRow,
+  CCol,
 } from "@coreui/react";
 
 import CIcon from "@coreui/icons-react";
@@ -74,43 +80,93 @@ export function CustomCFormAddInputGroup({
   inputClassName = "",
   onAddInputBtnPressed,
   addListName,
+  list,
   addBtnLabel = "Add",
+  tableHeaders = ["Name"],
+  tableRows = ["name"],
+  handleChildRemoveBtnPressed,
 }) {
   return (
     <>
-      <CCol className="mb-3" xs={12} md={mdSize}>
-        <CFormLabel
-          htmlFor={name}
-          className={uppercase ? "uppercase" : ""}
-        >{`${label}${required ? "*" : ""}`}</CFormLabel>
-        <CInputGroup>
-          <CFormInput
-            type={type}
-            className={`!bg-white ${inputClassName}`}
-            readOnly={readOnly}
-            id={name}
-            name={name}
-            onChange={onChange}
-            // required={required}
-            invalid={error ? true : false}
-            placeholder={placeholder}
-            multiple={multiple}
-            aria-describedby="button-addon2"
-          />
-          <CButton
-            name={addListName}
-            type="button"
-            color="secondary"
-            variant="outline"
-            id="button-addon2"
-            onClick={onAddInputBtnPressed}
-          >
-            {/* <CIcon icon={cilPlus} size="sm" className="mx-1"/> */}
-            {addBtnLabel}
-          </CButton>
-        </CInputGroup>
-        <CFormFeedback invalid>{error}</CFormFeedback>
-      </CCol>
+      {!readOnly && (
+        <CCol className="mb-3" xs={12} md={mdSize}>
+          <CFormLabel
+            htmlFor={name}
+            className={uppercase ? "uppercase" : ""}
+          >{`${label}${required ? "*" : ""}`}</CFormLabel>
+          <CInputGroup>
+            <CFormInput
+              type={type}
+              className={`!bg-white ${inputClassName}`}
+              readOnly={readOnly}
+              id={name}
+              name={name}
+              onChange={onChange}
+              value={value}
+              // required={required}
+              invalid={error ? true : false}
+              placeholder={placeholder}
+              multiple={multiple}
+              aria-describedby="button-addon2"
+            />
+            <CButton
+              name={addListName}
+              type="button"
+              color="secondary"
+              variant="outline"
+              id="button-addon2"
+              onClick={(e) => onAddInputBtnPressed({ e, tempFieldName: name })}
+            >
+              {/* <CIcon icon={cilPlus} size="sm" className="mx-1"/> */}
+              {addBtnLabel}
+            </CButton>
+          </CInputGroup>
+          <CFormFeedback invalid>{error}</CFormFeedback>
+        </CCol>
+      )}
+
+      {list.length > 0 && (
+        <CTable>
+          <CTableHead>
+            <CTableRow>
+              {tableHeaders.map((header, index) => (
+                <CTableHeaderCell scope="col" key={index}>
+                  {""}
+                  {header}
+                </CTableHeaderCell>
+              ))}
+              <CTableHeaderCell scope="col"></CTableHeaderCell>
+            </CTableRow>
+          </CTableHead>
+          <CTableBody>
+            {list.map((child, index) => (
+              <CTableRow key={index}>
+                {tableRows.map((row, index) => (
+                  <CTableDataCell scope="col" key={index}>
+                    {""}
+                    {child[row]}
+                  </CTableDataCell>
+                ))}
+                <CTableDataCell>
+                  <CButton
+                    color="danger"
+                    variant="ghost"
+                    name="childrenRemoveBtn"
+                    onClick={(_) =>
+                      handleChildRemoveBtnPressed({
+                        child,
+                        listName: addListName,
+                      })
+                    }
+                  >
+                    Remove
+                  </CButton>
+                </CTableDataCell>
+              </CTableRow>
+            ))}
+          </CTableBody>
+        </CTable>
+      )}
     </>
   );
 }

@@ -42,13 +42,13 @@ const FamilyDetailsSection = ({
           onChange={handleChange}
           error={formErrors.childName}
           uppercase={true}
-          onAddInputBtnPressed={(e) =>
-            handleAddBtnPressed({ e, tempFieldName: "childName" })
-          }
+          onAddInputBtnPressed={handleAddBtnPressed}
+          handleChildRemoveBtnPressed={handleChildRemoveBtnPressed}
           addListName="children"
+          list={formData.children}
           required={false}
         />
-        {formData.children.length > 0 && (
+        {/* {formData.children.length > 0 && (
           <CTable>
             <CTableHead>
               <CTableRow>
@@ -79,7 +79,7 @@ const FamilyDetailsSection = ({
               ))}
             </CTableBody>
           </CTable>
-        )}
+        )} */}
 
         <CustomCFormInputGroup
           label="Father's Name"

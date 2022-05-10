@@ -1,5 +1,5 @@
-import React from "react";
-
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   CFormLabel,
   CTable,
@@ -9,80 +9,111 @@ import {
   CCol,
 } from "@coreui/react";
 
-import { CustomCFormInputGroup } from "src/components/common/CustomCInputGroup";
+import { thunks, selectors } from "src/store";
 
-const MemberDetailsSection = ({ member }) => {
+import {
+  CustomCFormInputGroup,
+  CustomCFormAddInputGroup,
+  CustomCFormSelectGroup,
+} from "src/components/common/CustomCInputGroup";
+
+const MemberDetailsSection = ({
+  member,
+  formErrors,
+  onChange,
+  onAddBtnPressed,
+  onChildRemoveBtnPressed,
+  readOnly,
+}) => {
+  const dispatch = useDispatch();
+  const branchNameOptions = useSelector(selectors.meta.selectBranchNameOptions);
+
+  // Fetch branch names from server
+  useEffect(() => {
+    dispatch(thunks.meta.getBranches());
+  }, []);
+
   return (
     <>
       <h1 className="text-xl font-semibold mb-3">Member Details</h1>
       <div className="row g-3">
-        <CustomCFormInputGroup
-          label="Membership Number"
-          name="membershipNo"
-          value={member.membershipNo}
-          readOnly={true}
-          required={false}
-          mdSize={4}
-        />
-        <CustomCFormInputGroup
-          label="Date of Membership"
-          name="dateOfMembership"
-          value={member.dateOfMembership}
-          readOnly={true}
-          required={false}
-          mdSize={4}
-        />
-        <CustomCFormInputGroup
-          label="RDS Number"
-          name="RDSNumber"
-          value={member.RDSNumber}
-          readOnly={true}
-          required={false}
-          mdSize={4}
-        />
-        <CustomCFormInputGroup
-          label="Are you a member of any other union?"
-          name="memberOfOtherUnion"
-          value={member.memberOfOtherUnion}
-          readOnly={true}
-          required={false}
-          mdSize={6}
-        />
-        {member.memberOfOtherUnion === "Yes" && (
-          <CCol className="mb-3" md={12}>
-            <CFormLabel
-              htmlFor="exampleFormControlInput1"
-              className="uppercase"
-            >
-              Other Unions
-            </CFormLabel>
-            <CTable hover borderless small align="middle" responsive>
-              {/* <CTableHead>
-              <CTableRow>
-                <CTableHeaderCell scope="col"></CTableHeaderCell>
-                <CTableHeaderCell scope="col">Name</CTableHeaderCell>
-              </CTableRow>
-            </CTableHead> */}
-              <CTableBody>
-                {member.namesOfOtherUnions.map((child, index) => (
-                  <CTableRow key={index} className="justify-start">
-                    <CTableDataCell>{index + 1})</CTableDataCell>
-                    <CTableDataCell>{child}</CTableDataCell>
-                  </CTableRow>
-                ))}
-              </CTableBody>
-            </CTable>
-          </CCol>
-        )}
+        {CustomCFormInputGroup({
+          label: "Membership Number",
+          name: "membershipNo",
+          value: member.membershipNo,
+          onChange: onChange,
+          error: formErrors.membershipNo,
+          uppercase: true,
+          required: false,
+          readOnly: readOnly,
+          mdSize: 4,
+        })}
+        {CustomCFormInputGroup({
+          label: "Date of Membership",
+          name: "dateOfMembership",
+          value: member.dateOfMembership,
+          onChange: onChange,
+          error: formErrors.dateOfMembership,
+          uppercase: true,
+          required: false,
+          readOnly: readOnly,
+          mdSize: 4,
+        })}
+        {CustomCFormInputGroup({
+          label: "RDS Number",
+          name: "RDSNumber",
+          value: member.RDSNumber,
+          onChange: onChange,
+          error: formErrors.RDSNumber,
+          uppercase: true,
+          required: false,
+          readOnly: readOnly,
+          mdSize: 4,
+        })}
+        {CustomCFormSelectGroup({
+          label: "Are you a member of any other union?",
+          name: "memberOfOtherUnion",
+          value: member.memberOfOtherUnion,
+          onChange: onChange,
+          error: formErrors.memberOfOtherUnion,
+          uppercase: true,
+          required: false,
+          readOnly: readOnly,
+          mdSize: 6,
+          options: [
+            { value: "Yes", label: "Yes" },
+            { value: "No", label: "No" },
+          ],
+        })}
 
-        <CustomCFormInputGroup
-          label="Name of the branch"
-          name="branchName"
-          value={member.branchName}
-          readOnly={true}
-          required={false}
-          mdSize={6}
-        />
+        {member.memberOfOtherUnion === "Yes" &&
+          CustomCFormAddInputGroup({
+            label: "Other Unions",
+            name: "unionName",
+            value: member.unionName,
+            onChange: onChange,
+            error: formErrors.unionName,
+            uppercase: true,
+            required: false,
+            readOnly: readOnly,
+            addListName: "otherUnions",
+            list: member.otherUnions,
+            onAddInputBtnPressed: onAddBtnPressed,
+            handleChildRemoveBtnPressed: onChildRemoveBtnPressed,
+          })}
+
+        {CustomCFormSelectGroup({
+          label: "Branch Name",
+          name: "branchName",
+          value: member.branchName,
+          onChange: onChange,
+          error: formErrors.branchName,
+          uppercase: true,
+          required: false,
+          readOnly: readOnly,
+          mdSize: 6,
+          options: branchNameOptions,
+        })}
       </div>
     </>
   );

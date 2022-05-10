@@ -171,11 +171,14 @@ export default {
         axios.put(`/api/member/update/${memberId}`, memberData)
       );
     },
+    async getByUserId(userId) {
+      return ajaxResolver(axios.get(`/api/member/get/${userId}`));
+    },
     async get(query) {
       return ajaxResolver(axios.get("/api/member/get", { params: query }));
     },
     async find(query) {
-      return ajaxResolver(axios.get("/api/member/get", { params: query }));
+      return ajaxResolver(axios.get("/api/member/find", { params: query }));
     },
   },
 };

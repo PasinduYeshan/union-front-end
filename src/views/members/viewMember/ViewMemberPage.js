@@ -1,7 +1,18 @@
 import React, { useCallback, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory, useLocation } from "react-router-dom";
 import _ from "lodash";
+import Joi from "joi";
 
-import SearchBars from "./SearchBars";
+import { CButton, CFormSwitch } from "@coreui/react";
+
+import api, { registerAccessToken } from "src/api";
+import store, { thunks, selectors, accessToken } from "src/store";
+import { addEmptyStrings } from "src/utils/function";
+
+/**
+ * Component Imports
+ */
 
 // Stepper
 const Stepper = React.lazy(() => import("../../../components/common/Stepper"));
@@ -19,27 +30,128 @@ const DepartmentDetailsSection = React.lazy(() =>
 );
 const MemberDetailsSection = React.lazy(() => import("./MemberDetailsSection"));
 
+import SearchBars from "./SearchBars";
+
+// Joi Schemas
+import {
+  personalDetailsSchema,
+  familyDetailsSchema,
+  departmentDetailsSchema,
+  memberDetailsSchema,
+} from "./joiSchemas";
+
+/**
+ *  Component for Viewing and Updating Member Details
+ */
 const ViewMemberPage = () => {
-  /**
-   * State
-   */
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const userId = useLocation().state?.memberId;
+  const fromList = useLocation().state?.fromList || false; // If user is coming from list page then no Search Box should be appears
+
   const [currentStep, setCurrentStep] = useState(1);
   const [value, setValue] = useState({
     oldNIC: "",
     newNIC: "",
   });
-  const [member, setMember] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState(initialValue);
+  const [initialAccount, setInitialAccount] = useState({});
+  const [formErrors, setFormErrors] = useState(initialValue);
+  const [updateMode, setUpdateMode] = useState(false);
 
-  // TODO : Study on this
-  // const { value, handleChange } = useInput("");
-
+  // Fetch member if userId is provided
   useEffect(() => {
+    fetchMemberByUserID().catch((e) => console.log(e));
   }, []);
 
+  // Fetch member by userId
+  const fetchMemberByUserID = async () => {
+    if (!userId) return;
+    if (!registerAccessToken(accessToken(), history, dispatch)) return;
+    setLoading(true);
+    const res = await api.member.getByUserId(userId);
+    if (res && res.status == 200) {
+      setFormData(addEmptyStrings(res.data));
+      setInitialAccount(addEmptyStrings(res.data));
+    } else {
+      toast.error(
+        res.message ? res.message : "Error occurred, please try again"
+      );
+    }
+    setLoading(true);
+  };
+
+  // Fetch member with old NIC or new NIC if provided
+  const fetchMember = async (query) => {
+    if (!registerAccessToken(accessToken(), history, dispatch)) return;
+    const res = await api.member.get(query);
+    if (res && res.status == 200) {
+      setFormData(addEmptyStrings(res.data));
+        setInitialAccount(addEmptyStrings(res.data));
+    } else {
+      toast.error(
+        res.message ? res.message : "Error occurred, please try again"
+      );
+    }
+  };
+
+  // Submit function
+  const submit = async () => {
+    //Add member logic
+    const { childName, unionName, ...submitData } = formData;
+    if (!registerAccessToken(accessToken(), history, dispatch)) return;
+    const res = await api.member.update(deleteEmptyKeys(submitData));
+    if (res && res.status === 200) {
+      toast.success("Member updated successfully");
+      setInitialAccount(formData);
+      setCurrentStep(1);
+    } else {
+      toast.error(res.message ? res.message : "Something went wrong");
+    }
+  };
+
   /**
-   * Handle functions
+   * Update Handler
    */
-  const handleChange = (event) => {
+  const handleChange = (e) => {
+    const { name, value, files } = e.target;
+    if (name === "images") {
+      setFormData({ ...formData, [name]: files });
+    } else if (name == "memberOfOtherUnion" && value === "No") { // If member is not member of other union then clear the union details
+      delete formErrors[name];
+      setFormData({ ...formData, [name]: value, otherUnions: [] });
+    }else {
+      delete formErrors[name];
+      setFormData({ ...formData, [name]: value });
+    }
+  };
+
+  // Handle add button pressed
+  const handleAddBtnPressed = ({ e, tempFieldName }) => {
+    const { name } = e.target;
+    if (!formData[tempFieldName]) {
+      return;
+    }
+
+    setFormData({
+      ...formData,
+      [name]: [...formData[name], { name: formData[tempFieldName] }],
+    });
+  };
+
+  // Handle child remove button from list
+  const handleChildRemoveBtnPressed = ({ child, listName }) => {
+    const listTemp = formData[listName].filter(
+      (item) => item.name !== child.name
+    );
+    setFormData({ ...formData, [listName]: listTemp });
+  };
+
+  /**
+   * Search Handlers
+   */
+  const handleSearchChange = (event) => {
     if (event.target.name === "oldNIC") {
       setValue({
         ...value,
@@ -53,15 +165,104 @@ const ViewMemberPage = () => {
     }
   };
 
-  const handleSearch = (event) => {
-    if (event.target.name === "oldNICSearch") {
+  const handleSearch = async (event) => {
+    const { name, value } = event.target;
+    if (name === "oldNICSearch") {
+      await fetchMember({ oldNIC: value });
     } else {
+      await fetchMember({ newNIC: value });
     }
-    setMember(memberData);
   };
 
-  const handleNextBtn = () => {
-    setCurrentStep(currentStep + 1);
+  /**
+   * Stepper handlers
+   */
+   const handleNextBtn = async (e) => {
+    let schema;
+    let checkData;
+    switch (currentStep) {
+      case 1:
+        schema = personalDetailsSchema;
+        checkData = _.pick(formData, [
+          "fullName",
+          "nameWithInitials",
+          "otherName",
+          "oldNIC",
+          "newNIC",
+          "dob",
+          "sex",
+          "permanentAddress",
+          "mailingAddress",
+          "emailAddress",
+          "mobileCN",
+          "officeCN",
+          "homeCN",
+          "civilStatus",
+          "nominee",
+          "relationshipOfNominee",
+        ]);
+        break;
+      case 2:
+        schema = familyDetailsSchema;
+        checkData = _.pick(formData, [
+          "spouseName",
+          "children",
+          "fatherName",
+          "motherName",
+          "fatherInLawName",
+          "motherInLawName",
+          "childName",
+        ]);
+        break;
+      case 3:
+        schema = departmentDetailsSchema;
+        checkData = _.pick(formData, [
+          "title",
+          "grade",
+          "dateOfAppointment",
+          "permanentWorkStation",
+          "presentWorkStation",
+          "dateOfPension",
+          "officeOfRegionalAccountant",
+          "paySheetNo",
+          "employeeId",
+          "officeOfDPMG",
+        ]);
+        break;
+      default:
+        schema = memberDetailsSchema;
+        checkData = _.pick(formData, [
+          "membershipNo",
+          "dateOfMembership",
+          "RDSNumber",
+          "memberOfOtherUnion",
+          "otherUnions",
+          "unionName",
+          "branchName",
+        ]);
+        break;
+    }
+    const { error, value } = schema.validate(checkData, { abortEarly: false });
+    console.log("Here", error);
+    if (!error) {
+      // At the end of the form, submit the form
+      if (currentStep == stepComponents.length) {
+        await submit();
+        return;
+      }
+      console.log(currentStep);
+      setCurrentStep(currentStep + 1);
+    } else {
+      const errors = {};
+      for (let item of error.details) {
+        errors[item.path[0]] = item.message;
+      }
+      setFormErrors(errors);
+      // setTimeout(() => {
+      //   setCurrentStep(currentStep + 1);
+      //   return;
+      // }, 2000);
+    }
   };
 
   const handlePreviousBtn = () => {
@@ -72,10 +273,38 @@ const ViewMemberPage = () => {
    * Stepper
    */
   const stepComponents = [
-    <PersonalDetailsSection member={member} />,
-    <FamilyDetailsSection member={member} />,
-    <DepartmentDetailsSection member={member} />,
-    <MemberDetailsSection member={member} />,
+    <PersonalDetailsSection
+      member={formData}
+      formErrors={formErrors}
+      onChange={handleChange}
+      onAddBtnPressed={handleAddBtnPressed}
+      onChildRemoveBtnPressed={handleChildRemoveBtnPressed}
+      readOnly={!updateMode}
+    />,
+    <FamilyDetailsSection
+      member={formData}
+      formErrors={formErrors}
+      onChange={handleChange}
+      onAddBtnPressed={handleAddBtnPressed}
+      onChildRemoveBtnPressed={handleChildRemoveBtnPressed}
+      readOnly={!updateMode}
+    />,
+    <DepartmentDetailsSection
+      member={formData}
+      formErrors={formErrors}
+      onChange={handleChange}
+      onAddBtnPressed={handleAddBtnPressed}
+      onChildRemoveBtnPressed={handleChildRemoveBtnPressed}
+      readOnly={!updateMode}
+    />,
+    <MemberDetailsSection
+      member={formData}
+      formErrors={formErrors}
+      onChange={handleChange}
+      onAddBtnPressed={handleAddBtnPressed}
+      onChildRemoveBtnPressed={handleChildRemoveBtnPressed}
+      readOnly={!updateMode}
+    />,
   ];
 
   const returnStepComponent = (step) => {
@@ -86,22 +315,35 @@ const ViewMemberPage = () => {
   return (
     <>
       <div className="shadow sm:rounded-lg bg-white p-4 mb-5 row g-3">
-        {currentStep == 1 ? (
+        {currentStep == 1 && !fromList ? (
           <SearchBars
-            handleChange={handleChange}
+            handleChange={handleSearchChange}
             value={value}
             handleSearch={handleSearch}
           />
         ) : null}
-        {!_.isEmpty(member) && (
+        {!_.isEmpty(formData) && (
           <div>
-            {returnStepComponent(currentStep)}
-            <StepperControl
-              handleNextBtn={handleNextBtn}
-              handlePreviousBtn={handlePreviousBtn}
-              currentStep={currentStep}
-              maxSteps={stepComponents.length}
-            />
+            <div className="grid justify-end">
+              <CFormSwitch
+                //   size="xl"
+                label="Enable Update Mode"
+                id="formSwitchCheckDefault"
+                onChange={() => {
+                  setUpdateMode(!updateMode);
+                  setFormData(initialAccount);
+                }}
+              />
+            </div>
+            <div>
+              {returnStepComponent(currentStep)}
+              <StepperControl
+                handleNextBtn={handleNextBtn}
+                handlePreviousBtn={handlePreviousBtn}
+                currentStep={currentStep}
+                maxSteps={stepComponents.length}
+              />
+            </div>
           </div>
         )}
       </div>
@@ -111,62 +353,54 @@ const ViewMemberPage = () => {
 
 export default ViewMemberPage;
 
-const memberData = {
+const initialValue = {
   // personal details
-  userId: "jfsajfsdj346",
-  fullName: "BALARATNAM BAHEERATHAN",
-  nameWithInitials: "B.BAHEERATHAN",
-  otherName: "NIL",
-  oldNIC: "823481438V",
-  newNIC: "NIL",
-  dob: "1982-12-13",
-  sex: "male",
-  permanentAddress: "576/C, THARUMAR ROAD, PANDIRUPPU 02, KALMUNAI",
-  mailingAddress: "POST OFFICE, OLUVIL",
-  emailAddress: "baheybalah@gmail.com",
-  mobileCN: "0761397802",
-  officeCN: "0672255050",
-  homeCN: "0672059820",
-  civilStatus: "MARRIED",
-  nominee: "MRS. JANUJA BAHEERATHAN",
-  relationshipOfNominee: "WIFE",
+  fullName: "",
+  nameWithInitials: "",
+  otherName: "",
+  oldNIC: "",
+  newNIC: "",
+  dob: "",
+  sex: "",
+  permanentAddress: "",
+  mailingAddress: "",
+  emailAddress: "",
+  mobileCN: "",
+  officeCN: "",
+  homeCN: "",
+  civilStatus: "",
+  nominee: "",
+  relationshipOfNominee: "",
 
   //Family details
-  spouseName: "MRS. JANUJA BAHEERATHAN",
-  children: [
-    {
-      name: "BAHEERATHAN THANUSITH",
-      dob: "2020-01-01",
-    },
-    {
-      name: "KESHANYA BAHEERATHAN",
-      dob: "2020-01-01",
-    },
-  ],
-  fatherName: "MR. V. BALARATNAM",
-  motherName: "MRS.B.  MANKAYATKARASU",
-  fatherInLawName: "MR. N. RASALINGAM",
-  motherInLawName: "MRS. S. SUHIRTHADEVI",
+  spouseName: "",
+  children: [],
+  fatherName: "",
+  motherName: "",
+  fatherInLawName: "",
+  motherInLawName: "",
+  childName: "",
 
   // Department details
-  title: "POSTAL SERVICE OFFICER",
-  grade: "CLASS II",
-  dateOfAppointment: "2008-09-01",
-  permanentWorkStation: "OLUVIL POST OFFICE",
-  presentWorkStation: "OLUVIL POST OFFICE",
-  dateOfPension: "2047-12-12",
-  officeOfRegionalAccountant: "BATTICALOA",
-  paySheetNo: 28,
-  employeeId: 464,
-  officeOfDPMG: "BATTICALOA",
+  title: "",
+  grade: "",
+  dateOfAppointment: "",
+  permanentWorkStation: "",
+  presentWorkStation: "",
+  dateOfPension: "",
+  officeOfRegionalAccountant: "",
+  paySheetNo: "",
+  employeeId: "",
+  officeOfDPMG: "",
 
   // Member details
-  membershipNo: "B1125",
-  dateOfMembership: "2009-04-05",
-  RDSNumber: "0258",
-  memberOfOtherUnion: "Yes",
-  namesOfOtherUnions: ["UNION1", "UNION2"],
+  membershipNo: "",
+  dateOfMembership: "",
+  RDSNumber: "",
+  memberOfOtherUnion: "",
+  otherUnions: [],
+  unionName: "",
 
   // Branch details
-  branchName: "KALMUNAI/AMPARA",
+  branchName: "",
 };
