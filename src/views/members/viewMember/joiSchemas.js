@@ -1,3 +1,4 @@
+import Joi from "joi";
 /**
  * Joi Schemas
  */
@@ -75,7 +76,7 @@ export const memberDetailsSchema = Joi.object({
     .allow("Yes", "No")
     .label("Member of Other Union"),
   otherUnions: Joi.any().optional().label("Other Unions"),
-  unionName: Joi.string().required().label("Union Name"),
+  unionName: Joi.allow("").optional().label("Union Name"),
 
   // Branch details
   branchName: Joi.string(),

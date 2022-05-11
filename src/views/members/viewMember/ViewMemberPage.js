@@ -2,13 +2,13 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import _ from "lodash";
-import Joi from "joi";
+import { toast } from "react-toastify";
 
 import { CButton, CFormSwitch } from "@coreui/react";
 
 import api, { registerAccessToken } from "src/api";
 import store, { thunks, selectors, accessToken } from "src/store";
-import { addEmptyStrings } from "src/utils/function";
+import { addEmptyStrings, getUpdatedDataOnly } from "src/utils/function";
 
 /**
  * Component Imports
@@ -50,7 +50,7 @@ const ViewMemberPage = () => {
   const fromList = useLocation().state?.fromList || false; // If user is coming from list page then no Search Box should be appears
 
   const [currentStep, setCurrentStep] = useState(1);
-  const [value, setValue] = useState({
+  const [searchValue, setSearchValue] = useState({
     oldNIC: "",
     newNIC: "",
   });
@@ -88,8 +88,10 @@ const ViewMemberPage = () => {
     const res = await api.member.get(query);
     if (res && res.status == 200) {
       setFormData(addEmptyStrings(res.data));
-        setInitialAccount(addEmptyStrings(res.data));
+      setInitialAccount(addEmptyStrings(res.data));
     } else {
+      setFormData(initialValue);
+      setInitialAccount({});
       toast.error(
         res.message ? res.message : "Error occurred, please try again"
       );
@@ -101,10 +103,10 @@ const ViewMemberPage = () => {
     //Add member logic
     const { childName, unionName, ...submitData } = formData;
     if (!registerAccessToken(accessToken(), history, dispatch)) return;
-    const res = await api.member.update(deleteEmptyKeys(submitData));
+    const res = await api.member.update(formData.userId, getUpdatedDataOnly(initialAccount, formData));
     if (res && res.status === 200) {
       toast.success("Member updated successfully");
-      setInitialAccount(formData);
+      setUpdateMode(false);
       setCurrentStep(1);
     } else {
       toast.error(res.message ? res.message : "Something went wrong");
@@ -118,10 +120,11 @@ const ViewMemberPage = () => {
     const { name, value, files } = e.target;
     if (name === "images") {
       setFormData({ ...formData, [name]: files });
-    } else if (name == "memberOfOtherUnion" && value === "No") { // If member is not member of other union then clear the union details
+    } else if (name == "memberOfOtherUnion" && value === "No") {
+      // If member is not member of other union then clear the union details
       delete formErrors[name];
       setFormData({ ...formData, [name]: value, otherUnions: [] });
-    }else {
+    } else {
       delete formErrors[name];
       setFormData({ ...formData, [name]: value });
     }
@@ -153,13 +156,13 @@ const ViewMemberPage = () => {
    */
   const handleSearchChange = (event) => {
     if (event.target.name === "oldNIC") {
-      setValue({
-        ...value,
+      setSearchValue({
+        ...searchValue,
         oldNIC: event.target.value,
       });
     } else {
-      setValue({
-        ...value,
+      setSearchValue({
+        ...searchValue,
         newNIC: event.target.value,
       });
     }
@@ -168,16 +171,16 @@ const ViewMemberPage = () => {
   const handleSearch = async (event) => {
     const { name, value } = event.target;
     if (name === "oldNICSearch") {
-      await fetchMember({ oldNIC: value });
+      await fetchMember({ oldNIC: searchValue.oldNIC });
     } else {
-      await fetchMember({ newNIC: value });
+      await fetchMember({ newNIC: searchValue.newNIC });
     }
   };
 
   /**
    * Stepper handlers
    */
-   const handleNextBtn = async (e) => {
+  const handleNextBtn = async (e) => {
     let schema;
     let checkData;
     switch (currentStep) {
@@ -243,14 +246,12 @@ const ViewMemberPage = () => {
         break;
     }
     const { error, value } = schema.validate(checkData, { abortEarly: false });
-    console.log("Here", error);
     if (!error) {
       // At the end of the form, submit the form
       if (currentStep == stepComponents.length) {
         await submit();
         return;
       }
-      console.log(currentStep);
       setCurrentStep(currentStep + 1);
     } else {
       const errors = {};
@@ -308,7 +309,6 @@ const ViewMemberPage = () => {
   ];
 
   const returnStepComponent = (step) => {
-    console.log(step);
     return stepComponents[step - 1];
   };
 
@@ -318,17 +318,18 @@ const ViewMemberPage = () => {
         {currentStep == 1 && !fromList ? (
           <SearchBars
             handleChange={handleSearchChange}
-            value={value}
+            value={searchValue}
             handleSearch={handleSearch}
           />
         ) : null}
-        {!_.isEmpty(formData) && (
+        {!_.isEmpty(initialAccount) && (
           <div>
             <div className="grid justify-end">
               <CFormSwitch
                 //   size="xl"
                 label="Enable Update Mode"
                 id="formSwitchCheckDefault"
+                checked={updateMode}
                 onChange={() => {
                   setUpdateMode(!updateMode);
                   setFormData(initialAccount);
@@ -342,6 +343,7 @@ const ViewMemberPage = () => {
                 handlePreviousBtn={handlePreviousBtn}
                 currentStep={currentStep}
                 maxSteps={stepComponents.length}
+                readOnly={!updateMode}
               />
             </div>
           </div>

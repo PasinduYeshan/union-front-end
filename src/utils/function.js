@@ -44,7 +44,6 @@ export function saveImg(urlArr) {
   (async () => {
     for (let i = 0; i < urlArr.length; i++) {
       const response = await fetch(urlArr[i]);
-      console.log(response);
       const blob = await response.blob();
       saveAs(blob);
     }
@@ -82,7 +81,7 @@ export function convertTZ(date) {
 
 /**
  * Add empty strings to the given object keys if it is not present, null or undefined
- * @param {{key: value}} obj 
+ * @param {{key: value}} obj
  * @param {[key1, key2, key3]} keys
  * @returns {{key: value}} obj
  */
@@ -111,4 +110,15 @@ export function addEmptyStrings(obj, keys = null) {
     }
   }
   return obj;
+}
+
+export function getUpdatedDataOnly(original, updated) {
+  let updatedData = {};
+  for (let key in original) {
+    if (original[key] != updated[key]) {
+      console.log(key, original[key], updated[key]);
+      updatedData[key] = updated[key];
+    }
+  }
+  return updatedData;
 }

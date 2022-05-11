@@ -8,6 +8,7 @@ const StepperControl = ({
   handleNextBtn,
   maxSteps,
   submitBtnText,
+  readOnly,
 }) => {
   return (
     <>
@@ -31,9 +32,9 @@ const StepperControl = ({
             color="primary"
             variant="outline"
             onClick={async (e) => handleNextBtn(e)}
-            disabled={currentStep >= maxSteps ? true : false}
+            disabled={currentStep >= maxSteps && readOnly || currentStep > maxSteps && !readOnly ? true : false }
           >
-            Next
+              {currentStep == maxSteps && !readOnly ? "Submit" : "Next" }
           </CButton>
         )}
       </div>

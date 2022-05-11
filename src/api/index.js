@@ -175,7 +175,7 @@ export default {
       return ajaxResolver(axios.get(`/api/member/get/${userId}`));
     },
     async get(query) {
-      return ajaxResolver(axios.get("/api/member/get", { params: query }));
+      return ajaxResolver(axios.get("/api/member/find-nic", { params: query }));
     },
     async find(query) {
       return ajaxResolver(axios.get("/api/member/find", { params: query }));
