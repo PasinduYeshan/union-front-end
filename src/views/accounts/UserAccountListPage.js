@@ -7,6 +7,7 @@ import { deleteEmptyKeys } from "src/utils/function";
 import { useDispatch } from "react-redux";
 
 // Components
+import { LoadingIndicator } from "src/components";
 const AccountTable = React.lazy(() => import("./AccountTable"));
 const BSTableBody = React.lazy(() => import("./UserAccountTableBody"));
 
@@ -35,7 +36,7 @@ const BSAccountsPage = () => {
    */
   useEffect(() => {
     let isSubscribed = true;
-    
+
     const locations = currentLocation.split("/")[3];
     let fetchAccountType = "";
     switch (locations) {
@@ -112,21 +113,25 @@ const BSAccountsPage = () => {
 
   return (
     <>
-      <AccountTable
-        accounts={filteredData}
-        maxPages={maxPages}
-        pageNumber={pageNumber}
-        setPageNumber={setPageNumber}
-        tableHeaderCells={tableHeaderCells}
-        filters={filters}
-        filterErrors={filterErrors}
-        handleFilterChange={handleFilterChange}
-        handleFilterSubmit={handleFilterSubmit}
-        handleClearFilter={handleClearFilter}
-        accountsType={accountsType}
-      >
-        <BSTableBody accounts={filteredData} />
-      </AccountTable>
+      {loading ? (
+        <div className="flex justify-center"> {LoadingIndicator("lg")} </div>
+      ) : (
+        <AccountTable
+          accounts={filteredData}
+          maxPages={maxPages}
+          pageNumber={pageNumber}
+          setPageNumber={setPageNumber}
+          tableHeaderCells={tableHeaderCells}
+          filters={filters}
+          filterErrors={filterErrors}
+          handleFilterChange={handleFilterChange}
+          handleFilterSubmit={handleFilterSubmit}
+          handleClearFilter={handleClearFilter}
+          accountsType={accountsType}
+        >
+          <BSTableBody accounts={filteredData} />
+        </AccountTable>
+      )}
     </>
   );
 };

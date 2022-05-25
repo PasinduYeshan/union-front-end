@@ -1,6 +1,7 @@
 import React, { lazy, useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { convertTZ } from "src/utils/function";
+import { toast } from "react-toastify";
 
 import {
   CButton,
@@ -16,12 +17,15 @@ import {
 } from "@coreui/react";
 
 import { deleteEmptyKeys } from "src/utils/function";
-import FilterTable from "./FilterTable";
 import api, { registerAccessToken } from "src/api";
-import { toast } from "react-toastify";
 import { accessToken } from "src/store";
-import { useDispatch } from "react-redux";
 
+import { LoadingIndicator } from "src/components";
+import FilterTable from "./FilterTable";
+
+/**
+ * All the member details are displayed in this page
+ */
 const MemberTable = () => {
   const history = useHistory();
   const dispatch = useDispatch();
@@ -30,7 +34,7 @@ const MemberTable = () => {
   const [maxPages, setMaxPages] = useState(0);
   const [pageNumber, setPageNumber] = useState(1);
   const [filteredData, setFilteredData] = useState([]);
-  const [members, setIssues] = useState([]);
+  const [members, setMembers] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
   const [loading, setLoading] = useState(false);
 
@@ -44,21 +48,22 @@ const MemberTable = () => {
     fetchData({ page: pageNumber }).catch((e) => console.log(e));
   }, []);
 
-  const fetchData = async (qeury) => {
+  const fetchData = async (query) => {
     setLoading(true);
     if (!registerAccessToken(accessToken(), history, dispatch)) return;
-    const res = await api.member.find({ ...qeury, limit: recordsPerPage });
+    const res = await api.member.find({ ...query, limit: recordsPerPage });
     if (res.status != 200) {
       toast.error(res.message ? res.message : "Something went wrong");
       setLoading(false);
       return;
     } else {
       setTotalCount(res.data.count);
-      setIssues(res.data.members);
+      setMembers(res.data.members);
       setFilteredData(res.data.members);
       setMaxPages(Math.ceil(res.data.count / recordsPerPage));
       setLoading(false);
     }
+    setLoading(false);
   };
 
   /**
@@ -134,61 +139,69 @@ const MemberTable = () => {
           handleFilterSubmit={handleFilterSubmit}
           handleClearFilter={handleClearFilter}
         />
-        <CTable>
-          <CTableHead>
-            <CTableRow>
-              <CTableHeaderCell scope="col">Full Name</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Branch Name</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Title</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Membership Number</CTableHeaderCell>
-              <CTableHeaderCell scope="col"></CTableHeaderCell>
-            </CTableRow>
-          </CTableHead>
-          <CTableBody>
-            {filteredData.map((member, index) => (
-              <CTableRow key={index}>
-                <CTableDataCell>{member.fullName}</CTableDataCell>
-                <CTableDataCell>{member.branchName}</CTableDataCell>
-                <CTableDataCell>{member.title}</CTableDataCell>
-                <CTableDataCell>{ member.membershipNo}</CTableDataCell>
-                <CTableDataCell>
-                  <CButton
-                    color="info"
-                    variant="outline"
-                    onClick={() =>
-                      history.push({
-                        pathname: "/office/members/view-member",
-                        state: { memberId: member.userId, fromList: true },
-                      })
-                    }
-                  >
-                    View
-                  </CButton>
-                </CTableDataCell>
-              </CTableRow>
-            ))}
-          </CTableBody>
-        </CTable>
-        <div className="flex justify-end">
-          <CPagination aria-label="Page navigation example" className="">
-            <CPaginationItem
-              disabled={pageNumber == 1}
-              aria-label="Previous"
-              onClick={handlePageChangePrevious}
-            >
-              <span aria-hidden="true">&laquo;</span>
-            </CPaginationItem>
-            {PaginationPages()}
+        {loading ? (
+          <div className="flex justify-center"> {LoadingIndicator("lg")} </div>
+        ) : (
+          <div>
+            <CTable>
+              <CTableHead>
+                <CTableRow>
+                  <CTableHeaderCell scope="col">Full Name</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Branch Name</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Title</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">
+                    Membership Number
+                  </CTableHeaderCell>
+                  <CTableHeaderCell scope="col"></CTableHeaderCell>
+                </CTableRow>
+              </CTableHead>
+              <CTableBody>
+                {filteredData.map((member, index) => (
+                  <CTableRow key={index}>
+                    <CTableDataCell>{member.fullName}</CTableDataCell>
+                    <CTableDataCell>{member.branchName}</CTableDataCell>
+                    <CTableDataCell>{member.title}</CTableDataCell>
+                    <CTableDataCell>{member.membershipNo}</CTableDataCell>
+                    <CTableDataCell>
+                      <CButton
+                        color="info"
+                        variant="outline"
+                        onClick={() =>
+                          history.push({
+                            pathname: "/office/members/view-member",
+                            state: { memberId: member.userId, fromList: true },
+                          })
+                        }
+                      >
+                        View
+                      </CButton>
+                    </CTableDataCell>
+                  </CTableRow>
+                ))}
+              </CTableBody>
+            </CTable>
+            <div className="flex justify-end">
+              <CPagination aria-label="Page navigation example" className="">
+                <CPaginationItem
+                  disabled={pageNumber == 1}
+                  aria-label="Previous"
+                  onClick={handlePageChangePrevious}
+                >
+                  <span aria-hidden="true">&laquo;</span>
+                </CPaginationItem>
+                {PaginationPages()}
 
-            <CPaginationItem
-              disabled={pageNumber == maxPages}
-              aria-label="Next"
-              onClick={handlePageChangeNext}
-            >
-              <span aria-hidden="true">&raquo;</span>
-            </CPaginationItem>
-          </CPagination>
-        </div>
+                <CPaginationItem
+                  disabled={pageNumber == maxPages}
+                  aria-label="Next"
+                  onClick={handlePageChangeNext}
+                >
+                  <span aria-hidden="true">&raquo;</span>
+                </CPaginationItem>
+              </CPagination>
+            </div>
+          </div>
+        )}
       </div>
     </>
   );
@@ -199,4 +212,3 @@ export default MemberTable;
 const initialFilterData = {
   branchName: "",
 };
-

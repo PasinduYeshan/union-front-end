@@ -181,4 +181,20 @@ export default {
       return ajaxResolver(axios.get("/api/member/find", { params: query }));
     },
   },
+  event: {
+    async add(eventData) {
+      return ajaxResolver(axios.post("/api/event/add", eventData));
+    },
+    async update(eventId, eventData) {
+      return ajaxResolver(
+        axios.put(`/api/event/update/${eventId}`, eventData)
+      );
+    },
+    async getByEventId(eventId) {
+      return ajaxResolver(axios.get(`/api/event/get/${eventId}`));
+    },
+    async get(query) {
+      return ajaxResolver(axios.get("/api/event/get", { params: query }));
+    },
+  },
 };

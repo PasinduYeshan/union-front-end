@@ -1,5 +1,4 @@
 import React, { lazy, useState } from "react";
-import { useHistory } from "react-router-dom";
 
 import {
   CTable,
@@ -12,6 +11,11 @@ import {
 
 const FilterTable = React.lazy(() => import("./FilterTable"));
 
+/**
+ * Account table
+ * @param {*} param0
+ * @returns
+ */
 const AccountTable = ({
   maxPages,
   pageNumber,

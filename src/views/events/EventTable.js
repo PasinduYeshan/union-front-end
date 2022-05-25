@@ -16,78 +16,49 @@ import {
   CPagination,
 } from "@coreui/react";
 
-import { deleteEmptyKeys } from "src/utils/function";
-import { convertTZ } from "src/utils/function";
+import { cilArrowBottom, cilList } from "@coreui/icons";
+
 import { accessToken } from "src/store";
 import api, { registerAccessToken } from "src/api";
-
 import { LoadingIndicator } from "src/components";
-import FilterTable from "./FilterTable";
+import { convertTZ } from "src/utils/function";
+import CIcon from "@coreui/icons-react";
 
 /**
- * All the issues are displayed in this page
+ * Display all the events in the table
+ * @returns
  */
-const IssueTable = () => {
+const EventTable = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
   const recordsPerPage = 10;
   const [maxPages, setMaxPages] = useState(0);
   const [pageNumber, setPageNumber] = useState(1);
-  const [filteredData, setFilteredData] = useState([]);
-  const [issues, setIssues] = useState([]);
-  const [totalIssueCount, setTotalIssueCount] = useState(0);
+  const [events, setEvents] = useState([]);
+  const [totalCount, setTotalCount] = useState(0);
   const [loading, setLoading] = useState(false);
-
-  const [filterData, setFilterData] = useState({
-    branchName: "",
-    status: "",
-  });
-  const [filterErrors, setFilterErrors] = useState({});
+  const [sortByDate, setSortByDate] = useState(true);
 
   // Fetch issues from back end
   useEffect(() => {
     fetchData({ page: pageNumber }).catch((e) => console.log(e));
   }, []);
 
-  const fetchData = async (qeury) => {
+  const fetchData = async (query) => {
     setLoading(true);
     if (!registerAccessToken(accessToken(), history, dispatch)) return;
-    const res = await api.issue.get({ ...qeury, limit: recordsPerPage });
+    const res = await api.event.get({...query, limit: recordsPerPage });
     if (res.status != 200) {
       toast.error(res.message ? res.message : "Something went wrong");
       setLoading(false);
       return;
     } else {
-      setTotalIssueCount(res.data.count);
-      setIssues(res.data.issues);
-      setFilteredData(res.data.issues);
+      setTotalCount(res.data.count);
+      setEvents(res.data.events);
       setMaxPages(Math.ceil(res.data.count / recordsPerPage));
       setLoading(false);
     }
-  };
-
-  /**
-   * Filter related handlers
-   */
-  const handleFilterChange = (e) => {
-    const { name, value } = e.target;
-    setFilterData({ ...filterData, [name]: value });
-  };
-
-  const handleFilterSubmit = async (e) => {
-    e.preventDefault();
-    const filters = deleteEmptyKeys(filterData);
-    await fetchData({ ...filters, page: 1 });
-    setPageNumber(1);
-  };
-
-  const handleClearFilter = async () => {
-    setFilterData({
-      branchName: "",
-      status: "",
-    });
-    await fetchData({ page: 1 });
   };
 
   /**
@@ -130,53 +101,46 @@ const IssueTable = () => {
     return items;
   };
 
+  // Sort by date
+  const _sortByDate = () => {
+    if (sortByDate) {
+      setEvents(events.sort((a, b) =>  new Date(b.date) - new Date(a.date)));
+      setSortByDate(!sortByDate);
+    } else {
+      setEvents(events.sort((a, b) =>  new Date(a.date) - new Date(b.date)));
+      setSortByDate(!sortByDate);
+    }
+  };
+
   return (
     <>
       <div className="shadow border-b border-gray-200 sm:rounded-lg bg-white p-4 mb-5 justify-center">
-        <FilterTable
-          filterData={filterData}
-          filterErrors={filterErrors}
-          handleFilterChange={handleFilterChange}
-          handleFilterSubmit={handleFilterSubmit}
-          handleClearFilter={handleClearFilter}
-        />
         {loading ? (
-          <div className="flex justify-center">{LoadingIndicator("lg")} </div>
+          <div className="flex justify-center">{LoadingIndicator("lg")}</div>
         ) : (
           <div>
             <CTable>
               <CTableHead>
                 <CTableRow>
                   <CTableHeaderCell scope="col">Title</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Branch Name</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Name</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Issue Date</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Status</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">
+                    Event Date{" "}
+                    <CButton
+                      color="info"
+                      variant="ghost"
+                      onClick={_sortByDate}
+                    >
+                      <CIcon icon={cilArrowBottom} />
+                    </CButton>{" "}
+                  </CTableHeaderCell>
                   <CTableHeaderCell scope="col"></CTableHeaderCell>
                 </CTableRow>
               </CTableHead>
               <CTableBody>
-                {filteredData.map((issue, index) => (
+                {events.map((issue, index) => (
                   <CTableRow key={index}>
                     <CTableDataCell>{issue.title}</CTableDataCell>
-                    <CTableDataCell>{issue.branchName}</CTableDataCell>
-                    <CTableDataCell>{issue.name}</CTableDataCell>
-                    <CTableDataCell>
-                      {convertTZ(issue.issueDate)}
-                    </CTableDataCell>
-                    <CTableDataCell>
-                      <CBadge
-                        color={
-                          issue.status == "Pending"
-                            ? "warning"
-                            : issue.status == "Viewed"
-                            ? "info"
-                            : "success"
-                        }
-                      >
-                        {issue.status}
-                      </CBadge>
-                    </CTableDataCell>
+                    <CTableDataCell>{convertTZ(issue.date)}</CTableDataCell>
                     <CTableDataCell>
                       <CButton
                         color="info"
@@ -222,4 +186,4 @@ const IssueTable = () => {
   );
 };
 
-export default IssueTable;
+export default EventTable;

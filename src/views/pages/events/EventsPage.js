@@ -11,9 +11,12 @@ const FooterComponent = React.lazy(() =>
 const EventsPage = () => {
   return (
     <>
-      <NavigationBar activeNav="Events"/>
-      <EventsSection />
-      <FooterComponent />
+      <NavigationBar activeNav="Events" />
+      
+        <div className="flex flex-col justify-between h-screen">
+        <EventsSection />
+          <FooterComponent />
+        </div>
     </>
   );
 };

@@ -28,6 +28,11 @@ const UserAccountsPage = React.lazy(() =>
   import("./views/accounts/UserAccountPage")
 );
 
+// Event related pages
+const AddEventPage = React.lazy(() => import("./views/events/EventTable"));
+const EventListPage = React.lazy(() => import("./views/events/EventTable"));
+const EventPage = React.lazy(() => import("./views/events/EventPage"));
+
 const routes = [
   { path: "/office", exact: true, name: "Office" },
   {
@@ -140,6 +145,27 @@ const routes = [
     path: "/office/accounts/officer/account",
     name: "View Officer",
     component: UserAccountsPage,
+  },
+  // Event related routes
+  {
+    path: "/office/events",
+    name: "Events",
+    exact: true,
+  },
+  {
+    path: "/office/events/add",
+    name: "Add Officer",
+    component: AddEventPage,
+  },
+  {
+    path: "/office/events/view",
+    name: "Add Officer",
+    component: EventPage,
+  },
+  {
+    path: "/office/events/view-all",
+    name: "Add Officer",
+    component: EventListPage,
   },
 ];
 

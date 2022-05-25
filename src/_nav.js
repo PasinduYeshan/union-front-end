@@ -107,6 +107,22 @@ const _nav = [
     to: "/office/issues",
     icon: <CIcon icon={cilChatBubble} customClassName="nav-icon" />,
   },
+  {
+    component: CNavTitle,
+    name: "Events",
+  },
+  {
+    component: CNavItem,
+    name: "Add Event",
+    to: "/office/events/add",
+    icon: <CIcon icon={cilChatBubble} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: "Events List",
+    to: "/office/events/view-all",
+    icon: <CIcon icon={cilList} customClassName="nav-icon" />,
+  },
 ];
 
 export default _nav;

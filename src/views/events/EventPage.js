@@ -25,25 +25,25 @@ import {
   CustomCFormTextAreaGroup,
 } from "src/components/common/CustomCInputGroup";
 
-const IssuePage = () => {
+const EventPage = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const issueId = useLocation().state.issueId;
+  const eventId = useLocation().state.eventId;
 
-  const [issue, setIssue] = useState(initialValue);
+  const [event, setEvent] = useState(initialValue);
   const [formErrors, setFormErrors] = useState({});
 
   // Fetch data from server
   useEffect(() => {
     const fetchData = async () => {
       if (!registerAccessToken(accessToken(), history, dispatch)) return;
-      const res = await api.issue.getOne(issueId);
+      const res = await api.event.getByEventId(eventId);
       if (res.status != 200) {
         toast.error(
           res.message ? res.message : "Error occurred, please try again"
         );
       } else {
-        setIssue({
+        setEvent({
           ...res.data,
           images: [
             image1,
@@ -67,10 +67,10 @@ const IssuePage = () => {
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (name === "images") {
-      setIssue({ ...issue, [name]: files });
+      setEvent({ ...issue, [name]: files });
     } else {
       delete formErrors[name];
-      setIssue({ ...issue, [name]: value });
+      setEvent({ ...issue, [name]: value });
     }
   };
 
@@ -103,84 +103,36 @@ const IssuePage = () => {
     <>
       <div className="shadow border-b border-gray-200 sm:rounded-lg bg-white p-4 mb-5 row g-3">
         <CForm className="mx-2 row g-3">
-          <CustomCFormInputGroup
-            label="Issue Title"
-            name="title"
-            value={issue.title}
-            uppercase={true}
-            required={false}
-            readOnly={true}
-            mdSize={12}
-          />
-          <CustomCFormTextAreaGroup
-            label="Issue Description"
-            name="description"
-            value={issue.description}
-            uppercase={true}
-            required={false}
-            readOnly={true}
-            mdSize={12}
-          />
-          <CustomCFormInputGroup
-            label="Branch Name"
-            name="branchName"
-            value={issue.branchName}
-            uppercase={true}
-            required={false}
-            readOnly={true}
-            mdSize={4}
-          />
-          <CustomCFormInputGroup
-            label="Name"
-            name="name"
-            value={issue.name}
-            uppercase={true}
-            required={false}
-            readOnly={true}
-            mdSize={4}
-          />
-          <CustomCFormInputGroup
-            label="Membership Number"
-            name="membershipNo"
-            value={issue.membershipNo}
-            uppercase={true}
-            required={false}
-            readOnly={true}
-            mdSize={4}
-          />
-          <CustomCFormInputGroup
-            label="Contact Number"
-            name="contactNo"
-            value={issue.contactNo}
-            uppercase={true}
-            required={false}
-            readOnly={true}
-            mdSize={4}
-          />
-          <CustomCFormInputGroup
-            label="Issue Date"
-            name="issueDate"
-            value={convertTZ(issue.issueDate)}
-            uppercase={true}
-            required={false}
-            readOnly={true}
-            mdSize={4}
-          />
-          <CustomCFormSelectGroup
-            label="Issue Status"
-            name="status"
-            value={issue.status}
-            uppercase={true}
-            required={false}
-            readOnly={false}
-            onChange={handleChange}
-            mdSize={4}
-            options={[
-              { label: "Pending", value: "Pending" },
-              { label: "Viewed", value: "Viewed" },
-              { label: "Resolved", value: "Resolved" },
-            ]}
-          />
+        {CustomCFormInputGroup({
+          label: "Title",
+          name: "title",
+          value: member.title,
+          onChange: onChange,
+          error: formErrors.title,
+          uppercase: true,
+          required: false,
+          readOnly: readOnly,
+        })}
+          {CustomCFormInputGroup({
+          label: "Description",
+          name: "description",
+          value: member.description,
+          onChange: onChange,
+          error: formErrors.description,
+          uppercase: true,
+          required: false,
+          readOnly: readOnly,
+        })}{CustomCFormInputGroup({
+          label: "Date",
+          name: "date",
+          value: member.date,
+          onChange: onChange,
+          error: formErrors.date,
+          uppercase: true,
+          required: false,
+          readOnly: readOnly,
+          type: "date",
+        })}
           <div className="mb-3 grid grid-cols-2 md:grid-cols-3 align-middle justify-start">
             {issue?.images?.map((image, index) => (
               <div key={index} className="flex-row p-2">
@@ -227,16 +179,11 @@ const IssuePage = () => {
   );
 };
 
-export default IssuePage;
+export default EventPage;
 
 const initialValue = {
   title: "",
-  issueDate: "",
   description: "",
-  branchName: "",
-  name: "",
-  membershipNo: "",
-  contactNo: "",
-  status: "",
+  date: "",
   images: [],
 };

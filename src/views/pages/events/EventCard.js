@@ -7,13 +7,12 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/effect-cards";
 
-// import "./styles.css";
-
 // import required modules
 import { EffectCards } from "swiper";
 
-// import get image from bucket util function
-import { getImageFromBucket } from "../../../utils/function";
+
+import { getImageFromBucket, convertTZ } from "../../../utils/function";
+ 
 
 const EventCard = ({ event }) => {
   return (
@@ -43,7 +42,7 @@ const EventCard = ({ event }) => {
           <div className="p-4">
             <div className="flex items-center">
               <h2 className="text-lg font-semibold">{event.title}</h2>
-              <p className="text-xs text-gray-600 pl-5">{event.eventDate}</p>
+              <p className="text-xs text-gray-600 pl-5">{convertTZ(event.date)}</p>
             </div>
             <p className="text-xs text-gray-600 mt-2">{event.description}</p>
           </div>
@@ -54,3 +53,67 @@ const EventCard = ({ event }) => {
 };
 
 export default EventCard;
+
+const eventData = [
+  {
+    title: "Event Title",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sed rutrum tellus. Nunc tortor nisl, placerat id ligula auctor, malesuada rutrum ante. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;",
+    eventDate: "2020-01-01",
+    images: [
+      "https://cdn.tuk.dev/assets/templates/classified/Bitmap (1).png",
+        "https://picsum.photos/200",
+        "https://cdn.tuk.dev/assets/templates/classified/Bitmap (1).png",
+    ],
+  },
+//   {
+//     title: "Event Title",
+//     description:
+//       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sed rutrum tellus. Nunc tortor nisl, placerat id ligula auctor, malesuada rutrum ante. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;",
+//     eventDate: "2020-01-01",
+//     images: [
+//       "https://cdn.tuk.dev/assets/templates/classified/Bitmap (1).png",
+//       "https://cdn.tuk.dev/assets/templates/classified/Bitmap (1).png",
+//     ],
+//   },
+  {
+    title: "Event Title",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sed rutrum tellus. Nunc tortor nisl, placerat id ligula auctor, malesuada rutrum ante. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;",
+    eventDate: "2020-01-01",
+    images: [
+      "https://picsum.photos/200",
+      "https://picsum.photos/200",
+    ],
+  },
+  {
+    title: "Event Title",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sed rutrum tellus. Nunc tortor nisl, placerat id ligula auctor, malesuada rutrum ante. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;",
+    eventDate: "2020-01-01",
+    images: [
+      "https://cdn.tuk.dev/assets/templates/classified/Bitmap (1).png",
+      "https://cdn.tuk.dev/assets/templates/classified/Bitmap (1).png",
+    ],
+  },
+  {
+    title: "Event Title",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sed rutrum tellus. Nunc tortor nisl, placerat id ligula auctor, malesuada rutrum ante. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;",
+    eventDate: "2020-01-01",
+    images: [
+      "https://cdn.tuk.dev/assets/templates/classified/Bitmap (1).png",
+      "https://cdn.tuk.dev/assets/templates/classified/Bitmap (1).png",
+    ],
+  },
+  {
+    title: "Event Title",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sed rutrum tellus. Nunc tortor nisl, placerat id ligula auctor, malesuada rutrum ante. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;",
+    eventDate: "2020-01-01",
+    images: [
+      "https://cdn.tuk.dev/assets/templates/classified/Bitmap (1).png",
+      "https://cdn.tuk.dev/assets/templates/classified/Bitmap (1).png",
+    ],
+  },
+];
