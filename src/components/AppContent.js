@@ -30,7 +30,7 @@ const AppContent = () => {
               )
             )
           })}
-          <Redirect from="/office" to="/office/dashboard" />
+          <Redirect to="/404" />
         </Switch>
       </Suspense>
     </CContainer>

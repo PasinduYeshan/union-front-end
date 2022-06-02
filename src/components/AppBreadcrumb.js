@@ -19,10 +19,11 @@ const AppBreadcrumb = () => {
         }) != null
       );
     });
-    return currentRoute.name;
+    return currentRoute?.name ? currentRoute.name : "";
   };
 
   const getBreadcrumbs = (location) => {
+    console.log(location);
     const breadcrumbs = [];
     location.split("/").reduce((prev, curr, index, array) => {
       const currentPathname = `${prev}/${curr}`;

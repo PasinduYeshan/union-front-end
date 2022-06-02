@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { useDispatch } from "react-redux";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import "./scss/style.scss";
 import { thunks } from "./store";
 
@@ -113,6 +113,11 @@ function App() {
             path="/office"
             name="Office Home"
             render={(props) => <DefaultLayout {...props} />}
+          />
+          <Redirect
+            to={{
+              pathname: "/404",
+            }}
           />
         </Switch>
       </React.Suspense>

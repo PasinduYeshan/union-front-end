@@ -3,7 +3,7 @@ import { createDraftSafeSelector } from "@reduxjs/toolkit";
 
 const initialState = {
   sidebarShow: true,
-  unfoldable: true,
+  unfoldable: false,
 };
 
 /**

@@ -62,17 +62,17 @@ export default function LoginSection(props) {
       //Login loogic
       const res = await dispatch(thunks.user.userLogin(formData));
       if (res.status === 200) {
+        setLoading(false);
         // Save token to local storage
         localStorage.setItem("upto-access-token", res.data.token.access);
         localStorage.setItem("upto-refresh-token", res.data.token.refresh);
         history.replace("/office/dashboard");
       } else {
+        setLoading(false);
         toast.error(
           res.message ? res.message : "Error occurred. Please try again later."
         );
-        setLoading(false);
       }
-      setLoading(false);
     } else {
       setLoading(false);
       const errors = {};
