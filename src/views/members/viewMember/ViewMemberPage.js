@@ -1,13 +1,13 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import _ from "lodash";
 import { toast } from "react-toastify";
 
-import { CButton, CFormSwitch } from "@coreui/react";
+import { CFormSwitch } from "@coreui/react";
 
 import api, { registerAccessToken } from "src/api";
-import store, { thunks, selectors, accessToken } from "src/store";
+import store, { selectors, accessToken } from "src/store";
 import { addEmptyStrings, getUpdatedDataOnly } from "src/utils/function";
 
 /**
@@ -48,6 +48,7 @@ const ViewMemberPage = () => {
   const history = useHistory();
   const userId = useLocation().state?.memberId;
   const fromList = useLocation().state?.fromList || false; // If user is coming from list page then no Search Box should be appears
+  const loggedInUserAccountType = useSelector(selectors.user.selectAccountType);
 
   const [currentStep, setCurrentStep] = useState(1);
   const [searchValue, setSearchValue] = useState({
@@ -103,13 +104,25 @@ const ViewMemberPage = () => {
     //Add member logic
     const { childName, unionName, ...submitData } = formData;
     if (!registerAccessToken(accessToken(), history, dispatch)) return;
-    const res = await api.member.update(formData.userId, getUpdatedDataOnly(initialAccount, formData));
+    const res = await api.member.update(
+      formData.userId,
+      getUpdatedDataOnly(initialAccount, formData)
+    );
     if (res && res.status === 200) {
       toast.success("Member updated successfully");
       setUpdateMode(false);
       setCurrentStep(1);
     } else {
       toast.error(res.message ? res.message : "Something went wrong");
+    }
+  };
+
+  /**
+   * Check if the current user is an editor of this page
+   */
+  const isEditor = () => {
+    if(loggedInUserAccountType == "adminEditor" || loggedInUserAccountType == "bsEditor"){
+      return true;
     }
   };
 
@@ -324,18 +337,22 @@ const ViewMemberPage = () => {
         ) : null}
         {!_.isEmpty(initialAccount) && (
           <div>
-            <div className="grid justify-end">
-              <CFormSwitch
-                //   size="xl"
-                label="Enable Update Mode"
-                id="formSwitchCheckDefault"
-                checked={updateMode}
-                onChange={() => {
-                  setUpdateMode(!updateMode);
-                  setFormData(initialAccount);
-                }}
-              />
-            </div>
+            {isEditor() ? (
+              <div className="grid justify-end">
+                <CFormSwitch
+                  //   size="xl"
+                  label="Enable Update Mode"
+                  id="formSwitchCheckDefault"
+                  checked={updateMode}
+                  onChange={() => {
+                    setUpdateMode(!updateMode);
+                    setFormData(initialAccount);
+                  }}
+                />
+              </div>
+            ) : (
+              ""
+            )}
             <div>
               {returnStepComponent(currentStep)}
               <StepperControl

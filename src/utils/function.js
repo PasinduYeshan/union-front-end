@@ -78,10 +78,20 @@ export function convertTZ(date) {
   let dateStr = dateObj.toLocaleDateString("ko-KR", {
     timeZone: "Asia/Colombo",
   });
+
   // Convert ot YYYY-MM-DD format
-  let dateArr = dateStr.split("/");
-  let dateStr2 = `${dateArr[2]}-${dateArr[0]}-${dateArr[1]}`;
-  return dateStr2;
+  let dateArr = dateStr.split(".");
+  let year = dateArr[0].trim();
+  let month = dateArr[1].trim();
+  let day = dateArr[2].trim();
+
+  year.length === 2 ? (year = "00" + year) : year;
+  year.length === 3 ? (year = "0" + year) : year;
+  month.length === 1 ? (month = "0" + month) : month;
+  day.length === 1 ? (day = "0" + day) : day;
+
+  const final = `${year}-${month}-${day}`;
+  return final;
 }
 
 /**

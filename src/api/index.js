@@ -111,7 +111,7 @@ export default {
       return ajaxResolver(axios.post(`/api/user/update/${userId}`, userData));
     },
     async updateProfile(userData) {
-      return ajaxResolver(axios.post("/api/user/update-profile", userData));
+      return ajaxResolver(axios.put("/api/user/update-profile", userData));
     },
     async updatePassword(passwordData) {
       return ajaxResolver(
@@ -139,6 +139,9 @@ export default {
 
     async getUserAccount(userId) {
       return ajaxResolver(axios.get(`/api/user/user-account/${userId}`));
+    },
+    async getUserProfile() {
+      return ajaxResolver(axios.get(`/api/user/user-profile`));
     },
   },
   meta: {
@@ -186,9 +189,7 @@ export default {
       return ajaxResolver(axios.post("/api/event/add", eventData));
     },
     async update(eventId, eventData) {
-      return ajaxResolver(
-        axios.put(`/api/event/update/${eventId}`, eventData)
-      );
+      return ajaxResolver(axios.put(`/api/event/update/${eventId}`, eventData));
     },
     async getByEventId(eventId) {
       return ajaxResolver(axios.get(`/api/event/get/${eventId}`));

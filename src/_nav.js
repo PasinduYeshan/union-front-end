@@ -93,7 +93,7 @@ const _nav = [
   {
     component: CNavItem,
     name: "Add Member",
-    to: "/office/members/add-member",
+    to: "/office/member/add-member",
     icon: <CIcon icon={cilUserPlus} customClassName="nav-icon" />,
     accountType: ["adminEditor", "adminViewer", "bsEditor", "bsViewer"],
   },
@@ -107,7 +107,7 @@ const _nav = [
   {
     component: CNavItem,
     name: "View Member",
-    to: "/office/members/get-member",
+    to: "/office/member/get-member",
     icon: <CIcon icon={cilAddressBook} customClassName="nav-icon" />,
     accountType: ["adminEditor", "adminViewer", "bsEditor", "bsViewer"],
   },

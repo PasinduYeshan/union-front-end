@@ -33,6 +33,9 @@ const AddEventPage = React.lazy(() => import("./views/events/EventTable"));
 const EventListPage = React.lazy(() => import("./views/events/EventTable"));
 const EventPage = React.lazy(() => import("./views/events/EventPage"));
 
+// User profile
+const UserProfile = React.lazy(() => import("./views/profile/UserProfile"));
+
 const routes = [
   { path: "/office", exact: true, name: "Office" },
   {
@@ -60,6 +63,13 @@ const routes = [
     accountType: ["adminEditor", "adminViewer"],
   },
   {
+    path: "/office/member",
+    exact: true,
+    name: "Member",
+    isLoggedIn: true,
+    accountType: ["adminEditor", "adminViewer", "bsEditor", "bsViewer"],
+  },
+  {
     path: "/office/members",
     exact: true,
     name: "Members",
@@ -68,21 +78,21 @@ const routes = [
     accountType: ["adminEditor", "adminViewer", "bsEditor", "bsViewer"],
   },
   {
-    path: "/office/members/view-member",
+    path: "/office/member/view-member",
     name: "Member Details",
     component: ViewMemberPage,
     isLoggedIn: true,
     accountType: ["adminEditor", "adminViewer", "bsEditor", "bsViewer"],
   },
   {
-    path: "/office/members/get-member",
+    path: "/office/member/get-member",
     name: "Member Details",
     component: ViewMemberPage,
     isLoggedIn: true,
     accountType: ["adminEditor", "adminViewer", "bsEditor", "bsViewer"],
   },
   {
-    path: "/office/members/add-member",
+    path: "/office/member/add-member",
     name: "Add Member",
     component: AddMemberPage,
     isLoggedIn: true,
@@ -213,6 +223,13 @@ const routes = [
     component: EventListPage,
     isLoggedIn: true,
     accountType: ["officer"]
+  },
+  // Profile
+  {
+    path: "/office/profile",
+    name: "View User Profile",
+    component: UserProfile,
+    isLoggedIn: true,
   },
 ];
 

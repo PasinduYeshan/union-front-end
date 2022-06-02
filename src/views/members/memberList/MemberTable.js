@@ -168,7 +168,7 @@ const MemberTable = () => {
                         variant="outline"
                         onClick={() =>
                           history.push({
-                            pathname: "/office/members/view-member",
+                            pathname: "/office/member/view-member",
                             state: { memberId: member.userId, fromList: true },
                           })
                         }

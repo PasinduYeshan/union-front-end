@@ -58,7 +58,7 @@ const BSTableBody = ({ accounts }) => {
                   })
                 }
               >
-                <span className="text-sm"> Edit</span>
+                <span className="text-sm"> View</span>
               </CButton>
             </CTableDataCell>
           </CTableRow>

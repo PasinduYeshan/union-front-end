@@ -4,6 +4,7 @@ import { useLocation, useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 import Joi from "joi";
 import { CButton, CFormSwitch } from "@coreui/react";
+import _ from "lodash";
 
 import api, { registerAccessToken } from "src/api";
 import store, { accessToken, selectors, thunks } from "src/store";
@@ -14,12 +15,11 @@ import {
   CustomCFormSelectGroup,
 } from "src/components/common/CustomCInputGroup";
 
-const UserAccountPage = () => {
+const UserProfile = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const userId = useLocation().state.userId;
   const branchNameOptions = useSelector(selectors.meta.selectBranchNameOptions);
-  const loggedInUserAccountType = useSelector(selectors.user.selectAccountType);
+  const userId = useSelector(selectors.user.selectUserId);
 
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState(initialState);
@@ -37,7 +37,7 @@ const UserAccountPage = () => {
     setLoading(true);
     const fetchUserData = async () => {
       if (!registerAccessToken(accessToken(), history, dispatch)) return;
-      const res = await api.user.getUserAccount(userId);
+      const res = await api.user.getUserProfile();
 
       if (res.status === 200) {
         setFormData(res.data);
@@ -60,7 +60,6 @@ const UserAccountPage = () => {
   // Joi schema
   const schema = Joi.object({
     name: Joi.string().optional().label("name"),
-    username: Joi.string().optional().label("Username"),
     status: Joi.string().optional().label("Password"),
     email: Joi.string()
       .email({ tlds: { allow: false } })
@@ -68,8 +67,6 @@ const UserAccountPage = () => {
       .label("Email"),
     contactNo: Joi.string().optional().label("Contact Number"),
     NIC: Joi.string().optional().label("NIC"),
-    branchName: Joi.string().optional().label("Branch Name"),
-    accountType: Joi.string().optional().label("Access Level"),
   });
 
   /*
@@ -105,13 +102,6 @@ const UserAccountPage = () => {
     }
   };
 
-  /**
-   * Check update capability by user account type
-   */
-  const isEditor = () => {
-    return loggedInUserAccountType === "adminEditor";
-  };
-
   /*
    * Handling Button Presses
    */
@@ -126,13 +116,16 @@ const UserAccountPage = () => {
   };
 
   const handleSubmit = async (e) => {
+    console.log(updateMode);
     if (!updateMode) {
       return;
     }
-    const { error, value } = schema.validate(formData, { abortEarly: false });
+    const formD = _.pick(formData, ["name", "email", "contactNo", "NIC", "status"]);
+    const { error, value } = schema.validate(formD, { abortEarly: false });
+    console.log(error);
     if (!error) {
       e.preventDefault();
-      const res = await api.user.updateUser(userId, formData);
+      const res = await api.user.updateProfile(formD);
       if (res.status === 200) {
         toast.success("Account Updated Successfully");
       } else {
@@ -174,21 +167,17 @@ const UserAccountPage = () => {
           message="Are you sure you want to reset password?"
           submitLabel="Reset Password"
         />
-        {isEditor() ? (
-          <div className="grid justify-end">
-            <CFormSwitch
-              //   size="xl"
-              label="Enable Update Mode"
-              id="formSwitchCheckDefault"
-              onChange={() => {
-                setUpdateMode(!updateMode);
-                setFormData(initialAccount);
-              }}
-            />
-          </div>
-        ) : (
-          ""
-        )}
+        <div className="grid justify-end">
+          <CFormSwitch
+            //   size="xl"
+            label="Enable Update Mode"
+            id="formSwitchCheckDefault"
+            onChange={() => {
+              setUpdateMode(!updateMode);
+              setFormData(initialAccount);
+            }}
+          />
+        </div>
         <div className="row g-3">
           {CustomCFormInputGroup({
             label: "Name",
@@ -211,29 +200,15 @@ const UserAccountPage = () => {
             required: false,
             readOnly: !updateMode,
           })}
-          {updateMode ? (
-            <CustomCFormSelectGroup
-              label="Branch Name"
-              name="branchName"
-              value={formData.branchName}
-              onChange={handleChange}
-              error={formErrors.branchName}
-              uppercase={true}
-              required={false}
-              mdSize={4}
-              options={branchNameOptions}
-            />
-          ) : (
-            <CustomCFormInputGroup
-              label="Branch Name"
-              name="branchName"
-              value={formData.branchName}
-              uppercase={true}
-              required={false}
-              readOnly={!updateMode}
-              mdSize={4}
-            />
-          )}
+          <CustomCFormInputGroup
+            label="Branch Name"
+            name="branchName"
+            value={formData.branchName}
+            uppercase={true}
+            required={false}
+            readOnly={!updateMode}
+            mdSize={4}
+          />
           {CustomCFormInputGroup({
             label: "NIC",
             name: "NIC",
@@ -260,37 +235,22 @@ const UserAccountPage = () => {
             label: "Username",
             name: "username",
             value: formData.username,
-            onChange: handleChange,
             error: formErrors.username,
             uppercase: true,
             required: false,
-            readOnly: !updateMode,
+            readOnly: true,
             mdSize: 4,
           })}
 
-          {updateMode && formData.accountType != "officer" ? (
-            <CustomCFormSelectGroup
-              label="Access Level"
-              name="accountType"
-              value={formData.accountType}
-              onChange={handleChange}
-              error={formErrors.accountType}
-              uppercase={true}
-              required={false}
-              mdSize={4}
-              options={getAccountTypeOptions(formData.accountType)}
-            />
-          ) : (
-            <CustomCFormInputGroup
-              label="Access Level"
-              name="accountType"
-              value={getAccountTypeLabel(formData.accountType)}
-              uppercase={true}
-              required={false}
-              readOnly={!updateMode || formData.accountType == "officer"}
-              mdSize={4}
-            />
-          )}
+          <CustomCFormInputGroup
+            label="Access Level"
+            name="accountType"
+            value={getAccountTypeLabel(formData.accountType)}
+            uppercase={true}
+            required={false}
+            readOnly={true}
+            mdSize={4}
+          />
           {updateMode ? (
             <CustomCFormSelectGroup
               label="Account Status"
@@ -345,7 +305,7 @@ const UserAccountPage = () => {
   );
 };
 
-export default UserAccountPage;
+export default UserProfile;
 
 const initialState = {
   name: "",
