@@ -1,6 +1,7 @@
 import React from "react";
 
 import { CustomCFormInputGroup } from "src/components/common/CustomCInputGroup";
+import {convertTZ} from "src/utils/function";
 
 const PersonalDetailsSection = ({
   member,
@@ -69,7 +70,7 @@ const PersonalDetailsSection = ({
         {CustomCFormInputGroup({
           label: "Date of Birth",
           name: "dob",
-          value: member.dob,
+          value: readOnly ? (member.dob ? convertTZ(member.dob) : "") : member.dob,
           onChange: onChange,
           error: formErrors.dob,
           uppercase: true,

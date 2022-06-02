@@ -40,6 +40,7 @@ const routes = [
     exact: true,
     name: "Dashboard",
     component: Dashboard,
+    isLoggedIn: true,
   },
   // Issues
   {
@@ -47,125 +48,171 @@ const routes = [
     exact: true,
     name: "Issues",
     component: IssueTable,
+    isLoggedIn: true,
+    accountType: ["adminEditor", "adminViewer"],
   },
   {
     path: "/office/issues/view-issue",
     exact: true,
     name: "Issue Details",
     component: IssuePage,
+    isLoggedIn: true,
+    accountType: ["adminEditor", "adminViewer"],
   },
   {
     path: "/office/members",
     exact: true,
     name: "Members",
     component: MemberTable,
+    isLoggedIn: true,
+    accountType: ["adminEditor", "adminViewer", "bsEditor", "bsViewer"],
   },
   {
     path: "/office/members/view-member",
     name: "Member Details",
     component: ViewMemberPage,
+    isLoggedIn: true,
+    accountType: ["adminEditor", "adminViewer", "bsEditor", "bsViewer"],
   },
   {
     path: "/office/members/get-member",
     name: "Member Details",
     component: ViewMemberPage,
+    isLoggedIn: true,
+    accountType: ["adminEditor", "adminViewer", "bsEditor", "bsViewer"],
   },
   {
     path: "/office/members/add-member",
     name: "Add Member",
     component: AddMemberPage,
+    isLoggedIn: true,
+    accountType: ["adminEditor", "adminViewer", "bsEditor", "bsViewer"],
   },
   {
     path: "/office/accounts",
     exact: true,
     name: "Accounts",
+    isLoggedIn: true,
+    accountType: ["adminEditor", "adminViewer"],
   },
   // Branch Secretary related pages
   {
     path: "/office/accounts/branch-secretaries",
     name: "Branch Secretaries",
     component: UserAccountListPage,
+    isLoggedIn: true,
+    accountType: ["adminEditor", "adminViewer"],
   },
   {
     path: "/office/accounts/branch-secretary",
     name: "Branch Secretary",
     exact: true,
+    isLoggedIn: true,
+    accountType: ["adminEditor", "adminViewer"],
   },
   {
     path: "/office/accounts/branch-secretary/add",
     name: "Add Branch Secretary",
     component: AddUserAccountPage,
+    isLoggedIn: true,
+    accountType: ["adminEditor", "adminViewer"],
   },
 
   {
     path: "/office/accounts/branch-secretary/account",
     name: "View Branch Secretary",
     component: UserAccountsPage,
+    isLoggedIn: true,
+    accountType: ["adminEditor", "adminViewer"],
   },
   // Admin related pages
   {
     path: "/office/accounts/admins",
     name: "Admins",
     component: UserAccountListPage,
+    isLoggedIn: true,
+    accountType: ["adminEditor", "adminViewer"],
   },
   {
     path: "/office/accounts/admin",
     name: "Admin",
     exact: true,
+    isLoggedIn: true,
+    accountType: ["adminEditor", "adminViewer"],
   },
   {
     path: "/office/accounts/admin/add",
     name: "Add Admin",
     component: AddUserAccountPage,
+    isLoggedIn: true,
+    accountType: ["adminEditor", "adminViewer"],
   },
 
   {
     path: "/office/accounts/admin/account",
     name: "View Admin",
     component: UserAccountsPage,
+    isLoggedIn: true,
+    accountType: ["adminEditor", "adminViewer"],
   },
   // Officer related pages
   {
     path: "/office/accounts/officers",
     name: "Officers",
     component: UserAccountListPage,
+    isLoggedIn: true,
+    accountType: ["adminEditor", "adminViewer"],
   },
   {
     path: "/office/accounts/officer",
     name: "Officer",
     exact: true,
+    isLoggedIn: true,
+    accountType: ["adminEditor", "adminViewer"],
   },
   {
     path: "/office/accounts/officer/add",
     name: "Add Officer",
     component: AddUserAccountPage,
+    isLoggedIn: true,
+    accountType: ["adminEditor", "adminViewer"],
   },
 
   {
     path: "/office/accounts/officer/account",
     name: "View Officer",
     component: UserAccountsPage,
+    isLoggedIn: true,
+    accountType: ["adminEditor", "adminViewer"],
   },
   // Event related routes
   {
     path: "/office/events",
     name: "Events",
     exact: true,
+    isLoggedIn: true,
+    accountType: ["officer"]
   },
   {
     path: "/office/events/add",
-    name: "Add Officer",
+    name: "Add Event",
     component: AddEventPage,
+    isLoggedIn: true,
+    accountType: ["officer"]
   },
   {
     path: "/office/events/view",
-    name: "Add Officer",
+    name: "View Event",
     component: EventPage,
+    isLoggedIn: true,
+    accountType: ["officer"]
   },
   {
     path: "/office/events/view-all",
-    name: "Add Officer",
+    name: "View all Events",
     component: EventListPage,
+    isLoggedIn: true,
+    accountType: ["officer"]
   },
 ];
 

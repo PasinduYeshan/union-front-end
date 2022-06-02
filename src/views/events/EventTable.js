@@ -16,7 +16,7 @@ import {
   CPagination,
 } from "@coreui/react";
 
-import { cilArrowBottom, cilList } from "@coreui/icons";
+import { cilArrowBottom, cilArrowTop } from "@coreui/icons";
 
 import { accessToken } from "src/store";
 import api, { registerAccessToken } from "src/api";
@@ -38,7 +38,7 @@ const EventTable = () => {
   const [events, setEvents] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [sortByDate, setSortByDate] = useState(true);
+  const [sortDateDescendingOrder, setSortByDateDescendingOrder] = useState(true);
 
   // Fetch issues from back end
   useEffect(() => {
@@ -102,13 +102,13 @@ const EventTable = () => {
   };
 
   // Sort by date
-  const _sortByDate = () => {
-    if (sortByDate) {
+  const _sortDateDescendingOrder = () => {
+    if (!sortDateDescendingOrder) {
       setEvents(events.sort((a, b) =>  new Date(b.date) - new Date(a.date)));
-      setSortByDate(!sortByDate);
+      setSortByDateDescendingOrder(!sortDateDescendingOrder);
     } else {
       setEvents(events.sort((a, b) =>  new Date(a.date) - new Date(b.date)));
-      setSortByDate(!sortByDate);
+      setSortByDateDescendingOrder(!sortDateDescendingOrder);
     }
   };
 
@@ -126,29 +126,29 @@ const EventTable = () => {
                   <CTableHeaderCell scope="col">
                     Event Date{" "}
                     <CButton
-                      color="info"
+                      color="dark"
                       variant="ghost"
-                      onClick={_sortByDate}
+                      onClick={_sortDateDescendingOrder}
                     >
-                      <CIcon icon={cilArrowBottom} />
+                      <CIcon icon={sortDateDescendingOrder ? cilArrowBottom : cilArrowTop} />
                     </CButton>{" "}
                   </CTableHeaderCell>
                   <CTableHeaderCell scope="col"></CTableHeaderCell>
                 </CTableRow>
               </CTableHead>
               <CTableBody>
-                {events.map((issue, index) => (
+                {events.map((event, index) => (
                   <CTableRow key={index}>
-                    <CTableDataCell>{issue.title}</CTableDataCell>
-                    <CTableDataCell>{convertTZ(issue.date)}</CTableDataCell>
+                    <CTableDataCell>{event.title}</CTableDataCell>
+                    <CTableDataCell>{convertTZ(event.date)}</CTableDataCell>
                     <CTableDataCell>
                       <CButton
                         color="info"
                         variant="outline"
                         onClick={() =>
                           history.push({
-                            pathname: "/office/issues/view-issue",
-                            state: { issueId: issue.issueId },
+                            pathname: "/office/events/view",
+                            state: { eventId: event.eventId },
                           })
                         }
                       >

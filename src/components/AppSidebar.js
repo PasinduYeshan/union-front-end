@@ -9,6 +9,8 @@ import {
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 
+import { selectors, thunks } from "src/store";
+
 import { AppSidebarNav } from "./AppSidebarNav";
 
 const logoPhoto = require("../assets/images/logo.png");
@@ -23,31 +25,40 @@ import navigation from "../_nav";
 
 const AppSidebar = () => {
   const dispatch = useDispatch();
-  const unfoldable = useSelector((state) => state.sidebarUnfoldable);
-  const sidebarShow = useSelector((state) => state.sidebarShow);
+  const unfoldable = useSelector(selectors.ui.selectUnfoldable);
+  const sidebarShow = useSelector(selectors.ui.selectSidebarShow);
+  const accountType = useSelector(selectors.user.selectAccountType);
 
+  let navItems = navigation.filter((item) => {
+    if (item.accountType) {
+      if (item.accountType.indexOf(accountType) !== -1) {
+        delete item.accountType;
+        return item;
+      }
+    } else {
+      return item;
+    }
+  });
   return (
     <CSidebar
       position="fixed"
       unfoldable={unfoldable}
       visible={sidebarShow}
       onVisibleChange={(visible) => {
-        dispatch({ type: "set", sidebarShow: visible });
+        dispatch(thunks.ui.setSidebarShow(visible));
       }}
     >
       <CSidebarBrand className="d-none d-md-flex" to="/">
-        <img className="h-8 w-auto sm:h-10" src={logoPhoto} />
+      { !unfoldable ? (<img className="h-8 w-auto sm:h-10" src={logoPhoto} />) : ""}
       </CSidebarBrand>
       <CSidebarNav>
         <SimpleBar>
-          <AppSidebarNav items={navigation} />
+          <AppSidebarNav items={navItems} />
         </SimpleBar>
       </CSidebarNav>
       <CSidebarToggler
         className="d-none d-lg-flex"
-        onClick={() =>
-          dispatch({ type: "set", sidebarUnfoldable: !unfoldable })
-        }
+        onClick={() => dispatch(thunks.ui.setUnfoldable(!unfoldable))}
       />
     </CSidebar>
   );

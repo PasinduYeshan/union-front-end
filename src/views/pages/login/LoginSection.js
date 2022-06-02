@@ -70,12 +70,16 @@ export default function LoginSection(props) {
         toast.error(
           res.message ? res.message : "Error occurred. Please try again later."
         );
+        setLoading(false);
       }
+      setLoading(false);
     } else {
+      setLoading(false);
       const errors = {};
       for (let item of error.details) {
         errors[item.path[0]] = item.message;
       }
+      setLoading(false);
       setFormErrors(errors);
     }
     // setLoading(false);

@@ -37,7 +37,7 @@ const DepartmentDetailsSection = ({
         {CustomCFormInputGroup({
           label: "Date of Appointment",
           name: "dateOfAppointment",
-          value: member.dateOfAppointment,
+          value: readOnly ? (member.dateOfAppointment ? convertTZ(member.dateOfAppointment) : "") : member.dateOfAppointment,
           onChange: onChange,
           error: formErrors.dateOfAppointment,
           uppercase: true,
@@ -71,7 +71,7 @@ const DepartmentDetailsSection = ({
         {CustomCFormInputGroup({
           label: "Date of Pension",
           name: "dateOfPension",
-          value: member.dateOfPension,
+          value: readOnly ? (member.dateOfPension ? convertTZ(member.dateOfPension) : "") : member.dateOfPension,
           onChange: onChange,
           error: formErrors.dateOfPension,
           uppercase: true,

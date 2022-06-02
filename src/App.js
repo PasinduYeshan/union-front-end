@@ -14,6 +14,9 @@ const loading = (
   </div>
 );
 
+// Components
+import { ProtectedRoute } from "./components";
+
 // Containers
 const DefaultLayout = React.lazy(() => import("./layout/DefaultLayout"));
 
@@ -105,7 +108,8 @@ function App() {
             name="Home Page"
             render={(props) => <HomePage {...props} />}
           />
-          <Route
+          <ProtectedRoute
+            isLoggedIn={true}
             path="/office"
             name="Office Home"
             render={(props) => <DefaultLayout {...props} />}

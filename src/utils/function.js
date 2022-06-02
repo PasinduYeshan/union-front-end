@@ -72,11 +72,16 @@ export function deleteEmptyKeys(obj) {
  * @returns
  */
 export function convertTZ(date) {
+  if (!date) return "";
   let dateObj = new Date(date);
-  let dateStr = dateObj.toLocaleDateString("en-US", {
+  // MM-DD-YYYY format
+  let dateStr = dateObj.toLocaleDateString("ko-KR", {
     timeZone: "Asia/Colombo",
   });
-  return dateStr;
+  // Convert ot YYYY-MM-DD format
+  let dateArr = dateStr.split("/");
+  let dateStr2 = `${dateArr[2]}-${dateArr[0]}-${dateArr[1]}`;
+  return dateStr2;
 }
 
 /**
@@ -116,7 +121,6 @@ export function getUpdatedDataOnly(original, updated) {
   let updatedData = {};
   for (let key in original) {
     if (original[key] != updated[key]) {
-      console.log(key, original[key], updated[key]);
       updatedData[key] = updated[key];
     }
   }

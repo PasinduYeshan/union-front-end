@@ -51,13 +51,14 @@ const MemberDetailsSection = ({
         {CustomCFormInputGroup({
           label: "Date of Membership",
           name: "dateOfMembership",
-          value: member.dateOfMembership,
+          value: readOnly ? (member.dateOfMembership ? convertTZ(member.dateOfMembership) : "") : member.dateOfMembership,
           onChange: onChange,
           error: formErrors.dateOfMembership,
           uppercase: true,
           required: false,
           readOnly: readOnly,
           mdSize: 4,
+          type: "date",
         })}
         {CustomCFormInputGroup({
           label: "RDS Number",

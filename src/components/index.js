@@ -6,6 +6,7 @@ import AppHeaderDropdown from './header/AppHeaderDropdown'
 import AppSidebar from './AppSidebar'
 import LoadingIndicator from './LoadingIndicator';
 import CustomModal from './CustomModal'
+import ProtectedRoute from './ProtectedRoute'
 
 export {
   AppBreadcrumb,
@@ -15,5 +16,6 @@ export {
   AppHeaderDropdown,
   AppSidebar,
   LoadingIndicator,
-  CustomModal  
+  CustomModal,
+  ProtectedRoute
 }

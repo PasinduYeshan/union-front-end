@@ -1,6 +1,7 @@
-import React, { Suspense } from 'react'
-import { Redirect, Route, Switch } from 'react-router-dom'
-import { CContainer, CSpinner } from '@coreui/react'
+import React, { Suspense } from 'react';
+import { Redirect, Route, Switch } from 'react-router-dom';
+import { CContainer, CSpinner } from '@coreui/react';
+import { ProtectedRoute } from "./index";
 
 // routes config
 import routes from '../routes'
@@ -13,7 +14,9 @@ const AppContent = () => {
           {routes.map((route, idx) => {
             return (
               route.component && (
-                <Route
+                <ProtectedRoute
+                  isLoggedIn={route.isLoggedIn}
+                  accountType={route.accountType}
                   key={idx}
                   path={route.path}
                   exact={route.exact}
