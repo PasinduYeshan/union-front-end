@@ -1,5 +1,6 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { useSelector, useDispatch } from "react-redux";
+import {useHistory} from 'react-router-dom'
 
 import {
   CSidebar,
@@ -25,20 +26,29 @@ import navigation from "../_nav";
 
 const AppSidebar = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
+
   const unfoldable = useSelector(selectors.ui.selectUnfoldable);
   const sidebarShow = useSelector(selectors.ui.selectSidebarShow);
   const accountType = useSelector(selectors.user.selectAccountType);
+  const [navItems, setNavItems] = useState([]);
+  
 
-  let navItems = navigation.filter((item) => {
-    if (item.accountType) {
-      if (item.accountType.indexOf(accountType) !== -1) {
-        delete item.accountType;
+  useEffect(() => {
+    const temps = navigation.filter((item) => {
+      console.log("Account type: ", accountType);
+      if (item.accountType) {
+        if (item.accountType.indexOf(accountType) !== -1) {
+          delete item.accountType;
+          return item;
+        }
+      } else {
         return item;
       }
-    } else {
-      return item;
-    }
-  });
+    });
+    setNavItems(temps);
+  }, [accountType]);
+  
   return (
     <CSidebar
       position="fixed"

@@ -5,17 +5,35 @@ import Joi from "joi";
 import { toast } from "react-toastify";
 import _ from "lodash";
 
-import { CForm, CButton, CImage, CFormSwitch, CCallout } from "@coreui/react";
+import {
+  CForm,
+  CButton,
+  CImage,
+  CFormSwitch,
+  CCallout,
+  CModal,
+  CModalHeader,
+  CModalTitle,
+  CModalBody,
+  CModalFooter
+} from "@coreui/react";
 
 import api, { registerAccessToken } from "src/api";
 import store, { accessToken } from "src/store";
-import { saveImg, getImageFromBucket, convertTZ, getUpdatedDataOnly } from "../../utils/function";
+import {
+  saveImg,
+  getImageFromBucket,
+  convertTZ,
+  getUpdatedDataOnly,
+  addDataToFormData,
+} from "../../utils/function";
 import { image1, image2 } from "src/configs/constants";
 
 import {
   CustomCFormInputGroup,
   CustomCFormFilesGroup,
 } from "src/components/common/CustomCInputGroup";
+import { Modal } from "src/components";
 
 const EventPage = () => {
   const dispatch = useDispatch();
@@ -27,6 +45,8 @@ const EventPage = () => {
   const [formErrors, setFormErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [readOnly, setReadOnly] = useState(true);
+  const [imageViews, setImageViews] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
 
   // Fetch data from server
   useEffect(() => {
@@ -53,7 +73,7 @@ const EventPage = () => {
     title: Joi.string().optional().label("title"),
     description: Joi.string().optional().label("description"),
     date: Joi.date().optional().label("startDate"),
-    images: Joi.array().optional().label("images"),
+    images: Joi.any(),
   });
 
   /*
@@ -62,7 +82,17 @@ const EventPage = () => {
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (name === "images") {
-      setFormData({ ...formData, [name]: files });
+      // To display images in the form
+      let imageUrls = [];
+      for (let i = 0; i < files.length; i++) {
+        let url = URL.createObjectURL(files[i]);
+        imageUrls.push(url);
+      }
+      setFormData({
+        ...formData,
+        [name]: files,
+      });
+      setImageViews(imageUrls);
     } else {
       delete formErrors[name];
       setFormData({ ...formData, [name]: value });
@@ -70,16 +100,21 @@ const EventPage = () => {
   };
 
   const handleSubmit = async (e) => {
-    const updateFields = _.pick(formData, ['title', 'description', 'date', 'images']);
-    const originalData = _.pick(event, ['title', 'description', 'date', 'images']);
-    const updatedData = getUpdatedDataOnly(originalData, updateFields);
-
-    const { error, value } = schema.validate(updatedData, { abortEarly: false });
+    if (readOnly) return;
+    const updatedData = getUpdatedDataOnly(event, formData);
+    const { error, value } = schema.validate(updatedData, {
+      abortEarly: false,
+    });
     if (!error) {
       e.preventDefault();
-      const res = await api.event.update(eventId, updatedData);
+      if (!registerAccessToken(accessToken(), history, dispatch)) return;
+      const res = await api.event.update(
+        eventId,
+        addDataToFormData(updatedData)
+      );
       if (res.status == 200) {
-        toast.success("Issue status updated successfully");
+        toast.success("Event updated successfully");
+        history.replace("/office/events/view-all");
       } else {
         toast.error(
           res.message ? res.message : "Error occurred. Please try again later."
@@ -94,6 +129,24 @@ const EventPage = () => {
       setFormErrors(errors);
     }
   };
+
+  // Handle delete
+  const handleDelete = async (e) => {
+    if (readOnly) return;
+
+    e.preventDefault();
+    if (!registerAccessToken(accessToken(), history, dispatch)) return;
+    const res = await api.event.delete(eventId);
+    if (res.status == 200) {
+      toast.success("Event deleted successfully");
+      history.replace("/office/events/view-all");
+    } else {
+      toast.error(
+        res.message ? res.message : "Error occurred. Please try again later."
+      );
+    }
+  };
+
   return (
     <>
       <div className="shadow border-b border-gray-200 sm:rounded-lg bg-white p-4 mb-5 row g-3">
@@ -109,7 +162,16 @@ const EventPage = () => {
             }}
           />
         </div>
+        
         <CForm className="mx-2 row g-3">
+          <Modal
+            modalVisible={modalVisible}
+            setModalVisible={setModalVisible}
+            successCallback={handleDelete}
+            successLabel="Remove"
+            title="Remove Event"
+            body="Are you sure you want to remove this event?"
+          />
           {CustomCFormInputGroup({
             label: "Title",
             name: "title",
@@ -133,11 +195,7 @@ const EventPage = () => {
           {CustomCFormInputGroup({
             label: "Date",
             name: "date",
-            value: readOnly
-              ? formData.date
-                ? convertTZ(formData.date)
-                : ""
-              : formData.date,
+            value: formData.date ? convertTZ(formData.date) : "",
             onChange: handleChange,
             error: formErrors.date,
             uppercase: true,
@@ -151,14 +209,34 @@ const EventPage = () => {
             uploading new ones if you are planning to use old ones in future.
           </CCallout>
           {!readOnly ? (
-            <CustomCFormFilesGroup
-              label="Images"
-              name="images"
-              onChange={handleChange}
-              error={formErrors.images}
-              type="file"
-              required={false}
-            />
+            <div>
+              <CustomCFormFilesGroup
+                label="Images"
+                name="images"
+                onChange={handleChange}
+                error={formErrors.images}
+                type="file"
+                required={false}
+              />
+              <div>
+                <div className="mb-3 grid grid-cols-2 md:grid-cols-3 align-middle justify-start">
+                  {imageViews?.map((image, index) => (
+                    <div key={index} className="flex-row p-2">
+                      <CImage
+                        key={index}
+                        className="align-middle"
+                        rounded
+                        // thumbnail
+                        src={getImageFromBucket(image)}
+                        width={200}
+                        height={200}
+                        align="center"
+                      />{" "}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           ) : (
             <div>
               <div className="mb-3 grid grid-cols-2 md:grid-cols-3 align-middle justify-start">
@@ -194,16 +272,30 @@ const EventPage = () => {
             </div>
           )}
 
-          <div className="grid justify-end">
-            <CButton
-              color="primary"
-              variant="outline"
-              className="mr-2"
-              onClick={handleSubmit}
-            >
-              Update
-            </CButton>
-          </div>
+          {!readOnly && (
+            <div className="flex flex-row justify-end">
+              <div className="justify-end">
+                <CButton
+                  color="primary"
+                  variant="outline"
+                  className="mr-2"
+                  onClick={handleSubmit}
+                >
+                  Update
+                </CButton>
+              </div>
+              <div className="justify-end">
+                <CButton
+                  color="danger"
+                  variant="outline"
+                  className="mr-2"
+                  onClick={() => setModalVisible(true)}
+                >
+                  Remove
+                </CButton>
+              </div>
+            </div>
+          )}
         </CForm>
       </div>
     </>

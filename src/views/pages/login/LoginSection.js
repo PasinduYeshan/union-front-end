@@ -66,6 +66,7 @@ export default function LoginSection(props) {
         // Save token to local storage
         localStorage.setItem("upto-access-token", res.data.token.access);
         localStorage.setItem("upto-refresh-token", res.data.token.refresh);
+        history.go(0);
         history.replace("/office/dashboard");
       } else {
         setLoading(false);

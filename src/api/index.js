@@ -194,6 +194,9 @@ export default {
     async getByEventId(eventId) {
       return ajaxResolver(axios.get(`/api/event/get/${eventId}`));
     },
+    async delete(eventId) {
+      return ajaxResolver(axios.delete(`/api/event/delete/${eventId}`));
+    },
     async get(query) {
       return ajaxResolver(axios.get("/api/event/get", { params: query }));
     },

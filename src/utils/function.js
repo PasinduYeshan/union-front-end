@@ -12,7 +12,7 @@ export function getImageFromBucket(imageName) {
  * @param {*} data : {key: value}
  * @returns FormData object
  */
-export function addDataToFormData(formData, data) {
+export function addDataToFormData(data, formData = new FormData()) {
   for (let key in data) {
     if (key === "images") {
       for (let i = 0; i < data[key].length; i++) {
@@ -78,7 +78,6 @@ export function convertTZ(date) {
   let dateStr = dateObj.toLocaleDateString("ko-KR", {
     timeZone: "Asia/Colombo",
   });
-
   // Convert ot YYYY-MM-DD format
   let dateArr = dateStr.split(".");
   let year = dateArr[0].trim();

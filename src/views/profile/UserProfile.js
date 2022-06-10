@@ -89,19 +89,6 @@ const UserProfile = () => {
     }
   };
 
-  const getAccountTypeOptions = (accountType) => {
-    switch (accountType) {
-      case "bsEditor" || "bsViewer":
-        return ["bsEditor", "bsViewer"];
-      case "adminEditor" || "adminViewer":
-        return ["adminEditor", "adminViewer"];
-      case "officer":
-        return ["officer"];
-      default:
-        return [];
-    }
-  };
-
   /*
    * Handling Button Presses
    */

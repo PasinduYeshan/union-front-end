@@ -7,6 +7,7 @@ import AppSidebar from './AppSidebar'
 import LoadingIndicator from './LoadingIndicator';
 import CustomModal from './CustomModal'
 import ProtectedRoute from './ProtectedRoute'
+import Modal from './Modal'
 
 export {
   AppBreadcrumb,
@@ -17,5 +18,6 @@ export {
   AppSidebar,
   LoadingIndicator,
   CustomModal,
-  ProtectedRoute
+  ProtectedRoute,
+  Modal
 }

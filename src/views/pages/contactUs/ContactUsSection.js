@@ -68,7 +68,7 @@ const ContactUsSection = () => {
     if (!error) {
       //Issue send logic
       let fData = new FormData();
-      fData = addDataToFormData(fData, formData);
+      fData = addDataToFormData(formData, fData);
       const res = await api.issue.add(fData);
       if (res && res.status === 200) {
         toast.success("Issue sent successfully.");

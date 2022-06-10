@@ -29,7 +29,7 @@ const UserAccountsPage = React.lazy(() =>
 );
 
 // Event related pages
-const AddEventPage = React.lazy(() => import("./views/events/EventTable"));
+const AddEventPage = React.lazy(() => import("./views/events/AddEventPage"));
 const EventListPage = React.lazy(() => import("./views/events/EventTable"));
 const EventPage = React.lazy(() => import("./views/events/EventPage"));
 

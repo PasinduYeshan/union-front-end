@@ -93,13 +93,30 @@ const UserAccountPage = () => {
   };
 
   const getAccountTypeOptions = (accountType) => {
+    console.log("accountType", accountType);
     switch (accountType) {
-      case "bsEditor" || "bsViewer":
-        return ["bsEditor", "bsViewer"];
-      case "adminEditor" || "adminViewer":
-        return ["adminEditor", "adminViewer"];
+      case "bsEditor":
+        return [
+          { label: "Editor", value: "bsEditor" },
+          { label: "Viewer", value: "bsViewer" },
+        ];
+      case "bsViewer":
+        return [
+          { label: "Editor", value: "bsEditor" },
+          { label: "Viewer", value: "bsViewer" },
+        ];
+      case "adminEditor":
+        return [
+          { label: "Editor", value: "adminEditor" },
+          { label: "Viewer", value: "adminViewer" },
+        ];
+      case "adminViewer":
+        return [
+          { label: "Editor", value: "adminEditor" },
+          { label: "Viewer", value: "adminViewer" },
+        ];
       case "officer":
-        return ["officer"];
+        return [{ label: "Officer", value: "Officer" }];
       default:
         return [];
     }
@@ -162,7 +179,7 @@ const UserAccountPage = () => {
     }
     setModalVisibility(false);
   };
-
+  console.log(formData);
   return (
     <>
       <div className="shadow sm:rounded-lg bg-white p-4 mt-2 mb-5 row g-3">
