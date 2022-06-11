@@ -48,7 +48,6 @@ export const registerAccessToken = (token, history, dispatch) => {
  * @param res
  */
 function readStatus(res) {
-  console.log(res);
   if (!res || !res.status) {
     return {
       status: 408,
@@ -200,6 +199,62 @@ export default {
     },
     async get(query) {
       return ajaxResolver(axios.get("/api/event/get", { params: query }));
+    },
+  },
+  leader: {
+    async add(leaderData) {
+      return ajaxResolver(axios.post("/api/web/add-leader", leaderData));
+    },
+    async update(leaderId, leaderData) {
+      return ajaxResolver(axios.put(`/api/web/update-leader/${leaderId}`, leaderData));
+    },
+    async delete(leaderId) {
+      return ajaxResolver(axios.delete(`/api/web/delete-leader/${leaderId}`));
+    },
+    async get(query) {
+      return ajaxResolver(axios.get("/api/web/get-leaders", { params: query }));
+    },
+  },
+  branchSecretary: {
+    async add(branchSecData) {
+      return ajaxResolver(axios.post("/api/web/add-branch-secretary", branchSecData));
+    },
+    async update(branchSecId, branchSecData) {
+      return ajaxResolver(axios.put(`/api/web/update-branch-secretary/${branchSecId}`, branchSecData));
+    },
+    async delete(branchSecId) {
+      return ajaxResolver(axios.delete(`/api/web/delete-branch-secretary/${branchSecId}`));
+    },
+    async get(query) {
+      return ajaxResolver(axios.get("/api/web/get-branch-secretaries", { params: query }));
+    },
+  },
+  committeeMember: {
+    async add(committeeMemberData) {
+      return ajaxResolver(axios.post("/api/web/add-committee-member", committeeMemberData));
+    },
+    async update(committeeMemberId, committeeMemberData) {
+      return ajaxResolver(axios.put(`/api/web/update-committee-member/${committeeMemberId}`, committeeMemberData));
+    },
+    async delete(committeeMemberId) {
+      return ajaxResolver(axios.delete(`/api/web/delete-committee-member/${committeeMemberId}`));
+    },
+    async get(query) {
+      return ajaxResolver(axios.get("/api/web/get-committee-members", { params: query }));
+    },
+  },
+  announcement: {
+    async add(announcementData) {
+      return ajaxResolver(axios.post("/api/web/add-announcement", announcementData));
+    },
+    async update(announcementId, announcementData) {
+      return ajaxResolver(axios.put(`/api/web/update-announcement/${announcementId}`, announcementData));
+    },
+    async delete(announcementId) {
+      return ajaxResolver(axios.delete(`/api/web/delete-announcement/${announcementId}`));
+    },
+    async get(query) {
+      return ajaxResolver(axios.get("/api/web/get-announcements", { params: query }));
     },
   },
 };

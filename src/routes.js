@@ -36,8 +36,13 @@ const EventPage = React.lazy(() => import("./views/events/EventPage"));
 // User profile
 const UserProfile = React.lazy(() => import("./views/profile/UserProfile"));
 
+// Leader related pages
+const AddLeader = React.lazy(() => import("./views/leaders/AddPage"));
+const LeaderTable = React.lazy(() => import("./views/leaders/TablePage"));
+const LeaderPage = React.lazy(() => import("./views/leaders/ViewPage"));
+
 const routes = [
-  { path: "/office", exact: true, name: "Office" },
+  { path: "/office", exact: true, name: "Office", component: Dashboard, },
   {
     path: "/office/dashboard",
     exact: true,
@@ -198,9 +203,10 @@ const routes = [
   // Event related routes
   {
     path: "/office/events",
-    name: "Events",
+    name: "Event",
     exact: true,
     isLoggedIn: true,
+    component: EventListPage,
     accountType: ["officer"]
   },
   {
@@ -230,6 +236,36 @@ const routes = [
     name: "View User Profile",
     component: UserProfile,
     isLoggedIn: true,
+  },
+  // Leader related routes
+  {
+    path: "/office/leader",
+    name: "Leader",
+    exact: true,
+    isLoggedIn: true,
+    accountType: ["officer"],
+    component: LeaderTable,
+  },
+  {
+    path: "/office/leader/add",
+    name: "Add Leader",
+    component: AddLeader,
+    isLoggedIn: true,
+    accountType: ["officer"]
+  },
+  {
+    path: "/office/leader/view",
+    name: "View Leader",
+    component: LeaderPage,
+    isLoggedIn: true,
+    accountType: ["officer"]
+  },
+  {
+    path: "/office/leader/view-all",
+    name: "View all Leaders",
+    component: LeaderTable,
+    isLoggedIn: true,
+    accountType: ["officer"]
   },
 ];
 

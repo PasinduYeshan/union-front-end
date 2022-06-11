@@ -14,7 +14,7 @@ export function getImageFromBucket(imageName) {
  */
 export function addDataToFormData(data, formData = new FormData()) {
   for (let key in data) {
-    if (key === "images") {
+    if (key === "images" || key === "image") {
       for (let i = 0; i < data[key].length; i++) {
         formData.append(key, data[key][i]);
       }
@@ -42,6 +42,12 @@ export function printFormData(formData, data) {
  */
 export function saveImg(urlArr) {
   (async () => {
+    if (!Array.isArray(urlArr)) {
+      const response = await fetch(urlArr);
+      const blob = await response.blob();
+      saveAs(blob);
+      return;
+    }
     for (let i = 0; i < urlArr.length; i++) {
       const response = await fetch(urlArr[i]);
       const blob = await response.blob();
