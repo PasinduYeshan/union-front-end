@@ -13,7 +13,6 @@ const EventsSection = () => {
   useEffect(() => {
     async function fetchData() {
       const response = await api.event.get({});
-      console.log(response);
       if (response.status === 200) {
         setEvents(response.data.events);
         setTotalCount(response.data.count);

@@ -11,11 +11,15 @@ import {
   cilPuzzle,
   cilSpeedometer,
   cilStar,
-  cilChatBubble,
   cilGroup,
+  cilChatBubble,
   cilAddressBook,
   cilUserPlus,
   cilList,
+  cilLibraryAdd,
+  cilUserFollow,
+  cilPlus,
+  cilSearch
 } from "@coreui/icons";
 import { CNavGroup, CNavItem, CNavTitle } from "@coreui/react";
 
@@ -106,9 +110,9 @@ const _nav = [
   },
   {
     component: CNavItem,
-    name: "View Member",
+    name: "Search Member",
     to: "/office/member/get-member",
-    icon: <CIcon icon={cilAddressBook} customClassName="nav-icon" />,
+    icon: <CIcon icon={cilSearch} customClassName="nav-icon" />,
     accountType: ["adminEditor", "adminViewer", "bsEditor", "bsViewer"],
   },
   {
@@ -118,11 +122,12 @@ const _nav = [
   },
   {
     component: CNavItem,
-    name: "Issue List",
+    name: "Issues",
     to: "/office/issues",
     icon: <CIcon icon={cilChatBubble} customClassName="nav-icon" />,
     accountType: ["adminEditor", "adminViewer"],
   },
+  // Officer nav items
   {
     component: CNavTitle,
     name: "Events",
@@ -132,7 +137,7 @@ const _nav = [
     component: CNavItem,
     name: "Add Event",
     to: "/office/events/add",
-    icon: <CIcon icon={cilChatBubble} customClassName="nav-icon" />,
+    icon: <CIcon icon={cilLibraryAdd} customClassName="nav-icon" />,
     accountType: ["officer"]
   },
   {
@@ -140,6 +145,86 @@ const _nav = [
     name: "Events List",
     to: "/office/events/view-all",
     icon: <CIcon icon={cilList} customClassName="nav-icon" />,
+    accountType: ["officer"]
+  },
+  // Leaders
+  {
+    component: CNavTitle,
+    name: "Leader",
+    accountType: ["officer"]
+  },
+  {
+    component: CNavItem,
+    name: "Add Leader",
+    to: "/office/leader/add",
+    icon: <CIcon icon={cilUserFollow} customClassName="nav-icon" />,
+    accountType: ["officer"]
+  },
+  {
+    component: CNavItem,
+    name: "Leaders",
+    to: "/office/leader/view-all",
+    icon: <CIcon icon={cilGroup} customClassName="nav-icon" />,
+    accountType: ["officer"]
+  },
+  // Committee Members
+  {
+    component: CNavTitle,
+    name: "Committee Members",
+    accountType: ["officer"]
+  },
+  {
+    component: CNavItem,
+    name: "Add Committee Member",
+    to: "/office/committee/add",
+    icon: <CIcon icon={cilUserFollow} customClassName="nav-icon" />,
+    accountType: ["officer"]
+  },
+  {
+    component: CNavItem,
+    name: "Committee Members",
+    to: "/office/committee/view-all",
+    icon: <CIcon icon={cilGroup} customClassName="nav-icon" />,
+    accountType: ["officer"]
+  },
+  // Branch Secretaries Section
+  {
+    component: CNavTitle,
+    name: "Branch Secretaries",
+    accountType: ["officer"]
+  },
+  {
+    component: CNavItem,
+    name: "Add Branch Secretary",
+    to: "/office/bsec/add",
+    icon: <CIcon icon={cilUserFollow} customClassName="nav-icon" />,
+    accountType: ["officer"]
+  },
+  {
+    component: CNavItem,
+    name: "Branch Secretaries",
+    to: "/office/bsec/view-all",
+    icon: <CIcon icon={cilGroup} customClassName="nav-icon" />,
+    accountType: ["officer"]
+  },
+  // Announcement Section
+  {
+    component: CNavTitle,
+    name: "Announcement",
+    accountType: ["officer"]
+  },
+  {
+    component: CNavItem,
+    name: "Add Announcement",
+    to: "/office/announcement/add",
+    icon: <CIcon icon={cilPlus} customClassName="nav-icon" />,
+    accountType: ["officer"]
+  },
+  {
+    component: CNavItem,
+    name: "Announcements",
+    to: "/office/announcement/view-all",
+    icon: <CIcon icon={cilBell} customClassName="nav-icon" />,
     accountType: ["officer"]
   },
 ];

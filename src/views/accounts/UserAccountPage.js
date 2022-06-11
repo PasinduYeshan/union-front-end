@@ -4,6 +4,7 @@ import { useLocation, useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 import Joi from "joi";
 import { CButton, CFormSwitch } from "@coreui/react";
+import _ from 'lodash';
 
 import api, { registerAccessToken } from "src/api";
 import store, { accessToken, selectors, thunks } from "src/store";
@@ -146,12 +147,16 @@ const UserAccountPage = () => {
     if (!updateMode) {
       return;
     }
-    const { error, value } = schema.validate(formData, { abortEarly: false });
+    const updatedData = _.pick(formData, ['name', 'username', 'status', 'email', 'contactNo', 'NIC', 'branchName', 'accountType']);
+    const { error, value } = schema.validate(updatedData, { abortEarly: false });
+    console.log(error);
     if (!error) {
       e.preventDefault();
-      const res = await api.user.updateUser(userId, formData);
+      if (!registerAccessToken(accessToken(), history, dispatch)) return;
+      const res = await api.user.updateUser(userId, updatedData);
       if (res.status === 200) {
         toast.success("Account Updated Successfully");
+        setInitialAccount(formData);
       } else {
         toast.error(
           res.message ? res.message : "Error occurred. Please try again later."
@@ -179,7 +184,6 @@ const UserAccountPage = () => {
     }
     setModalVisibility(false);
   };
-  console.log(formData);
   return (
     <>
       <div className="shadow sm:rounded-lg bg-white p-4 mt-2 mb-5 row g-3">

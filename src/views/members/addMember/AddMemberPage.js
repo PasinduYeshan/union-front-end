@@ -123,14 +123,12 @@ const AddMemberPage = () => {
         break;
     }
     const { error, value } = schema.validate(checkData, { abortEarly: false });
-    console.log("Here", error);
     if (!error) {
       // At the end of the form, submit the form
       if (currentStep == stepComponents.length) {
         await submit();
         return;
       }
-      console.log(currentStep);
       setCurrentStep(currentStep + 1);
     } else {
       const errors = {};
@@ -170,7 +168,6 @@ const AddMemberPage = () => {
       ...formData,
       [name]: [...formData[name], { name: formData[tempFieldName] }],
     });
-    console.log(formData);
   };
 
   // Handle child remove button from list

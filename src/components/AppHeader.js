@@ -19,16 +19,21 @@ import { AppHeaderDropdown } from './header/index'
 import { logo } from 'src/assets/brand/logo'
 const logoPhoto = require("../assets/images/logo.png")
 
+import { selectors, thunks } from "src/store";
+
 const AppHeader = () => {
-  const dispatch = useDispatch()
-  const sidebarShow = useSelector((state) => state.sidebarShow)
+  const dispatch = useDispatch();
+
+  const unfoldable = useSelector(selectors.ui.selectUnfoldable);
+  const sidebarShow = useSelector(selectors.ui.selectSidebarShow);
 
   return (
     <CHeader position="sticky" className="mb-4">
       <CContainer fluid>
         <CHeaderToggler
           className="ps-1"
-          onClick={() => dispatch({ type: 'set', sidebarShow: !sidebarShow })}
+          // onClick={() => dispatch({ type: 'set', sidebarShow: !sidebarShow })}
+          onClick={() => dispatch(thunks.ui.setSidebarShow(!sidebarShow))}
         >
           <CIcon icon={cilMenu} size="lg" />
         </CHeaderToggler>

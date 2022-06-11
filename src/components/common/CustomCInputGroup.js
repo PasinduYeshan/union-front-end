@@ -44,6 +44,7 @@ export function CustomCFormInputGroup({
           className={uppercase ? "uppercase" : ""}
         >{`${label}${required ? "*" : ""}`}</CFormLabel>
         <CFormInput
+          disabled={readOnly}
           type={type}
           className={`!bg-white ${inputClassName}`}
           readOnly={readOnly}
@@ -88,12 +89,12 @@ export function CustomCFormAddInputGroup({
 }) {
   return (
     <>
+      <CFormLabel
+        htmlFor={name}
+        className={uppercase ? "uppercase" : ""}
+      >{`${label}${required ? "*" : ""}`}</CFormLabel>
       {!readOnly && (
         <CCol className="mb-3" xs={12} md={mdSize}>
-          <CFormLabel
-            htmlFor={name}
-            className={uppercase ? "uppercase" : ""}
-          >{`${label}${required ? "*" : ""}`}</CFormLabel>
           <CInputGroup>
             <CFormInput
               type={type}
@@ -148,19 +149,21 @@ export function CustomCFormAddInputGroup({
                   </CTableDataCell>
                 ))}
                 <CTableDataCell>
-                  <CButton
-                    color="danger"
-                    variant="ghost"
-                    name="childrenRemoveBtn"
-                    onClick={(_) =>
-                      handleChildRemoveBtnPressed({
-                        child,
-                        listName: addListName,
-                      })
-                    }
-                  >
-                    Remove
-                  </CButton>
+                  {!readOnly && (
+                    <CButton
+                      color="danger"
+                      variant="ghost"
+                      name="childrenRemoveBtn"
+                      onClick={(_) =>
+                        handleChildRemoveBtnPressed({
+                          child,
+                          listName: addListName,
+                        })
+                      }
+                    >
+                      Remove
+                    </CButton>
+                  )}
                 </CTableDataCell>
               </CTableRow>
             ))}

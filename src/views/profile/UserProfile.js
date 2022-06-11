@@ -26,6 +26,9 @@ const UserProfile = () => {
   const [initialAccount, setInitialAccount] = useState({});
   const [formErrors, setFormErrors] = useState(initialState);
   const [updateMode, setUpdateMode] = useState(false);
+  const [passwordSection, setPasswordSection] = useState(false);
+  const [passwordData, setPasswordData] = useState(initialPasswordValues);
+  const [passwordError, setPasswordError] = useState(initialPasswordValues);
 
   // Modal related states
   const [modalVisibility, setModalVisibility] = useState(false);
@@ -59,14 +62,23 @@ const UserProfile = () => {
 
   // Joi schema
   const schema = Joi.object({
-    name: Joi.string().optional().label("name"),
-    status: Joi.string().optional().label("Password"),
+    name: Joi.string().optional().label("Name"),
+    status: Joi.string().optional().label("Status"),
     email: Joi.string()
       .email({ tlds: { allow: false } })
       .optional()
       .label("Email"),
     contactNo: Joi.string().optional().label("Contact Number"),
     NIC: Joi.string().optional().label("NIC"),
+  });
+
+  // Joi schema for password change
+  const passwordSchema = Joi.object({
+    password: Joi.string().exist().label("Password"),
+    currentPassword: Joi.string().exist().label("Current Password"),
+    confirmPassword: Joi.string()
+      .equal(Joi.ref("password"))
+      .label("Confirm Password"),
   });
 
   /*
@@ -102,16 +114,28 @@ const UserProfile = () => {
     }
   };
 
+  // Handle password change
+  const handlePasswordChange = (e) => {
+    const { name, value, files } = e.target;
+    delete passwordError[name];
+    setPasswordData({ ...passwordData, [name]: value });
+  };
+
   const handleSubmit = async (e) => {
-    console.log(updateMode);
     if (!updateMode) {
       return;
     }
-    const formD = _.pick(formData, ["name", "email", "contactNo", "NIC", "status"]);
+    const formD = _.pick(formData, [
+      "name",
+      "email",
+      "contactNo",
+      "NIC",
+      "status",
+    ]);
     const { error, value } = schema.validate(formD, { abortEarly: false });
-    console.log(error);
     if (!error) {
       e.preventDefault();
+      if (!registerAccessToken(accessToken(), history, dispatch)) return;
       const res = await api.user.updateProfile(formD);
       if (res.status === 200) {
         toast.success("Account Updated Successfully");
@@ -127,6 +151,36 @@ const UserProfile = () => {
         errors[item.path[0]] = item.message;
       }
       setFormErrors(errors);
+    }
+  };
+
+  // Handle password submit
+  const handlePasswordSubmit = async (e) => {
+    if (!updateMode) {
+      return;
+    }
+    const { error, value } = passwordSchema.validate(passwordData, {
+      abortEarly: false,
+    });
+    if (!error) {
+      e.preventDefault();
+      if (!registerAccessToken(accessToken(), history, dispatch)) return;
+      const res = await api.user.updatePassword(passwordData);
+      if (res.status === 200) {
+        toast.success("Password Updated Successfully");
+        setPasswordSection(false);
+      } else {
+        toast.error(
+          res.message ? res.message : "Error occurred. Please try again later."
+        );
+      }
+      return;
+    } else {
+      const errors = {};
+      for (let item of error.details) {
+        errors[item.path[0]] = item.message;
+      }
+      setPasswordError(errors);
     }
   };
 
@@ -193,7 +247,7 @@ const UserProfile = () => {
             value={formData.branchName}
             uppercase={true}
             required={false}
-            readOnly={!updateMode}
+            readOnly={true}
             mdSize={4}
           />
           {CustomCFormInputGroup({
@@ -281,12 +335,64 @@ const UserProfile = () => {
             variant="ghost"
             className="mr-2"
             onClick={() => {
-              setModalVisibility(true);
+              setPasswordSection(!passwordSection);
             }}
           >
-            Reset Password
+            Change Password
           </CButton>
         </div>
+        {passwordSection && (
+          <div className="row g-3">
+            <div className="row g-3">
+              {CustomCFormInputGroup({
+                label: "Current Password",
+                name: "currentPassword",
+                value: passwordData.currentPassword,
+                error: passwordError.currentPassword,
+                onChange: handlePasswordChange,
+                uppercase: true,
+                required: false,
+                readOnly: !updateMode,
+                mdSize: 6,
+                type: "password",
+              })}
+            </div>
+            {CustomCFormInputGroup({
+              label: "New Password",
+              name: "password",
+              value: passwordData.password,
+              error: passwordError.password,
+              onChange: handlePasswordChange,
+              uppercase: true,
+              required: false,
+              readOnly: !updateMode,
+              mdSize: 6,
+              type: "password",
+            })}
+            {CustomCFormInputGroup({
+              label: "Confirm Password",
+              name: "confirmPassword",
+              value: passwordData.confirmPassword,
+              error: passwordError.confirmPassword,
+              onChange: handlePasswordChange,
+              uppercase: true,
+              required: false,
+              readOnly: !updateMode,
+              mdSize: 6,
+              type: "password",
+            })}
+            <div className="grid justify-start" hidden={!updateMode}>
+              <CButton
+                color="primary"
+                variant="outline"
+                className="mr-2"
+                onClick={handlePasswordSubmit}
+              >
+                Update Password
+              </CButton>
+            </div>
+          </div>
+        )}
       </div>
     </>
   );
@@ -303,4 +409,10 @@ const initialState = {
   username: "",
   accountType: "",
   status: "",
+};
+
+const initialPasswordValues = {
+  currentPassword: "",
+  password: "",
+  confirmPassword: "",
 };

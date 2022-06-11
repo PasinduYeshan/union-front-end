@@ -48,6 +48,7 @@ export const registerAccessToken = (token, history, dispatch) => {
  * @param res
  */
 function readStatus(res) {
+  console.log(res);
   if (!res || !res.status) {
     return {
       status: 408,
@@ -108,14 +109,14 @@ export default {
       return ajaxResolver(axios.post("/api/user/register", userData));
     },
     async updateUser(userId, userData) {
-      return ajaxResolver(axios.post(`/api/user/update/${userId}`, userData));
+      return ajaxResolver(axios.put(`/api/user/update/${userId}`, userData));
     },
     async updateProfile(userData) {
       return ajaxResolver(axios.put("/api/user/update-profile", userData));
     },
     async updatePassword(passwordData) {
       return ajaxResolver(
-        axios.post("/api/user/update-password", passwordData)
+        axios.put("/api/user/update-password", passwordData)
       );
     },
     async changePassword(userId, passwordData) {

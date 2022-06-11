@@ -36,7 +36,6 @@ const AppSidebar = () => {
 
   useEffect(() => {
     const temps = navigation.filter((item) => {
-      console.log("Account type: ", accountType);
       if (item.accountType) {
         if (item.accountType.indexOf(accountType) !== -1) {
           delete item.accountType;

@@ -62,7 +62,6 @@ const ContactUsSection = () => {
   };
 
   const handleSubmit = async (e) => {
-    console.log(formData);
     e.preventDefault();
     const { error, value } = schema.validate(formData, { abortEarly: false });
     if (!error) {
@@ -80,7 +79,6 @@ const ContactUsSection = () => {
       for (let item of error.details) {
         errors[item.path[0]] = item.message;
       }
-      console.log("Erros", errors);
       setFormErrors(errors);
     }
   };
