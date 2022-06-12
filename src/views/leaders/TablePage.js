@@ -59,9 +59,9 @@ const LeaderTablePage = () => {
             <CTable>
               <CTableHead>
                 <CTableRow>
-                  <CTableHeaderCell scope="col">Name</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Position</CTableHeaderCell>
                   <CTableHeaderCell scope="col">
-                    Position
+                    Name
                   </CTableHeaderCell>
                   <CTableHeaderCell scope="col"></CTableHeaderCell>
                 </CTableRow>
@@ -69,8 +69,8 @@ const LeaderTablePage = () => {
               <CTableBody>
                 {fetchedData.map((item, index) => (
                   <CTableRow key={index}>
-                    <CTableDataCell>{item.name}</CTableDataCell>
                     <CTableDataCell>{item.position}</CTableDataCell>
+                    <CTableDataCell>{item.name}</CTableDataCell>
                     <CTableDataCell>
                       <CButton
                         color="info"

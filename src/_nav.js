@@ -196,14 +196,14 @@ const _nav = [
   {
     component: CNavItem,
     name: "Add Branch Secretary",
-    to: "/office/bsec/add",
+    to: "/office/branch-secretary/add",
     icon: <CIcon icon={cilUserFollow} customClassName="nav-icon" />,
     accountType: ["officer"]
   },
   {
     component: CNavItem,
     name: "Branch Secretaries",
-    to: "/office/bsec/view-all",
+    to: "/office/branch-secretary/view-all",
     icon: <CIcon icon={cilGroup} customClassName="nav-icon" />,
     accountType: ["officer"]
   },

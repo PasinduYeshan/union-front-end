@@ -41,6 +41,11 @@ const AddLeader = React.lazy(() => import("./views/leaders/AddPage"));
 const LeaderTable = React.lazy(() => import("./views/leaders/TablePage"));
 const LeaderPage = React.lazy(() => import("./views/leaders/ViewPage"));
 
+// Branch Secretary related pages
+const AddBranchSecretaryPage = React.lazy(() => import("./views/branch-secretaries/AddPage"));
+const BranchSecretariesTable = React.lazy(() => import("./views/branch-secretaries/TablePage"));
+const BranchSecretaryPage = React.lazy(() => import("./views/branch-secretaries/ViewPage"));
+
 const routes = [
   { path: "/office", exact: true, name: "Office", component: Dashboard, },
   {
@@ -264,6 +269,36 @@ const routes = [
     path: "/office/leader/view-all",
     name: "View all Leaders",
     component: LeaderTable,
+    isLoggedIn: true,
+    accountType: ["officer"]
+  },
+  // Branch secretary related routes
+  {
+    path: "/office/branch-secretary",
+    name: "Branch Secretary",
+    exact: true,
+    isLoggedIn: true,
+    accountType: ["officer"],
+    component: BranchSecretariesTable,
+  },
+  {
+    path: "/office/branch-secretary/add",
+    name: "Add Branch Secretary",
+    component: AddBranchSecretaryPage,
+    isLoggedIn: true,
+    accountType: ["officer"]
+  },
+  {
+    path: "/office/branch-secretary/view",
+    name: "View Branch Secretary",
+    component: BranchSecretaryPage,
+    isLoggedIn: true,
+    accountType: ["officer"]
+  },
+  {
+    path: "/office/branch-secretary/view-all",
+    name: "View all Branch Secretaries",
+    component: BranchSecretariesTable,
     isLoggedIn: true,
     accountType: ["officer"]
   },
