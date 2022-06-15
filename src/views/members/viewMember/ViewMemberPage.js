@@ -109,7 +109,7 @@ const ViewMemberPage = () => {
       getUpdatedDataOnly(initialAccount, formData)
     );
     if (res && res.status === 200) {
-      toast.success("Member updated successfully");
+      toast.success("Member is updated successfully");
       setUpdateMode(false);
       setCurrentStep(1);
     } else {

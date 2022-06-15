@@ -83,7 +83,7 @@ const IssuePage = () => {
       e.preventDefault();
       const res = await api.issue.update(issueId, { status: issue.status });
       if (res.status === 200) {
-        toast.success("Issue status updated successfully");
+        toast.success("Issue status is updated successfully");
       } else {
         toast.error(
           res.message ? res.message : "Error occurred. Please try again later."

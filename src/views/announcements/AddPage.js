@@ -7,11 +7,11 @@ import _ from "lodash";
 import { CForm, CButton, CImage } from "@coreui/react";
 
 import api, { registerAccessToken } from "src/api";
-import store, { accessToken } from "src/store";
+import { accessToken } from "src/store";
 import {
   getImageFromBucket,
   convertTZ,
-  addDataToFormData,
+  addDataToFormData
 } from "../../utils/function";
 
 import { LoadingIndicator } from "src/components";
@@ -19,13 +19,12 @@ import {
   CustomCFormInputGroup,
   CustomCFormFilesGroup,
   CustomCFormTextAreaGroup,
-  CustomCFormSelectGroup,
 } from "src/components/common/CustomCInputGroup";
 
 /**
- * Add leader to leader section in web page
+ * Add Announcement to web page 
  */
-const AddLeaderPage = () => {
+const AddAnnouncementPage = () => {
   const dispatch = useDispatch();
 
   const [formData, setFormData] = useState(initialValue);
@@ -36,11 +35,10 @@ const AddLeaderPage = () => {
 
   // Joi schema
   const schema = Joi.object({
-    name: Joi.string().exist().label("Name"),
-    position: Joi.string().exist().label("Position"),
-    contactNo: Joi.string().exist().label("Contact Number"),
-    image: Joi.any(),
-    order: Joi.number().exist().label("Order"),
+    title: Joi.exist().label("Title"),
+    content: Joi.optional().allow("").label("Content"),
+    date: Joi.date().exist().label("startDate"),
+    images: Joi.any(),
   });
 
   /*
@@ -48,11 +46,13 @@ const AddLeaderPage = () => {
    */
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-    if (name === "image") {
+    if (name === "images") {
       // To display images in the form
       let imageUrls = [];
-      let url = URL.createObjectURL(files[0]);
-      imageUrls.push(url);
+      for (let i = 0; i < files.length; i++) {
+        let url = URL.createObjectURL(files[i]);
+        imageUrls.push(url);
+      }
       setFormData({
         ...formData,
         [name]: files,
@@ -60,36 +60,19 @@ const AddLeaderPage = () => {
       setImageViews(imageUrls);
     } else {
       delete formErrors[name];
-      // Set order according to the position
-      if (name == "position") {
-        switch (value) {
-          case "Hon. President":
-            setFormData({ ...formData, [name]: value, order: 1 });
-            break;
-          case "Hon. General Secretary":
-            setFormData({ ...formData, [name]: value, order: 2 });
-            break;
-          case "Hon. Treasurer":
-            setFormData({ ...formData, [name]: value, order: 3 });
-            break;
-        }
-      } else {
-        setFormData({ ...formData, [name]: value });
-      }
+      setFormData({ ...formData, [name]: value });
     }
   };
 
   const handleSubmit = async (e) => {
-    const { error, value } = schema.validate(formData, {
-      abortEarly: false,
-    });
+    const { error, value } = schema.validate(formData, { abortEarly: false });
     if (!error) {
       e.preventDefault();
       setLoading(true);
       if (!registerAccessToken(accessToken(), history, dispatch)) return;
-      const res = await api.leader.add(addDataToFormData(formData));
+      const res = await api.announcement.add(addDataToFormData(formData));
       if (res.status == 200) {
-        toast.success("Leader added successfully");
+        toast.success("Announcement added successfully");
         setFormData(initialValue);
         setImageViews([]);
       } else {
@@ -100,6 +83,7 @@ const AddLeaderPage = () => {
       setLoading(false);
       return;
     } else {
+      console.log(error);
       const errors = {};
       for (let item of error.details) {
         errors[item.path[0]] = item.message;
@@ -112,54 +96,49 @@ const AddLeaderPage = () => {
       <div className="shadow border-b border-gray-200 sm:rounded-lg bg-white p-4 mb-5 row g-3">
         <CForm className="mx-2 row g-3">
           {CustomCFormInputGroup({
-            label: "Name",
-            name: "name",
-            value: formData.name,
+            label: "Title",
+            name: "title",
+            value: formData.title,
             onChange: handleChange,
-            error: formErrors.name,
+            error: formErrors.title,
             uppercase: true,
             required: false,
             readOnly: readOnly,
           })}
-          {CustomCFormSelectGroup({
-            label: "Position",
-            name: "position",
-            value: formData.position,
+          {CustomCFormTextAreaGroup({
+            label: "Content",
+            name: "content",
+            value: formData.content,
             onChange: handleChange,
-            error: formErrors.position,
+            error: formErrors.content,
             uppercase: true,
             required: false,
             readOnly: readOnly,
-            options: [
-              { value: "Hon. President", label: "Hon. President" },
-              {
-                value: "Hon. General Secretary",
-                label: "Hon. General Secretary",
-              },
-              { value: "Hon. Treasurer", label: "Hon. Treasurer" },
-            ],
-            mdSize: '6',
           })}
           {CustomCFormInputGroup({
-            label: "Contact Number",
-            name: "contactNo",
-            value: formData.contactNo,
+            label: "Date",
+            name: "date",
+            value: readOnly
+              ? formData.date
+                ? convertTZ(formData.date)
+                : ""
+              : formData.date,
             onChange: handleChange,
-            error: formErrors.contactNo,
+            error: formErrors.date,
             uppercase: true,
             required: false,
             readOnly: readOnly,
-            mdSize: '6',
+            type: "date",
+            mdSize: "6",
           })}
           <CustomCFormFilesGroup
-            label="Image"
-            name="image"
+            label="Images"
+            name="images"
             onChange={handleChange}
-            error={formErrors.image}
+            error={formErrors.images}
             type="file"
             required={false}
             mdSize="6"
-            multiple={false}
           />
           <div>
             <div className="mb-3 grid grid-cols-2 md:grid-cols-3 align-middle justify-start">
@@ -170,7 +149,7 @@ const AddLeaderPage = () => {
                     className="align-middle"
                     rounded
                     // thumbnail
-                    src={image}
+                    src={getImageFromBucket(image)}
                     width={200}
                     height={200}
                     align="center"
@@ -188,7 +167,7 @@ const AddLeaderPage = () => {
               onClick={handleSubmit}
             >
               {loading ? LoadingIndicator("sm") : null}
-              Add Leader
+              Add Announcement
             </CButton>
           </div>
         </CForm>
@@ -197,12 +176,11 @@ const AddLeaderPage = () => {
   );
 };
 
-export default AddLeaderPage;
+export default AddAnnouncementPage;
 
 const initialValue = {
-  name: "",
-  position: "",
-  contactNo: "",
-  image: "",
-  order: "",
+  title: "",
+  content: "",
+  date: "",
+  images: [],
 };

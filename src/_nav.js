@@ -176,14 +176,14 @@ const _nav = [
   {
     component: CNavItem,
     name: "Add Committee Member",
-    to: "/office/committee/add",
+    to: "/office/committee-member/add",
     icon: <CIcon icon={cilUserFollow} customClassName="nav-icon" />,
     accountType: ["officer"]
   },
   {
     component: CNavItem,
     name: "Committee Members",
-    to: "/office/committee/view-all",
+    to: "/office/committee-member/view-all",
     icon: <CIcon icon={cilGroup} customClassName="nav-icon" />,
     accountType: ["officer"]
   },

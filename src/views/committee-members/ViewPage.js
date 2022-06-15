@@ -7,33 +7,22 @@ import _ from "lodash";
 
 import { CForm, CButton, CImage, CFormSwitch, CCallout } from "@coreui/react";
 
-import { selectors, thunks } from "src/store";
+import { thunks } from "src/store";
 import api, { registerAccessToken } from "src/api";
 import { accessToken } from "src/store";
-import {
-  saveImg,
-  getImageFromBucket,
-  convertTZ,
-  getUpdatedDataOnly,
-  addDataToFormData,
-} from "../../utils/function";
 
 import {
   CustomCFormInputGroup,
-  CustomCFormFilesGroup,
-  CustomCFormSelectGroup,
 } from "src/components/common/CustomCInputGroup";
 import { Modal } from "src/components";
 
 /**
- * View and update branch secretary
+ * View and update committee member
  */
-const BranchSecretaryPage = () => {
+const CommitteeMemberPage = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const locationData = useLocation().state;
-
-  const branchNameOptions = useSelector(selectors.meta.selectBranchNameOptions);
 
   const [fetchedData, setFetchedData] = useState(locationData);
   const [formData, setFormData] = useState(locationData);
@@ -51,8 +40,9 @@ const BranchSecretaryPage = () => {
   // Joi schema
   const schema = Joi.object({
     name: Joi.string().optional().label("Name"),
-    branchName: Joi.string().optional().label("Branch Name"),
+    position: Joi.string().optional().label("Position"),
     contactNo: Joi.string().optional().label("Contact Number"),
+    order: Joi.number().optional().label("Order"),
   });
 
   /*
@@ -66,19 +56,19 @@ const BranchSecretaryPage = () => {
 
   const handleSubmit = async (e) => {
     if (readOnly) return;
-    const updateData = _.pick(formData, ["name", "branchName", "contactNo"]);
+    const updateData = _.pick(formData, ["name", "position", "contactNo", "order"]);
     const { error, value } = schema.validate(updateData, {
       abortEarly: false,
     });
     if (!error) {
       e.preventDefault();
       if (!registerAccessToken(accessToken(), history, dispatch)) return;
-      const res = await api.branchSecretary.update(
-        locationData.branchSecId,
+      const res = await api.committeeMember.update(
+        locationData.committeeMemberId,
         updateData
       );
       if (res.status == 200) {
-        toast.success("Branch secretary is updated successfully");
+        toast.success("Committee member is updated successfully");
         setFetchedData(formData);
       } else {
         toast.error(
@@ -98,13 +88,12 @@ const BranchSecretaryPage = () => {
   // Handle delete
   const handleDelete = async (e) => {
     if (readOnly) return;
-
     e.preventDefault();
     if (!registerAccessToken(accessToken(), history, dispatch)) return;
-    const res = await api.branchSecretary.delete(locationData.branchSecId);
+    const res = await api.branchSecretary.delete(locationData.committeeMemberId);
     if (res.status == 200) {
-      toast.success("Branch secretary is deleted successfully");
-      history.replace("/office/branch-secretary/view-all");
+      toast.success("Committee member is deleted successfully");
+      history.replace("/office/committee-member/view-all");
     } else {
       toast.error(
         res.message ? res.message : "Error occurred. Please try again later."
@@ -134,9 +123,19 @@ const BranchSecretaryPage = () => {
             setModalVisible={setModalVisible}
             successCallback={handleDelete}
             successLabel="Remove"
-            title="Remove Branch Secretary"
+            title="Remove Committee Member"
             body="Are you sure you want to remove?"
           />
+          {CustomCFormInputGroup({
+            label: "Position",
+            name: "position",
+            value: formData.position,
+            onChange: handleChange,
+            error: formErrors.position,
+            uppercase: true,
+            required: false,
+            readOnly: readOnly,
+          })}
           {CustomCFormInputGroup({
             label: "Name",
             name: "name",
@@ -147,18 +146,6 @@ const BranchSecretaryPage = () => {
             required: false,
             readOnly: readOnly,
           })}
-          {CustomCFormSelectGroup({
-            label: "Branch Name",
-            name: "branchName",
-            value: formData.branchName,
-            onChange: handleChange,
-            error: formErrors.branchName,
-            uppercase: true,
-            required: false,
-            readOnly: readOnly,
-            options: branchNameOptions,
-            mdSize: "6",
-          })}
           {CustomCFormInputGroup({
             label: "Contact Number",
             name: "contactNo",
@@ -168,6 +155,19 @@ const BranchSecretaryPage = () => {
             uppercase: true,
             required: false,
             readOnly: readOnly,
+            mdSize: "6",
+          })}
+          {CustomCFormInputGroup({
+            label: "Display Order",
+            name: "order",
+            value: formData.order,
+            onChange: handleChange,
+            error: formErrors.order,
+            uppercase: true,
+            required: false,
+            readOnly: readOnly,
+            type: "number",
+            mdSize: "6",
           })}
 
           {!readOnly && (
@@ -200,7 +200,7 @@ const BranchSecretaryPage = () => {
   );
 };
 
-export default BranchSecretaryPage;
+export default CommitteeMemberPage;
 
 const initialValue = {
   name: "",

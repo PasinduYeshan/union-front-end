@@ -20,7 +20,7 @@ import {
 import {
   CustomCFormInputGroup,
   CustomCFormFilesGroup,
-  CustomCFormSelectGroup
+  CustomCFormSelectGroup,
 } from "src/components/common/CustomCInputGroup";
 import { Modal } from "src/components";
 
@@ -41,8 +41,7 @@ const LeaderPage = () => {
   const [modalVisible, setModalVisible] = useState(false);
 
   // Fetch data from server
-  useEffect(() => {
-  }, []);
+  useEffect(() => {}, []);
 
   // Joi schema
   const schema = Joi.object({
@@ -60,7 +59,6 @@ const LeaderPage = () => {
     if (name === "image") {
       // To display images in the form
       let imageUrls = [];
-      console.log(e.target);
       let url = URL.createObjectURL(files[0]);
       imageUrls.push(url);
       setFormData({
@@ -91,7 +89,12 @@ const LeaderPage = () => {
 
   const handleSubmit = async (e) => {
     if (readOnly) return;
-    const updateData = _.pick(formData, ["name", "position", "image", "contactNo"]);
+    const updateData = _.pick(formData, [
+      "name",
+      "position",
+      "image",
+      "contactNo",
+    ]);
     const { error, value } = schema.validate(updateData, {
       abortEarly: false,
     });
@@ -103,7 +106,7 @@ const LeaderPage = () => {
         addDataToFormData(updateData)
       );
       if (res.status == 200) {
-        toast.success("Leader updated successfully");
+        toast.success("Leader is updated successfully");
         history.replace("/office/leader/view-all");
       } else {
         toast.error(
@@ -128,7 +131,7 @@ const LeaderPage = () => {
     if (!registerAccessToken(accessToken(), history, dispatch)) return;
     const res = await api.leader.delete(locationData.leaderId);
     if (res.status == 200) {
-      toast.success("Leader deleted successfully");
+      toast.success("Leader is deleted successfully");
       history.replace("/office/leader/view-all");
     } else {
       toast.error(
@@ -189,7 +192,7 @@ const LeaderPage = () => {
               },
               { value: "Hon. Treasurer", label: "Hon. Treasurer" },
             ],
-            mdSize: '6',
+            mdSize: "6",
           })}
           {CustomCFormInputGroup({
             label: "Contact Number",
@@ -201,11 +204,7 @@ const LeaderPage = () => {
             required: false,
             readOnly: readOnly,
           })}
-          <CCallout color="danger">
-            If you upload new images, all the previously uploaded images will be
-            removed. Therefore, please download all the old images before
-            uploading new ones if you are planning to use old ones in future.
-          </CCallout>
+
           {!readOnly ? (
             <div>
               <CustomCFormFilesGroup
@@ -238,32 +237,40 @@ const LeaderPage = () => {
             </div>
           ) : (
             <div>
-              <div className="mb-3 grid grid-cols-2 md:grid-cols-3 align-middle justify-start">
-                <div className="flex-row p-2">
-                  <CImage
-                    className="align-middle"
-                    rounded
-                    // thumbnail
-                    src={getImageFromBucket(formData.image)}
-                    width={200}
-                    height={200}
-                    align="center"
-                  />{" "}
-                </div>
-
-                {/* <iframe src={formData.images[0]}></iframe> */}
-              </div>
               {formData.image && (
-                <div className="mb-3 flex">
-                  <CButton
-                    className="mt-2"
-                    color="success"
-                    variant="outline"
-                    onClick={() => saveImg(formData.image)}
-                  >
-                    {" "}
-                    Download Image
-                  </CButton>
+                <div>
+                  <CCallout color="danger">
+                    If you upload new images, all the previously uploaded images
+                    will be removed. Therefore, please download all the old
+                    images before uploading new ones if you are planning to use
+                    old ones in future.
+                  </CCallout>
+                  <div className="mb-3 grid grid-cols-2 md:grid-cols-3 align-middle justify-start">
+                    <div className="flex-row p-2">
+                      <CImage
+                        className="align-middle"
+                        rounded
+                        // thumbnail
+                        src={getImageFromBucket(formData.image)}
+                        width={200}
+                        height={200}
+                        align="center"
+                      />{" "}
+                    </div>
+
+                    {/* <iframe src={formData.images[0]}></iframe> */}
+                  </div>
+                  <div className="mb-3 flex">
+                    <CButton
+                      className="mt-2"
+                      color="success"
+                      variant="outline"
+                      onClick={() => saveImg(formData.image)}
+                    >
+                      {" "}
+                      Download Image
+                    </CButton>
+                  </div>
                 </div>
               )}
             </div>

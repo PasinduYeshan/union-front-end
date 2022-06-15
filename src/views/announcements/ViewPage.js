@@ -11,11 +11,6 @@ import {
   CImage,
   CFormSwitch,
   CCallout,
-  CModal,
-  CModalHeader,
-  CModalTitle,
-  CModalBody,
-  CModalFooter
 } from "@coreui/react";
 
 import api, { registerAccessToken } from "src/api";
@@ -24,7 +19,6 @@ import {
   saveImg,
   getImageFromBucket,
   convertTZ,
-  getUpdatedDataOnly,
   addDataToFormData,
 } from "../../utils/function";
 import { image1, image2 } from "src/configs/constants";
@@ -38,42 +32,22 @@ import { Modal } from "src/components";
 const EventPage = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const eventId = useLocation().state.eventId;
+  const locationData = useLocation().state;
 
-  const [event, setEvent] = useState(initialValue);
-  const [formData, setFormData] = useState(initialValue);
+  const [fetchedData, setFetchedData] = useState(locationData);
+  const [formData, setFormData] = useState(locationData);
   const [formErrors, setFormErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [readOnly, setReadOnly] = useState(true);
   const [imageViews, setImageViews] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
 
-  // Fetch data from server
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      if (!registerAccessToken(accessToken(), history, dispatch)) return;
-      const res = await api.event.getByEventId(eventId);
-      if (res.status != 200) {
-        toast.error(
-          res.message ? res.message : "Error occurred, please try again"
-        );
-      } else {
-        setEvent(res.data);
-        setFormData(res.data);
-      }
-      setLoading(false);
-    };
-
-    fetchData().catch((e) => console.log(e));
-  }, []);
-
   // Joi schema
   const schema = Joi.object({
-    title: Joi.string().optional().label("title"),
-    description: Joi.string().optional().label("description"),
-    date: Joi.date().optional().label("startDate"),
-    images: Joi.any(),
+    title: Joi.string().optional().label("Title"),
+    content: Joi.string().optional().allow("").label("Content"),
+    date: Joi.date().optional().label("Contact Number"),
+    images: Joi.any().optional().label("Images"),
   });
 
   /*
@@ -101,20 +75,20 @@ const EventPage = () => {
 
   const handleSubmit = async (e) => {
     if (readOnly) return;
-    const updatedData = getUpdatedDataOnly(event, formData);
-    const { error, value } = schema.validate(updatedData, {
+    const updateData = _.pick(formData, ["title", "content", "date", "images"]);
+    const { error, value } = schema.validate(updateData, {
       abortEarly: false,
     });
     if (!error) {
       e.preventDefault();
       if (!registerAccessToken(accessToken(), history, dispatch)) return;
-      const res = await api.event.update(
-        eventId,
-        addDataToFormData(updatedData)
+      const res = await api.announcement.update(
+        locationData.announcementId,
+        addDataToFormData(updateData)
       );
       if (res.status == 200) {
-        toast.success("Event is updated successfully");
-        history.replace("/office/events/view-all");
+        toast.success("Announcement is updated successfully");
+        history.replace("/office/announcement/view-all");
       } else {
         toast.error(
           res.message ? res.message : "Error occurred. Please try again later."
@@ -136,10 +110,10 @@ const EventPage = () => {
 
     e.preventDefault();
     if (!registerAccessToken(accessToken(), history, dispatch)) return;
-    const res = await api.event.delete(eventId);
+    const res = await api.announcement.delete(locationData.announcementId);
     if (res.status == 200) {
-      toast.success("Event is deleted successfully");
-      history.replace("/office/events/view-all");
+      toast.success("Announcement is deleted successfully");
+      history.replace("/office/announcement/view-all");
     } else {
       toast.error(
         res.message ? res.message : "Error occurred. Please try again later."
@@ -158,11 +132,11 @@ const EventPage = () => {
             checked={!readOnly}
             onChange={() => {
               setReadOnly(!readOnly);
-              setFormData(event);
+              setFormData(fetchedData);
             }}
           />
         </div>
-        
+
         <CForm className="mx-2 row g-3">
           <Modal
             modalVisible={modalVisible}
@@ -175,7 +149,7 @@ const EventPage = () => {
           {CustomCFormInputGroup({
             label: "Title",
             name: "title",
-            value: formData.title,
+            value: formData.title ? formData.title : "",
             onChange: handleChange,
             error: formErrors.title,
             uppercase: true,
@@ -183,11 +157,11 @@ const EventPage = () => {
             readOnly: readOnly,
           })}
           {CustomCFormInputGroup({
-            label: "Description",
-            name: "description",
-            value: formData.description,
+            label: "Content",
+            name: "content",
+            value: formData.content,
             onChange: handleChange,
-            error: formErrors.description,
+            error: formErrors.content,
             uppercase: true,
             required: false,
             readOnly: readOnly,
@@ -306,7 +280,7 @@ export default EventPage;
 
 const initialValue = {
   title: "",
-  description: "",
+  content: "",
   date: "",
   images: [],
 };

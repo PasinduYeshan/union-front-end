@@ -25,10 +25,10 @@ import { convertTZ } from "src/utils/function";
 import CIcon from "@coreui/icons-react";
 
 /**
- * Display all the branch secretaries which will be displayed in web page
+ * Display all the events in the table
  * @returns
  */
-const BranchSecretariesTable = () => {
+const EventTable = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -49,7 +49,7 @@ const BranchSecretariesTable = () => {
   const fetchData = async (query) => {
     setLoading(true);
     if (!registerAccessToken(accessToken(), history, dispatch)) return;
-    const res = await api.branchSecretary.get({ });
+    const res = await api.announcement.get({ });
     if (res.status != 200) {
       toast.error(res.message ? res.message : "Something went wrong");
       setLoading(false);
@@ -69,7 +69,7 @@ const BranchSecretariesTable = () => {
   /**
    * Pagination related functions
    */
-  const handlePageChangePrevious = async () => {
+   const handlePageChangePrevious = async () => {
     if (pageNumber == 1) {
       return;
     } else {
@@ -112,6 +112,33 @@ const BranchSecretariesTable = () => {
     return items;
   };
 
+  /**
+   * Sort by date
+   * Steps ::
+   * 1. Sort the fetched data by date
+   * 2. Update fetchData
+   * 3. Set page number to 1
+   * 4. Update page data to first <records per page>
+   * 5. Update sort by date descending order
+   */
+  const _sortDateDescendingOrder = () => {
+    if (!sortDateDescendingOrder) {
+      const sortedData = fetchedData.sort((a, b) => new Date(b.date) - new Date(a.date));
+      setFetchedData(sortedData);
+      setPageNumber(1);
+      const displayData = sortedData.slice(0, (1 * recordsPerPage));
+      setPageData(displayData);
+      setSortByDateDescendingOrder(!sortDateDescendingOrder);
+    } else {
+      const sortedData = fetchedData.sort((a, b) => new Date(a.date) - new Date(b.date));
+      setFetchedData(sortedData);
+      setPageNumber(1);
+      const displayData = sortedData.slice(0, (1 * recordsPerPage));
+      setPageData(displayData);
+      setSortByDateDescendingOrder(!sortDateDescendingOrder);
+    }
+  };
+
   return (
     <>
       <div className="shadow border-b border-gray-200 sm:rounded-lg bg-white p-4 mb-5 justify-center">
@@ -122,9 +149,16 @@ const BranchSecretariesTable = () => {
             <CTable>
               <CTableHead>
                 <CTableRow>
-                  <CTableHeaderCell scope="col">Branch Name</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Title</CTableHeaderCell>
                   <CTableHeaderCell scope="col">
-                    Name
+                    Date
+                    <CButton
+                      color="dark"
+                      variant="ghost"
+                      onClick={_sortDateDescendingOrder}
+                    >
+                      <CIcon icon={sortDateDescendingOrder ? cilArrowBottom : cilArrowTop} />
+                    </CButton>
                   </CTableHeaderCell>
                   <CTableHeaderCell scope="col"></CTableHeaderCell>
                 </CTableRow>
@@ -132,15 +166,15 @@ const BranchSecretariesTable = () => {
               <CTableBody>
                 {pageData.map((item, index) => (
                   <CTableRow key={index}>
-                    <CTableDataCell>{item.branchName}</CTableDataCell>
-                    <CTableDataCell>{item.name}</CTableDataCell>
+                    <CTableDataCell>{item.title}</CTableDataCell>
+                    <CTableDataCell>{convertTZ(item.date)}</CTableDataCell>
                     <CTableDataCell>
                       <CButton
                         color="info"
                         variant="outline"
                         onClick={() =>
                           history.push({
-                            pathname: "/office/branch-secretary/view",
+                            pathname: "/office/announcement/view",
                             state: item,
                           })
                         }
@@ -179,4 +213,4 @@ const BranchSecretariesTable = () => {
   );
 };
 
-export default BranchSecretariesTable;
+export default EventTable;

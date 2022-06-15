@@ -7,7 +7,7 @@ import _ from "lodash";
 import { CForm, CButton, CImage } from "@coreui/react";
 
 import api, { registerAccessToken } from "src/api";
-import store, { accessToken, selectors } from "src/store";
+import store, { accessToken, selectors, thunks } from "src/store";
 
 import { LoadingIndicator } from "src/components";
 import {
@@ -29,11 +29,16 @@ const AddBranchSecretaryPage = () => {
 
   const branchNameOptions = useSelector(selectors.meta.selectBranchNameOptions);
 
+   // Fetch data from server
+   useEffect(() => {
+    dispatch(thunks.meta.getBranches());
+  }, []);
+
   // Joi schema
   const schema = Joi.object({
     name: Joi.string().exist().label("Name"),
     branchName: Joi.string().exist().label("Branch Name"),
-    contactNo: Joi.date().exist().label("Contact Number"),
+    contactNo: Joi.string().exist().label("Contact Number"),
   });
 
   /*

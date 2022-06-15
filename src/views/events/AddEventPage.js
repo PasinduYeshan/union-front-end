@@ -32,9 +32,9 @@ const AddEventPage = () => {
 
   // Joi schema
   const schema = Joi.object({
-    title: Joi.string().exist().label("title"),
-    description: Joi.string().exist().label("description"),
-    date: Joi.date().exist().label("startDate"),
+    title: Joi.string().exist().label("Title"),
+    description: Joi.string().exist().label("Description"),
+    date: Joi.date().exist().label("Date"),
     images: Joi.any(),
   });
 

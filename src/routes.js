@@ -46,6 +46,16 @@ const AddBranchSecretaryPage = React.lazy(() => import("./views/branch-secretari
 const BranchSecretariesTable = React.lazy(() => import("./views/branch-secretaries/TablePage"));
 const BranchSecretaryPage = React.lazy(() => import("./views/branch-secretaries/ViewPage"));
 
+// Committee Member related pages
+const AddCommitteeMemberPage = React.lazy(() => import("./views/committee-members/AddPage"));
+const CommitteeMembersTable = React.lazy(() => import("./views/committee-members/TablePage"));
+const CommitteeMemberPage = React.lazy(() => import("./views/committee-members/ViewPage"));
+
+// Announcement related pages
+const AddAnnouncementPage = React.lazy(() => import("./views/announcements/AddPage"));
+const AnnouncementTable = React.lazy(() => import("./views/announcements/TablePage"));
+const AnnouncementPage = React.lazy(() => import("./views/announcements/ViewPage"));
+
 const routes = [
   { path: "/office", exact: true, name: "Office", component: Dashboard, },
   {
@@ -299,6 +309,66 @@ const routes = [
     path: "/office/branch-secretary/view-all",
     name: "View all Branch Secretaries",
     component: BranchSecretariesTable,
+    isLoggedIn: true,
+    accountType: ["officer"]
+  },
+  // Committee member related routes
+  {
+    path: "/office/committee-member",
+    name: "Committee Member",
+    exact: true,
+    isLoggedIn: true,
+    accountType: ["officer"],
+    component: CommitteeMembersTable,
+  },
+  {
+    path: "/office/committee-member/add",
+    name: "Add Committee Member",
+    component: AddCommitteeMemberPage,
+    isLoggedIn: true,
+    accountType: ["officer"]
+  },
+  {
+    path: "/office/committee-member/view",
+    name: "View Committee Member",
+    component: CommitteeMemberPage,
+    isLoggedIn: true,
+    accountType: ["officer"]
+  },
+  {
+    path: "/office/committee-member/view-all",
+    name: "View all committee members",
+    component: CommitteeMembersTable,
+    isLoggedIn: true,
+    accountType: ["officer"]
+  },
+  // Announcement related routes
+  {
+    path: "/office/announcement",
+    name: "Announcement",
+    exact: true,
+    isLoggedIn: true,
+    accountType: ["officer"],
+    component: AnnouncementTable,
+  },
+  {
+    path: "/office/announcement/add",
+    name: "Add Announcement",
+    component: AddAnnouncementPage,
+    isLoggedIn: true,
+    accountType: ["officer"]
+  },
+  {
+    path: "/office/announcement/view",
+    name: "View Announcement",
+    component: AnnouncementPage,
+    isLoggedIn: true,
+    accountType: ["officer"]
+  },
+  {
+    path: "/office/announcement/view-all",
+    name: "View all announcements",
+    component: AnnouncementTable,
     isLoggedIn: true,
     accountType: ["officer"]
   },

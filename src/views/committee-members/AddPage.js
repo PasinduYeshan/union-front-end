@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Joi from "joi";
 import { toast } from "react-toastify";
 import _ from "lodash";
@@ -7,25 +7,17 @@ import _ from "lodash";
 import { CForm, CButton, CImage } from "@coreui/react";
 
 import api, { registerAccessToken } from "src/api";
-import store, { accessToken } from "src/store";
-import {
-  getImageFromBucket,
-  convertTZ,
-  addDataToFormData,
-} from "../../utils/function";
+import { accessToken } from "src/store";
 
 import { LoadingIndicator } from "src/components";
 import {
   CustomCFormInputGroup,
-  CustomCFormFilesGroup,
-  CustomCFormTextAreaGroup,
-  CustomCFormSelectGroup,
 } from "src/components/common/CustomCInputGroup";
 
 /**
- * Add leader to leader section in web page
+ * Add secretary to secretary section
  */
-const AddLeaderPage = () => {
+const AddCommitteeMemberPage = () => {
   const dispatch = useDispatch();
 
   const [formData, setFormData] = useState(initialValue);
@@ -39,8 +31,7 @@ const AddLeaderPage = () => {
     name: Joi.string().exist().label("Name"),
     position: Joi.string().exist().label("Position"),
     contactNo: Joi.string().exist().label("Contact Number"),
-    image: Joi.any(),
-    order: Joi.number().exist().label("Order"),
+    order: Joi.number().exist().label("Contact Number"),
   });
 
   /*
@@ -60,22 +51,7 @@ const AddLeaderPage = () => {
       setImageViews(imageUrls);
     } else {
       delete formErrors[name];
-      // Set order according to the position
-      if (name == "position") {
-        switch (value) {
-          case "Hon. President":
-            setFormData({ ...formData, [name]: value, order: 1 });
-            break;
-          case "Hon. General Secretary":
-            setFormData({ ...formData, [name]: value, order: 2 });
-            break;
-          case "Hon. Treasurer":
-            setFormData({ ...formData, [name]: value, order: 3 });
-            break;
-        }
-      } else {
-        setFormData({ ...formData, [name]: value });
-      }
+      setFormData({ ...formData, [name]: value });
     }
   };
 
@@ -87,9 +63,9 @@ const AddLeaderPage = () => {
       e.preventDefault();
       setLoading(true);
       if (!registerAccessToken(accessToken(), history, dispatch)) return;
-      const res = await api.leader.add(addDataToFormData(formData));
+      const res = await api.committeeMember.add(formData);
       if (res.status == 200) {
-        toast.success("Leader added successfully");
+        toast.success("Committee member added successfully");
         setFormData(initialValue);
         setImageViews([]);
       } else {
@@ -111,6 +87,16 @@ const AddLeaderPage = () => {
     <>
       <div className="shadow border-b border-gray-200 sm:rounded-lg bg-white p-4 mb-5 row g-3">
         <CForm className="mx-2 row g-3">
+        {CustomCFormInputGroup({
+            label: "Position",
+            name: "position",
+            value: formData.position,
+            onChange: handleChange,
+            error: formErrors.position,
+            uppercase: true,
+            required: false,
+            readOnly: readOnly,
+          })}
           {CustomCFormInputGroup({
             label: "Name",
             name: "name",
@@ -121,25 +107,6 @@ const AddLeaderPage = () => {
             required: false,
             readOnly: readOnly,
           })}
-          {CustomCFormSelectGroup({
-            label: "Position",
-            name: "position",
-            value: formData.position,
-            onChange: handleChange,
-            error: formErrors.position,
-            uppercase: true,
-            required: false,
-            readOnly: readOnly,
-            options: [
-              { value: "Hon. President", label: "Hon. President" },
-              {
-                value: "Hon. General Secretary",
-                label: "Hon. General Secretary",
-              },
-              { value: "Hon. Treasurer", label: "Hon. Treasurer" },
-            ],
-            mdSize: '6',
-          })}
           {CustomCFormInputGroup({
             label: "Contact Number",
             name: "contactNo",
@@ -149,37 +116,20 @@ const AddLeaderPage = () => {
             uppercase: true,
             required: false,
             readOnly: readOnly,
-            mdSize: '6',
+            mdSize: "6",
           })}
-          <CustomCFormFilesGroup
-            label="Image"
-            name="image"
-            onChange={handleChange}
-            error={formErrors.image}
-            type="file"
-            required={false}
-            mdSize="6"
-            multiple={false}
-          />
-          <div>
-            <div className="mb-3 grid grid-cols-2 md:grid-cols-3 align-middle justify-start">
-              {imageViews?.map((image, index) => (
-                <div key={index} className="flex-row p-2">
-                  <CImage
-                    key={index}
-                    className="align-middle"
-                    rounded
-                    // thumbnail
-                    src={image}
-                    width={200}
-                    height={200}
-                    align="center"
-                  />{" "}
-                </div>
-              ))}
-            </div>
-          </div>
-
+          {CustomCFormInputGroup({
+            label: "Display Order",
+            name: "order",
+            value: formData.order,
+            onChange: handleChange,
+            error: formErrors.order,
+            uppercase: true,
+            required: false,
+            readOnly: readOnly,
+            type: "number",
+            mdSize: "6",
+          })}
           <div className="grid justify-end">
             <CButton
               color="primary"
@@ -188,7 +138,7 @@ const AddLeaderPage = () => {
               onClick={handleSubmit}
             >
               {loading ? LoadingIndicator("sm") : null}
-              Add Leader
+              Add Committee Member
             </CButton>
           </div>
         </CForm>
@@ -197,12 +147,11 @@ const AddLeaderPage = () => {
   );
 };
 
-export default AddLeaderPage;
+export default AddCommitteeMemberPage;
 
 const initialValue = {
   name: "",
-  position: "",
   contactNo: "",
-  image: "",
+  position: "",
   order: "",
 };
